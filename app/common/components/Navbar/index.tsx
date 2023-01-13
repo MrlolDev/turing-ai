@@ -41,7 +41,7 @@ export default function Navbar() {
                 router.push("/app");
               }}
             >
-              Open Turing AI
+              Open Dashboard
             </button>
           </>
         ) : (
