@@ -38,15 +38,15 @@ export default function Landing() {
               Turing AI is the best way to use AIs
             </h1>
             <p className=" w-[90%] text-left">
-              Turing AI - our mission is to bring the most powerfull AIs to the
-              mass public for free.
+              Turing AI - our mission is to bring the best powerfull AIs to the
+              most public for free.
             </p>
             <div className="flex flex-row items-center gap-2">
               <button
                 className="px-12 mt-2 py-1 text-lg bg-turing-primary/[.88] text-turing-white rounded-md hover:bg-turing-primary transition duration-300"
                 onClick={() => login()}
               >
-                {user ? "Open Turing AI" : "Log in"}
+                {user ? "Dashboard" : "Log in"}
               </button>
               <button
                 className="px-12 mt-2 flex flex-row items-center gap-2 w-fit py-1 text-lg bg-neutral-600/[.88] text-turing-white rounded-md hover:bg-neutral-500 transition duration-300"
