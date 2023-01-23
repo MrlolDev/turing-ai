@@ -4,6 +4,7 @@ import useUser from "@/hooks/useUser";
 import supabase from "@/utils/supabase";
 import Loading from "@/components/Loading";
 import { useRef, useState } from "react";
+import Link from "next/link";
 
 export default function App() {
   var user = useUser();
@@ -13,7 +14,7 @@ export default function App() {
     supabase.auth.signInWithOAuth({
       provider: "discord",
     });
-    return <Loading message="Redirecting to login" />;
+    return <Loading message="Redirecting to login..." />;
   }
   if (user == "loading") {
     return <Loading message="Loading session" />;
@@ -36,11 +37,23 @@ export default function App() {
   }
   return (
     <>
-      <main className="relative top-[14vh] w-[95%] left-[2.5%]">
-        <h1 className="text-2xl font-bold">
-          Hello, {user ? user.user_metadata.name : "loading"}
-        </h1>
+      <main className="relative top-[14vh] w-[95%] left-[2.5%] ">
+        <button className="text-2xl text-white font-bold">
+           Hello, {user ? user.user_metadata.name : "Loading..."}
+        </button>
+        <br />
+        <p className="mt-3">The dashboard is in the Beta phase, if you found any error tell us in the support.</p>
         <div className="flex flex-row items-start gap-10 mt-2 h-fit w-full sm:w-fit"></div>
+
+        <Link href="/app/dalle2" className="mr-4 text-2x font-bold bg-turing-primary/[.88] px-4 py-1 text-turing-white rounded-md text-turing-white rounded-md">
+          Go to Dall-e 2
+        </Link>
+        <Link href="/app/chatgpt" className="mr-4 text-2x font-bold bg-turing-primary/[.88] px-4 py-1 text-turing-white rounded-md text-turing-white rounded-md">
+          Go to ChatGPT
+        </Link>
+        <Link href="/app/turing" className="text-2x font-bold bg-turing-primary/[.88] px-4 py-1 text-turing-white rounded-md text-turing-white rounded-md">
+          Go to Turing
+        </Link>
       </main>
     </>
   );
