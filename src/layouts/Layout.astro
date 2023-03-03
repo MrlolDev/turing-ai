@@ -5,16 +5,7 @@ export interface Props {
 
 const { title } = Astro.props;
 import Navbar from '../components/Navbar.astro';
-import { useSate } from 'react';
- var [pag,setPag] = useSate('discord');
-setInterval(function() {
-	console.log(pag);
-	if (pag == 'discord') {
-		setPag('whatsapp')
-	} else if (pag == 'whatsapp') {
-		setPag('discord')
-	}
-}, 5000);
+
 ---
 
 <!DOCTYPE html>
@@ -28,7 +19,7 @@ setInterval(function() {
 		<title>{title}</title>
 	</head>
 	<body class="bg-neutral-800 text-white h-[100vh]">
-		<Navbar pag={pag} />
+		<Navbar />
 		<slot />
 	</body>
 </html>

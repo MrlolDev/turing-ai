@@ -1,11 +1,10 @@
 ---
 import DiscordBot from './cta/DiscordBot.astro';
 import WhatsappBot from './cta/WhatsappBot.astro';
+import pag from '../lib/pag.js';
 
 export interface Props {
-pag:string
 }
-var {pag} = Astro.props as Props;
 ---
 
 <nav class="fixed top-4 left-[50%] translate-x-[-50%] w-[90vw] lg:w-[80vw] bg-neutral-900 rounded-lg px-4 py-2 flex flex-row items-center justify-between">
@@ -14,9 +13,9 @@ var {pag} = Astro.props as Props;
         <p class="hidden lg:block">Turing AI</p>
     </div>
     <ul class="flex flex-row items-center gap-4">
-        <li class={`transition-200 cursor-pointer ${pag == 'whatsapp' ? 'hover:text-whatsapp-green' :'hover:text-discord-blurple'}`}>Home</li>
-        <li>Discord Server</li>
-        <li>Premium</li>
+        <li class={`transition duration-200 cursor-pointer ${pag.get() == 'whatsapp' ? 'hover:text-whatsapp-green' :'hover:text-discord-blurple'}`}>Home</li>
+        <li class={`transition duration-200 cursor-pointer ${pag.get() == 'whatsapp' ? 'hover:text-whatsapp-green' :'hover:text-discord-blurple'}`}>Discord Server</li>
+        <li class={`transition duration-200 cursor-pointer ${pag.get() == 'whatsapp' ? 'hover:text-whatsapp-green' :'hover:text-discord-blurple'}`}>Premium</li>
     </ul>
 <div  class="flex flex-row items-center gap-2">
     {/* 
@@ -24,7 +23,7 @@ var {pag} = Astro.props as Props;
     <button  class="">Sign Up</button>
     */}
     {
-        pag == 'whatsapp'? <WhatsappBot />: <DiscordBot />
+        pag.get() == 'whatsapp'? <WhatsappBot />: <DiscordBot />
     }
 </div>
 </nav>
