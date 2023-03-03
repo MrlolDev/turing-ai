@@ -1,0 +1,21 @@
+---
+import DiscordBot from './cta/DiscordBot.astro';
+
+export interface Props {
+
+}
+---
+
+<nav class="fixed top-4 left-[50%] translate-x-[-50%] w-[90vw] lg:w-[80vw] bg-neutral-900 rounded-lg px-4 py-2 flex flex-row items-center justify-between">
+    <div class="flex flex-row items-center gap-2">
+        <img src="/favicon.svg" class="rounded-full w-8 h-8" />
+        <p class="hidden lg:block">Turing AI</p>
+    </div>
+<div  class="flex flex-row items-center gap-2">
+    {/* 
+    <button>Sign In</button>
+    <button  class="">Sign Up</button>
+    */}
+    <DiscordBot />
+</div>
+</nav>
