@@ -8,4 +8,4 @@ setInterval(() => {
   } else {
     page.set("discord");
   }
-}, 20000);
+}, 10000);
