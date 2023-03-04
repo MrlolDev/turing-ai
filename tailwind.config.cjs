@@ -18,6 +18,8 @@ module.exports = {
         },
         turing: {
           premium: "#FFB743",
+          background: "#272934",
+          dark: "#20222A",
         },
       },
     },
