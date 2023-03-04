@@ -3,16 +3,6 @@ import DiscordBot from "./cta/DiscordBot.astro";
 import WhatsappBot from "./cta/WhatsappBot.astro";
 import page from "../lib/pag.js";
 import TelegramBot from "./cta/TelegramBot.astro";
-import {
-  Astronav,
-  MenuItems,
-  MenuIcon,
-  Dropdown,
-  DropdownItems,
-  OpenIcon,
-  CloseIcon,
-} from "astro-navbar";
-
 export interface Props {}
 setInterval(() => {
   if (page.get() === "discord") {
