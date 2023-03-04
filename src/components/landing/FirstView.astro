@@ -8,7 +8,7 @@ import TelegramBot from "../cta/TelegramBot.astro";
 <div class="flex flex-col items-center">
   <div class="flex flex-col items-start">
     <h1 class="text-5xl font-bold">The best AIs integrated into</h1>
-    <div class="flex flex-col md:flex-row items-star gap-10">
+    <div class="flex flex-col md:flex-row items-star gap-2">
       <div class="flex flex-col items-start">
         <strong
           class={`text-5xl font-bold ${
@@ -19,7 +19,7 @@ import TelegramBot from "../cta/TelegramBot.astro";
               : "text-discord-blurple"
           }`}>{page.get()}</strong
         >
-        <p class="text-lg mt-2">
+        <p class="text-lg mt-2 max-w-[30vw]">
           Turing AI offers free, easy-to-use AI tools for everyone to automate
           and enhance various functions. The open-source and freemium model
           fosters innovation, community engagement, and user control over their
@@ -27,7 +27,7 @@ import TelegramBot from "../cta/TelegramBot.astro";
           technology to the masses.
         </p>
       </div>
-      <img src="/Asset_Discord.png" width="500" class="mt-4" />
+      <img src="/Asset_Discord.png" class="mt-4 max-w-[40vw]" />
     </div>
   </div>
   <div class="flex flex-row items-center gap-2 mt-4">
