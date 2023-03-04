@@ -15,10 +15,10 @@ import Navbar from '../components/Navbar.astro';
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
+		<script src="https://kit.fontawesome.com/962d295c08.js" crossorigin="anonymous" async defer></script>
 		<title>{title}</title>
 	</head>
-	<body class="bg-neutral-800 text-white h-[100vh]">
+	<body class="bg-neutral-800 text-white min-h-[100vh] h-fit flex overflow-y-auto overflow-x-hidden pb-20">
 		<Navbar />
 		<slot />
 	</body>
@@ -31,14 +31,14 @@ import Navbar from '../components/Navbar.astro';
 	html {
 		font-family: system-ui, sans-serif;
 		background-color: #F6F6F6;
+		min-height: 100vh;
+	}
+	body {
 	}
 	code {
 		font-family: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,
 			Bitstream Vera Sans Mono, Courier New, monospace;
 	}
 	@layer components {
-		main {
-			@apply mt-2;
-		}
 	}
 </style>

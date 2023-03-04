@@ -1,29 +1,132 @@
 ---
-import DiscordBot from './cta/DiscordBot.astro';
-import WhatsappBot from './cta/WhatsappBot.astro';
-import pag from '../lib/pag.js';
+import DiscordBot from "./cta/DiscordBot.astro";
+import WhatsappBot from "./cta/WhatsappBot.astro";
+import page from "../lib/pag.js";
+import TelegramBot from "./cta/TelegramBot.astro";
+import {
+  Astronav,
+  MenuItems,
+  MenuIcon,
+  Dropdown,
+  DropdownItems,
+  OpenIcon,
+  CloseIcon,
+} from "astro-navbar";
 
-export interface Props {
-}
+export interface Props {}
+setInterval(() => {
+  if (page.get() === "discord") {
+    page.set("whatsapp");
+  } else if (page.get() === "telegram") {
+    page.set("discord");
+  } else if (page.get() === "whatsapp") {
+    page.set("telegram");
+  }
+  page.set("discord");
+}, 10000);
+var hoverColor = `transition duration-200 cursor-pointer ${
+  page.get() == "whatsapp"
+    ? "hover:text-whatsapp-green"
+    : page.get() == "telegram"
+    ? "hover:text-telegram-blue"
+    : "hover:text-discord-blurple"
+}`;
 ---
 
-<nav class="fixed top-4 left-[50%] translate-x-[-50%] w-[90vw] lg:w-[80vw] bg-neutral-900 rounded-lg px-4 py-2 flex flex-row items-center justify-between">
+<>
+  <nav
+    class="fixed top-4 left-[50%] translate-x-[-50%] w-[90vw] md:w-[80vw] bg-neutral-900 rounded-lg px-4 py-2 flex flex-row items-center justify-between z-10"
+  >
     <div class="flex flex-row items-center gap-2">
-        <img src="/favicon.svg" class="rounded-full w-8 h-8" />
-        <p class="hidden lg:block">Turing AI</p>
+      <img src="/favicon.svg" class="rounded-full w-8 h-8" />
+      <p>Turing AI</p>
     </div>
-    <ul class="flex flex-row items-center gap-4">
-        <li class={`transition duration-200 cursor-pointer ${pag.get() == 'whatsapp' ? 'hover:text-whatsapp-green' :'hover:text-discord-blurple'}`}>Home</li>
-        <li class={`transition duration-200 cursor-pointer ${pag.get() == 'whatsapp' ? 'hover:text-whatsapp-green' :'hover:text-discord-blurple'}`}>Discord Server</li>
-        <li class={`transition duration-200 cursor-pointer ${pag.get() == 'whatsapp' ? 'hover:text-whatsapp-green' :'hover:text-discord-blurple'}`}>Premium</li>
+    <ul class="flex-row items-center hidden md:flex md:gap-4 list-none">
+      <li class={hoverColor}>Home</li>
+      <li class={hoverColor}>Discord Server</li>
+      <li class={hoverColor}>Premium</li>
     </ul>
-<div  class="flex flex-row items-center gap-2">
-    {/* 
-    <button>Sign In</button>
-    <button  class="">Sign Up</button>
-    */}
-    {
-        pag.get() == 'whatsapp'? <WhatsappBot />: <DiscordBot />
+    <div class="hidden md:flex flex-row items-center gap-2">
+      {
+        page.get() == "whatsapp" ? (
+          <WhatsappBot />
+        ) : page.get() == "telegram" ? (
+          <TelegramBot />
+        ) : (
+          <DiscordBot />
+        )
+      }
+    </div>
+    <div class={`flex lg:hidden ${hoverColor} outline-none`} id="astronav-menu">
+      <i class="fa-solid fa-bars astronav-toggle"></i>
+      <i class="fa-solid fa-xmark astronav-toggle hidden"></i>
+    </div>
+  </nav>
+  <nav
+    class="astronav-toggle fixed top-20 left-[50%] translate-x-[-50%] w-[90vw] md:w-[80vw] bg-neutral-900 rounded-lg px-4 py-2 hidden md:hidden flex-row items-center justify-between z-10"
+  >
+    <ul class="flex-col items-start flex gap-2 list-none">
+      <li class={hoverColor}>Home</li>
+      <li class={hoverColor}>Discord Server</li>
+      <li class={hoverColor}>Premium</li>
+      <li>
+        {
+          page.get() == "whatsapp" ? (
+            <WhatsappBot />
+          ) : page.get() == "telegram" ? (
+            <TelegramBot />
+          ) : (
+            <DiscordBot />
+          )
+        }
+      </li>
+    </ul>
+  </nav>
+</>
+<script>
+  const menuButton = document.getElementById("astronav-menu");
+  menuButton.addEventListener("click", () => {
+    [...document.querySelectorAll(".astronav-toggle")].forEach((el) => {
+      // if is hidden
+      if (el.classList.contains("hidden")) {
+        el.classList.toggle("hidden");
+        el.classList.add("animate__fadeIn");
+      } else {
+        el.classList.add("animate__fadeOut");
+        setTimeout(() => {
+          el.classList.toggle("hidden");
+        }, 300);
+      }
+      setTimeout(() => {
+        el.classList.remove("animate__fadeOut");
+        el.classList.remove("animate__fadeIn");
+      }, 300);
+    });
+  });
+</script>
+<style>
+  .animate__fadeIn {
+    animation: fadeIn 0.3s;
+    opacity: 1;
+  }
+  .animate__fadeOut {
+    animation: fadeOut 0.3s;
+    opacity: 0;
+  }
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
     }
-</div>
-</nav>
+    100% {
+      opacity: 1;
+    }
+  }
+  @keyframes fadeOut {
+    0% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+</style>
