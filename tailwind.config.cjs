@@ -16,6 +16,9 @@ module.exports = {
         telegram: {
           blue: "#229ED9",
         },
+        turing: {
+          premium: "#FFB743",
+        },
       },
     },
   },
