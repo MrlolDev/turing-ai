@@ -4,7 +4,6 @@ export interface Props {
 }
 
 const { title } = Astro.props;
-import Navbar from "../components/Navbar.astro";
 ---
 
 <!DOCTYPE html>
@@ -25,7 +24,6 @@ import Navbar from "../components/Navbar.astro";
   <body
     class="bg-turing-background text-white min-h-[100vh] h-fit flex overflow-y-auto overflow-x-hidden pb-40"
   >
-    <Navbar />
     <slot />
   </body>
 </html>
