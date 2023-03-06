@@ -1,7 +1,7 @@
 import underagedCebs from "./underagedCelebs.js";
 import { OpenAIApi, Configuration } from "openai";
 
-export default async function filter(prompt, model?) {
+export default async function filter(prompt, model, openAIKEY) {
   var youngWords = [
     "kid",
     "kids",
@@ -67,7 +67,7 @@ export default async function filter(prompt, model?) {
     isYoung = true;
   if (!isYoung) {
     const configuration = new Configuration({
-      apiKey: process.env.OPENAI_API_KEY,
+      apiKey: openAIKEY,
     });
     const openai = new OpenAIApi(configuration);
     var result = await openai.createModeration({
