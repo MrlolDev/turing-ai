@@ -7,7 +7,7 @@ const app: Application = express();
 import { getToken, verifyToken } from "./modules/key.js";
 import filter from "./modules/filter/index.js";
 app.use(helmet());
-app.use(cors());
+app.use(cors({}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.set("port", process.env.PORT || 3000);
@@ -32,8 +32,6 @@ app.use(async (req: Request, res: Response, next) => {
 
 app.listen(app.get("port"), async () => {
   console.log(`Server is running on port ${app.get("port")}`);
-  var token = await getToken();
-  console.log(token);
 });
 
 // filter route
