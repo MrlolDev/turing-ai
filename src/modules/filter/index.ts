@@ -75,6 +75,8 @@ export default async function filter(prompt, model, openAIKEY) {
     });
     isYoung = result.data.results[0].categories["sexual/minors"];
   }
-  if (isYoung && isNsfw) return true;
-  return false;
+  var isCP = false;
+  if (isYoung && isNsfw) isCP = true;
+
+  return { isNsfw, isYoung, isCP };
 }
