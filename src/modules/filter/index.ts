@@ -1,7 +1,7 @@
 import underagedCebs from "./underagedCelebs.js";
 import { OpenAIApi, Configuration } from "openai";
 
-export default async function filter(prompt, model, openAIKEY) {
+export default async function filter(prompt, model) {
   var youngWords = [
     "kid",
     "kids",
@@ -66,14 +66,14 @@ export default async function filter(prompt, model, openAIKEY) {
   if (underagedCebs.some((v) => prompt.toLowerCase().includes(v.toLowerCase())))
     isYoung = true;
   if (!isYoung) {
-    const configuration = new Configuration({
+    /*  const configuration = new Configuration({
       apiKey: openAIKEY,
     });
     const openai = new OpenAIApi(configuration);
     var result = await openai.createModeration({
       input: prompt,
     });
-    isYoung = result.data.results[0].categories["sexual/minors"];
+    isYoung = result.data.results[0].categories["sexual/minors"];*/
   }
   var isCP = false;
   if (isYoung && isNsfw) isCP = true;

@@ -36,8 +36,8 @@ app.listen(app.get("port"), async () => {
 
 // filter route
 app.post("/filter", async (req: Request, res: Response) => {
-  var { prompt, model, openAIKEY } = req.body;
-  var result = await filter(prompt, model, openAIKEY);
+  var { prompt, model } = req.body;
+  var result = await filter(prompt, model);
   res
     .json({ isCP: result.isCP, isNsfw: result.isNsfw, isYoung: result.isYoung })
     .status(200);
