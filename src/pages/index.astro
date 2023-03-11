@@ -1,16 +1,26 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import Navbar from "../components/Navbar.astro";
-
-import FirstView from "../components/landing/FirstView.astro";
+import MaintenanceNav from "../components/MaintenanceNav.astro";
+import Countdown from "../components/maintenance/Countdown.astro";
+import FirstView from "../components/maintenance/FirstView.astro";
+import Footer from "../components/maintenance/Footer.astro";
+import Roadmap from "../components/maintenance/Roadmap.astro";
 ---
 
 <Layout title="Turing AI">
-  <Navbar />
+  {/*<Navbar />*/}
+  <MaintenanceNav />
   <main
     class="relative top-24 md:top-32 max-w-[90vw] md:max-w-[80vw] p-0 px-4 m-0 left-[50%] translate-x-[-50%] h-fit overflow-hidden"
   >
     <FirstView />
+    <section
+      class="flex lg:flex-row flex-col items-center lg:items-start justify-between mt-12"
+    >
+      <Roadmap />
+      <Countdown />
+    </section>
+    <Footer />
   </main>
 </Layout>
 

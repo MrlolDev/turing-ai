@@ -1,0 +1,65 @@
+---
+export interface Props {}
+var features = [
+  {
+    name: "Discord chatbot",
+    completed: true,
+  },
+  {
+    name: "Voice chat",
+    completed: true,
+  },
+  {
+    name: "Image generation(dall-e/stablediffusion)",
+    completed: true,
+  },
+  {
+    name: "Image viewing(chatbot)",
+    completed: true,
+  },
+  {
+    name: "Whataspp chatbot",
+    completed: true,
+  },
+  {
+    name: "Telegram chatbot",
+    completed: false,
+  },
+  {
+    name: "Chatbot access to internet",
+    completed: false,
+  },
+  {
+    name: "Website platform",
+    completed: false,
+  },
+  {
+    name: "Mobile app",
+    completed: false,
+  },
+];
+---
+
+<section>
+  <h2 class="text-5xl">Roadmap</h2>
+  <div>
+    <ul>
+      {
+        features.map((feature, i) => (
+          <li class="flex items-center">
+            <span
+              class={`w-4 h-4 rounded-full mr-2 z-20 border-white border-[1px] ${
+                feature.completed ? "bg-green-500" : "bg-none"
+              }`}
+            />
+            {i < features.length - 1 && (
+              <span class="absolute h-2 w-[2px] bg-white z-10 ml-[7px] mt-[24px]" />
+            )}
+
+            {feature.name}
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>

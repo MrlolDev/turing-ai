@@ -83,27 +83,7 @@ var hoverColor = `transition duration-200 cursor-pointer ${
     </ul>
   </nav>
 </>
-<script>
-  const menuButton = document.getElementById("astronav-menu");
-  menuButton.addEventListener("click", () => {
-    [...document.querySelectorAll(".astronav-toggle")].forEach((el) => {
-      // if is hidden
-      if (el.classList.contains("hidden")) {
-        el.classList.toggle("hidden");
-        el.classList.add("animate__fadeIn");
-      } else {
-        el.classList.add("animate__fadeOut");
-        setTimeout(() => {
-          el.classList.toggle("hidden");
-        }, 300);
-      }
-      setTimeout(() => {
-        el.classList.remove("animate__fadeOut");
-        el.classList.remove("animate__fadeIn");
-      }, 300);
-    });
-  });
-</script>
+
 <style>
   .animate__fadeIn {
     animation: fadeIn 0.3s;

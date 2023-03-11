@@ -1,0 +1,36 @@
+---
+export interface Props {}
+let leftTime = updateTime();
+setInterval(() => {
+  leftTime = updateTime();
+}, 1000);
+function updateTime() {
+  let leftTime = { days: null, hours: null, minutes: null };
+  let endTime = 1681941600000;
+  let now = new Date().getTime();
+  let leftTimeMS = endTime - now;
+  let leftTimeS = leftTimeMS / 1000;
+  let leftTimeM = leftTimeS / 60;
+  let leftTimeH = leftTimeM / 60;
+  let leftTimeD = leftTimeH / 24;
+  leftTime.days = Math.floor(leftTimeD);
+  leftTime.hours = Math.floor(leftTimeH - leftTime.days * 24);
+  leftTime.minutes = Math.floor(
+    leftTimeM - leftTime.days * 24 * 60 - leftTime.hours * 60
+  );
+  return leftTime;
+}
+---
+
+<div class="flex flex-col items-center">
+  <h2 class="text-5xl mb-4">Launching Soon</h2>
+  {/* counter 100 20 54 bellow add days hours minutes */}
+  <div class="grid grid-cols-3 grid-rows-2 items-center content-center">
+    <p class="w-fit font-bold text-4xl">{leftTime.days}</p>
+    <p class="w-fit font-bold text-4xl">{leftTime.hours}</p>
+    <p class="w-fit font-bold text-4xl">{leftTime.minutes}</p>
+    <p class="w-fit text-xl">days</p>
+    <p class="w-fit text-xl">hours</p>
+    <p class="w-fit text-xl">minutes</p>
+  </div>
+</div>
