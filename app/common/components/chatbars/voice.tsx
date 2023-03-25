@@ -36,15 +36,17 @@ export default function Voice({
       setRecording("finished");
     }
   };
-  async function send(audioData: any) {
+  async function send() {
     //  get transcription
-    let res = await fetch("https://api.turingai.tech/transcription", {
+    let res = await fetch("https://api.turingai.tech/transcript", {
       method: "POST",
       headers: {
         Authorization: `Bearer ${process.env.TURING_API}`,
       },
       body: JSON.stringify({
-        file: audioData,
+        file: URL.createObjectURL(
+          new Blob([audioData], { type: "audio/ogg; codecs=opus" })
+        ),
         ai: "gladia",
       }),
     });
@@ -78,7 +80,7 @@ export default function Voice({
         <button
           className="relative h-[8vh] w-[8vh] rounded-full bg-gradient-to-br from-turing-blue to-turing-purple shadow-lg flex items-center justify-center cursor-pointer text-xl transition duration-200 outline-none hover:from-turing-purple hover:to-turing-blue"
           onClick={() => {
-            send(audioData);
+            send();
           }}
         >
           <i className="fas fa-paper-plane text-white"></i>
