@@ -1,7 +1,7 @@
 import Image from "next/image";
 import SystemMenu from "./SystemMenu";
 
-export default function Navbar() {
+export default function Navbar({ mode, setMode }: { mode: any; setMode: any }) {
   let socials = [
     {
       name: "Twitter",
@@ -28,7 +28,7 @@ export default function Navbar() {
         height={50}
         className="rounded-full"
       />
-      <SystemMenu />
+      <SystemMenu mode={mode} setMode={setMode} />
       <ul className="flex flex-row items-center gap-2 ">
         {socials.map((social) => (
           <li

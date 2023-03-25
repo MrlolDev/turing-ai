@@ -1,9 +1,14 @@
 "use client";
 import { useLocalStorage } from "react-use";
 
-export default function SystemMenu() {
+export default function SystemMenu({
+  mode,
+  setMode,
+}: {
+  mode: any;
+  setMode: any;
+}) {
   // get selected mode
-  const [mode, setMode] = useLocalStorage("mode", "text");
   let options = [
     {
       name: "Text",

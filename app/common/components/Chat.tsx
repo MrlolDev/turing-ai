@@ -1,12 +1,13 @@
 "use client";
 import Navbar from "./Navbar";
 import Chatbar from "./Chatbar";
-import UserMessage from "./messages/user";
 import { useState } from "react";
 import { useEffect, useRef } from "react";
-import { type } from "os";
+import { useLocalStorage } from "react-use";
 
 export default function Chat() {
+  const [mode, setMode] = useLocalStorage("mode", "text");
+
   let [messages, setMessages] = useState<
     Array<{ text: string; sender: "User" | "AI"; time: string }>
   >([]);
@@ -41,10 +42,10 @@ export default function Chat() {
   }, [messages]);
   return (
     <>
-      <Navbar />
+      <Navbar mode={mode} setMode={setMode} />
       <main className="min-h-[86vh] relative top-[14vh] w-full flex flex-col items-center  ">
         {/* messages div */}
-        <div className="flex flex-col gap-2 w-[80vw] h-[76vh] pb-2 overflow-y-auto list-none overflow-x-none px-2">
+        <div className="flex flex-col gap-2 w-[80vw] h-[70vh] pb-2 overflow-y-auto list-none overflow-x-none pr-2">
           {messages.map((message) => (
             <div
               key={message.time}
@@ -64,6 +65,7 @@ export default function Chat() {
           addMessage={(...args) => {
             addMessage(...args);
           }}
+          mode={mode}
         />
         <footer className="text-sm text-gray-100/[.75] mt-1">
           Service powered by{" "}
