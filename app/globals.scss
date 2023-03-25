@@ -1,3 +1,19 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+  background-color: #1d1b31;
+  background-image: url("/bg-ping.jpg");
+  background-repeat: no-repeat;
+  background-size: 100%;
+}
+
+@media screen and (max-width: 768px) {
+  :root {
+    background-color: #000000;
+    background-image: url("/bg-pong.jpg");
+    background-size: 170%;
+    background-repeat: no-repeat;
+  }
+}
