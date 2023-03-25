@@ -36,7 +36,20 @@ export default function Voice({
       setRecording("finished");
     }
   };
-  function send(audioData: any) {}
+  async function send(audioData: any) {
+    //  get transcription
+    let res = await fetch("https://api.turingai.tech/transcription", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${process.env.TURING_API}`,
+      },
+      body: JSON.stringify({
+        file: audioData,
+        ai: "gladia",
+      }),
+    });
+    console.log(res);
+  }
 
   return (
     <div className="flex flex-row items-center relative gap-2">
