@@ -17,3 +17,23 @@
     background-repeat: no-repeat;
   }
 }
+
+/* Set the width and height of the scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+/* Track piece of the scrollbar */
+::-webkit-scrollbar-track {
+}
+
+/* Handle piece of the scrollbar */
+::-webkit-scrollbar-thumb {
+  @apply bg-gradient-to-b from-turing-blue to-turing-purple shadow-lg cursor-pointer;
+  border-radius: 4px;
+}
+
+/* Optional: Set the color of the scrollbar when hovered */
+::-webkit-scrollbar-thumb:hover {
+  cursor: pointer;
+}
