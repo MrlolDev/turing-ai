@@ -36,8 +36,8 @@ export default function Chat() {
       </div>
     );
   }
-  function addMessage(msg: any) {
-    console.log(profile);
+  async function addMessage(msg: any) {
+    let model = "chatgpt";
     messages.push({
       id: uuidv4(),
       text: msg,
@@ -45,10 +45,33 @@ export default function Chat() {
       time: formatTime(Date.now()),
     });
     setMessages([...messages]);
-    console.log(messages);
+    // add loading message that dissapears after 2 seconds
     messages.push({
       id: uuidv4(),
-      text: `Hello, ${profile.user_metadata?.full_name}`,
+      text: "Loading...",
+      sender: "AI",
+      time: formatTime(Date.now()),
+    });
+    setMessages([...messages]);
+    let res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/chat/${model}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${profile.access_token}`,
+      },
+      body: JSON.stringify({
+        message: msg,
+        userName: profile.user_metadata?.full_name,
+        conversationId: `${model}-${profile.user_metadata?.sub}`,
+      }),
+    });
+    let data = await res.json();
+    messages.pop();
+    setMessages([...messages]);
+
+    messages.push({
+      id: uuidv4(),
+      text: data.response,
       sender: "AI",
       time: formatTime(Date.now()),
     });
