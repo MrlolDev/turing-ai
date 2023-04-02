@@ -10,6 +10,8 @@ import Loading from "./Loading";
 
 export default function Chat() {
   const [mode, setMode] = useLocalStorage("mode", "text");
+  const [model, setModel] = useLocalStorage("model", "chatgpt");
+
   const { status, profile } = useUser(true);
   let [messages, setMessages] = useState<
     Array<{ id: string; text: string; sender: "User" | "AI"; time: string }>
@@ -37,7 +39,6 @@ export default function Chat() {
     );
   }
   async function addMessage(msg: any) {
-    let model = "chatgpt";
     messages.push({
       id: uuidv4(),
       text: msg,
