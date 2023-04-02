@@ -44,7 +44,27 @@ const useUser = (
         throw error;
       }
       if (data && data.user) {
-        setProfile({ ...data.user, ...user });
+        let profile = { ...data.user, ...user };
+        let premium = false;
+        let ispremium = await supabase
+          .from("premium")
+          .select("*")
+          .eq("id", profile.user_metadata?.sub)
+          .single();
+        if (ispremium.data) {
+          var now = Date.now();
+          if (now >= ispremium.data.expires_at) {
+            await supabase
+              .from("premium")
+              .delete()
+              .eq("id", profile.user_metadata?.sub);
+
+            premium = false;
+          } else {
+            premium = true;
+          }
+        }
+        setProfile({ ...profile, premium: premium });
       }
     } catch (error) {
       setProfile({
@@ -57,11 +77,15 @@ const useUser = (
       getProfile();
     }
     if (required && status == "unauthenticated") {
-      router.push("/");
+      supabase.auth.signInWithOAuth({ provider: "discord" }).then(() => {
+        router.push("/");
+      });
     }
     if (required && !profile.id) {
       supabase.auth.signOut().then(() => {
-        router.push("/");
+        supabase.auth.signInWithOAuth({ provider: "discord" }).then(() => {
+          router.push("/");
+        });
       });
     }
   });

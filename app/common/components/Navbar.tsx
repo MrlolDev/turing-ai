@@ -36,7 +36,7 @@ export default function Navbar({ mode, setMode }: { mode: any; setMode: any }) {
             className="text-gray-300 hover:text-white transition duration-300 text-xl"
           >
             <a href={social.link} target="_blank" rel="noreferrer">
-              <i className={social.icon}></i>
+              <i className={social.icon} aria-hidden="true"></i>
             </a>
           </li>
         ))}

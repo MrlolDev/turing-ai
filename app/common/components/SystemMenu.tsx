@@ -13,10 +13,12 @@ export default function SystemMenu({
     {
       name: "Text",
       selected: mode === "text",
+      disabled: false,
     },
     {
       name: "Voice",
       selected: mode === "voice",
+      disabled: true,
     },
   ];
   return (
@@ -27,9 +29,17 @@ export default function SystemMenu({
             option.selected
               ? "bg-purple-500 bg-clip-padding backdrop-filter backdrop-blur-xl bg-opacity-30 hover:bg-opacity-50"
               : " hover:bg-clip-padding hover:backdrop-filter hover:backdrop-blur-xl hover:bg-opacity-30"
-          } px-4 rounded-md transition duration-200 cursor-pointer border border-gray-100/[.2]`}
+          } ${
+            option.disabled
+              ? "cursor-not-allowed text-gray-500"
+              : "cursor-pointer"
+          } px-4 rounded-md transition duration-200 border border-gray-100/[.2]`}
           key={option.name}
-          onClick={() => setMode(option.name.toLowerCase())}
+          onClick={() => {
+            if (!option.disabled) {
+              setMode(option.name.toLowerCase());
+            }
+          }}
         >
           {option.name}
         </div>

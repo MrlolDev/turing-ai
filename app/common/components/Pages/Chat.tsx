@@ -1,18 +1,45 @@
 "use client";
-import Navbar from "./Navbar";
-import Chatbar from "./Chatbar";
+import Navbar from "../Navbar";
+import Chatbar from "../Chatbar";
 import { useState } from "react";
 import { useEffect, useRef } from "react";
 import { useLocalStorage } from "react-use";
+import useUser from "../../hooks/useUser";
+import { v4 as uuidv4 } from "uuid";
+import Loading from "./Loading";
 
 export default function Chat() {
   const [mode, setMode] = useLocalStorage("mode", "text");
-
+  const { status, profile } = useUser(true);
   let [messages, setMessages] = useState<
-    Array<{ text: string; sender: "User" | "AI"; time: string }>
+    Array<{ id: string; text: string; sender: "User" | "AI"; time: string }>
   >([]);
+  const messagesEndRef = useRef(null);
+
+  useEffect(() => {
+    if (messagesEndRef.current) {
+      // @ts-ignore
+      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [messages]);
+
+  if (status === "loading" || profile.id === "loading") {
+    return <Loading message="Loading" />;
+  }
+
+  if (profile.premium == false) {
+    return (
+      <div className="flex flex-col items-center justify-center h-[80vh]">
+        <h1 className="text-2xl font-bold">
+          You need to be a premium user to use this feature
+        </h1>
+      </div>
+    );
+  }
   function addMessage(msg: any) {
+    console.log(profile);
     messages.push({
+      id: uuidv4(),
       text: msg,
       sender: "User",
       time: formatTime(Date.now()),
@@ -20,7 +47,8 @@ export default function Chat() {
     setMessages([...messages]);
     console.log(messages);
     messages.push({
-      text: `Answer`,
+      id: uuidv4(),
+      text: `Hello, ${profile.user_metadata?.full_name}`,
       sender: "AI",
       time: formatTime(Date.now()),
     });
@@ -34,12 +62,6 @@ export default function Chat() {
     let seconds = date.getSeconds();
     return `${hours}:${minutes}:${seconds}`;
   }
-  const messagesEndRef = useRef(null);
-
-  useEffect(() => {
-    // @ts-ignore
-    messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
   return (
     <>
       <Navbar mode={mode} setMode={setMode} />
@@ -48,7 +70,7 @@ export default function Chat() {
         <div className="flex flex-col gap-2 w-[80vw] h-[70vh] pb-2 overflow-y-auto list-none overflow-x-none pr-2">
           {messages.map((message) => (
             <div
-              key={message.time}
+              key={message.id}
               className={`flex flex-row ${
                 message.sender == "User" ? "justify-end " : "justify-start"
               } items-center gap-2 `}
