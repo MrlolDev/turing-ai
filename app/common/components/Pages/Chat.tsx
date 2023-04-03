@@ -11,6 +11,10 @@ import Loading from "./Loading";
 export default function Chat() {
   const [mode, setMode] = useLocalStorage("mode", "text");
   const [model, setModel] = useLocalStorage("model", "chatgpt");
+  const [searchEngine, setSearchEngine] = useLocalStorage(
+    "searchEngine",
+    "google"
+  );
 
   const { status, profile } = useUser(true);
   let [messages, setMessages] = useState<
@@ -54,7 +58,7 @@ export default function Chat() {
       time: formatTime(Date.now()),
     });
     setMessages([...messages]);
-    let res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/chat/${model}`, {
+    let res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/alan/${model}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -63,7 +67,8 @@ export default function Chat() {
       body: JSON.stringify({
         message: msg,
         userName: profile.user_metadata?.full_name,
-        conversationId: `${model}-${profile.user_metadata?.sub}`,
+        conversationId: `alan-${model}-${profile.user_metadata?.sub}`,
+        searchEngine: searchEngine,
       }),
     });
     let data = await res.json();
@@ -88,7 +93,14 @@ export default function Chat() {
   }
   return (
     <>
-      <Navbar mode={mode} setMode={setMode} />
+      <Navbar
+        mode={mode}
+        setMode={setMode}
+        model={model}
+        setModel={setModel}
+        searchEngine={searchEngine}
+        setSearchEngine={setSearchEngine}
+      />
       <main className="min-h-[86vh] relative top-[14vh] w-full flex flex-col items-center  ">
         {/* messages div */}
         <div className="flex flex-col gap-2 w-[80vw] h-[70vh] pb-2 overflow-y-auto list-none overflow-x-none pr-2">
@@ -99,7 +111,7 @@ export default function Chat() {
                 message.sender == "User" ? "justify-end " : "justify-start"
               } items-center gap-2 `}
             >
-              <div className="bg-gray-500 rounded-md bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-30 py-1 px-2 border border-gray-100/[.25]}">
+              <div className="bg-gray-500 rounded-md bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-30 py-1 px-2 border border-gray-100/[.25] max-w-[40vw]">
                 <p>{message.text}</p>
               </div>
             </div>

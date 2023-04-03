@@ -74,19 +74,14 @@ const useUser = (
   }
   useEffect(() => {
     if (status == "loading") {
+      console.log("loading");
       getProfile();
     }
-    if (required && status == "unauthenticated") {
-      supabase.auth.signInWithOAuth({ provider: "discord" }).then(() => {
-        router.push("/");
-      });
-    }
-    if (required && !profile.id) {
-      supabase.auth.signOut().then(() => {
-        supabase.auth.signInWithOAuth({ provider: "discord" }).then(() => {
-          router.push("/");
-        });
-      });
+    if (
+      (required && status == "unauthenticated") ||
+      (required && !profile.id)
+    ) {
+      router.push("/login");
     }
   });
   return { status, profile };

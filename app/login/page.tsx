@@ -4,15 +4,15 @@ import supabase from "../common/lib/supabase";
 import delay from "delay";
 import { useRouter } from "next/navigation";
 
-export default function Logout() {
+export default function Login() {
   const router = useRouter();
 
   async function out() {
     await delay(1000);
-    supabase.auth.signOut().then(() => {
-      router.push("/login");
+    supabase.auth.signInWithOAuth({ provider: "discord" }).then(() => {
+      router.push("/");
     });
   }
   out();
-  return <Loading message="Logging out" />;
+  return <Loading message="Logging in" />;
 }
