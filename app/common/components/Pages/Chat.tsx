@@ -18,7 +18,13 @@ export default function Chat() {
 
   const { status, profile } = useUser(true);
   let [messages, setMessages] = useState<
-    Array<{ id: string; text: string; sender: "User" | "AI"; time: string }>
+    Array<{
+      id: string;
+      text: string;
+      sender: "User" | "AI";
+      time: string;
+      photo?: string;
+    }>
   >([]);
   const messagesEndRef = useRef(null);
 
@@ -42,12 +48,13 @@ export default function Chat() {
       </div>
     );
   }
-  async function addMessage(msg: any) {
+  async function addMessage(msg: any, photo?: any) {
     messages.push({
       id: uuidv4(),
       text: msg,
       sender: "User",
       time: formatTime(Date.now()),
+      photo: photo,
     });
     setMessages([...messages]);
     // add loading message that dissapears after 2 seconds
@@ -69,6 +76,7 @@ export default function Chat() {
         userName: profile.user_metadata?.full_name,
         conversationId: `alan-${model}-${profile.user_metadata?.sub}`,
         searchEngine: searchEngine,
+        photo: photo,
       }),
     });
     let data = await res.json();
@@ -103,7 +111,7 @@ export default function Chat() {
       />
       <main className="min-h-[86vh] relative top-[14vh] w-full flex flex-col items-center  ">
         {/* messages div */}
-        <div className="flex flex-col gap-2 w-[80vw] h-[70vh] pb-2 overflow-y-auto list-none overflow-x-none pr-2">
+        <div className="flex flex-col gap-2 w-[80vw] h-full min-h-[60vh] max-h-[65vh] pb-2 overflow-y-auto list-none overflow-x-none pr-2">
           {messages.map((message) => (
             <div
               key={message.id}
@@ -112,6 +120,12 @@ export default function Chat() {
               } items-center gap-2 `}
             >
               <div className="bg-gray-500 rounded-md bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-30 py-1 px-2 border border-gray-100/[.25] max-w-[40vw]">
+                {message.photo && (
+                  <img
+                    className="w-20 h-20 rounded-md object-fill"
+                    src={message.photo}
+                  />
+                )}
                 <p>{message.text}</p>
               </div>
             </div>
@@ -120,8 +134,8 @@ export default function Chat() {
         </div>
 
         <Chatbar
-          addMessage={(...args) => {
-            addMessage(...args);
+          addMessage={(msg, photo) => {
+            addMessage(msg, photo);
           }}
           mode={mode}
         />

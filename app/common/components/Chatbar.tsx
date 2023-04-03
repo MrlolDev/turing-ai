@@ -6,11 +6,11 @@ export default function Chatbar({
   addMessage,
   mode,
 }: {
-  addMessage: (text: string) => void;
+  addMessage: (text: string, photo?: any) => void;
   mode: any;
 }) {
-  function getres(text: string) {
-    addMessage(text);
+  function getres(text: string, photo?: any) {
+    addMessage(text, photo);
   }
   if (mode == "text") {
     return <Text sendMsg={getres} />;
