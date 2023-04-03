@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { useRef } from "react";
 import SystemMenu from "./SystemMenu";
+import Settings from "./config/settings";
 
 export default function Navbar({
   mode,
@@ -42,7 +43,7 @@ export default function Navbar({
   setCodeRunner: any;
 }) {
   let sideBar = useRef(null);
-  let socials = [
+  const socials = [
     {
       name: "Twitter",
       icon: "fab fa-twitter",
@@ -59,148 +60,11 @@ export default function Navbar({
       link: "https://discord.gg/alanai",
     },
   ];
-  let searchEngines = [
-    {
-      name: "Google",
-      value: "google",
-      disabled: false,
-    },
-    {
-      name: "DuckDuckGo",
-      value: "duckduckgo",
-      disabled: false,
-    },
-    {
-      name: "Bing",
-      value: "bing",
-      disabled: true,
-    },
-    {
-      name: "Yahoo",
-      value: "yahoo",
-      disabled: true,
-    },
-    {
-      name: "Yandex",
-      value: "yandex",
-      disabled: true,
-    },
-  ];
-  let models = [
-    {
-      name: "ChatGPT",
-      value: "chatgpt",
-      developer: "OpenAI",
-      disabled: false,
-    },
-    {
-      name: "GPT-4",
-      value: "gpt4",
-      developer: "OpenAI",
-      disabled: true,
-    },
-    {
-      name: "GPT-3",
-      value: "gpt3",
-      developer: "OpenAI",
-      disabled: true,
-    },
-    {
-      name: "LLaMa",
-      value: "llama",
-      developer: "Meta",
-      disabled: true,
-    },
-    {
-      name: "Alpaca",
-      value: "alpaca",
-      developer: "Tatsu",
-      disabled: true,
-    },
-    {
-      name: "OpenAssistant",
-      value: "openassistant",
-      developer: "LAION",
-      disabled: true,
-    },
-    {
-      name: "GPT-neoX",
-      value: "gpt-neox",
-      developer: "EleutherAI",
-      disabled: true,
-    },
-  ];
-  let imageReaders = [
-    {
-      name: "Blip-2",
-      value: "blip-2",
-      developer: "Salesforce",
-      disabled: true,
-    },
-  ];
-  let imageGenerators = [
-    {
-      name: "Dall-e 2",
-      value: "dall-e-2",
-      developer: "OpenAI",
-      disabled: true,
-    },
-    {
-      name: "Stable diffusion",
-      value: "stable-diffusion",
-      developer: "StabilityAI",
-      disabled: true,
-    },
-  ];
-  let imageModificators = [
-    {
-      name: "Stable diffusion img2img",
-      value: "stable-diffusion-img2img",
-      developer: "StabilityAI",
-      disabled: true,
-    },
-    {
-      name: "ControlNet",
-      value: "controlnet",
-      developer: "",
-      disabled: true,
-    },
-  ];
-  let videoGenerators = [
-    {
-      name: "GEN-1",
-      value: "gen-1",
-      developer: "RunwayML",
-      disabled: true,
-    },
-  ];
-  let audioGenerators = [
-    {
-      name: "Mubert",
-      value: "mubert",
-      developer: "Mubert",
-      disabled: true,
-    },
-    {
-      name: "Riffussion",
-      value: "riffussion",
-      developer: "Riffussion",
-      disabled: true,
-    },
-  ];
-  let codeRunners = [
-    {
-      name: "Turing Machines",
-      value: "turing-machines",
-      developer: "TuringAI",
-      disabled: true,
-    },
-  ];
   return (
     <>
-      <nav className="flex flex-row items-center justify-between w-[80vw] absolute top-[4vh] left-[50%] translate-x-[-50%]">
+      <nav className="flex flex-row items-center justify-between w-[90vw] md:w-[80vw] absolute top-[4vh] left-[50%] translate-x-[-50%]">
         <Image
-          src="/neon.png"
+          src="/icons/neon.png"
           alt="Alan AI Logo"
           width={50}
           height={50}
@@ -225,7 +89,7 @@ export default function Navbar({
         <div>
           <div className="flex flex-row items-center justify-between gap-2">
             <Image
-              src="/neon.png"
+              src="/icons/neon.png"
               alt="Alan AI Logo"
               width={50}
               height={50}
@@ -244,166 +108,24 @@ export default function Navbar({
           {/* settings */}
           <div className="flex flex-col gap-2 mt-6 items-start h-[75vh] py-2 overflow-y-auto">
             <h3 className="text-gray-300 font-bold text-xl">Settings</h3>
-            <div className="flex flex-col items-start gap-2 mt-1">
-              <p className="text-gray-300 font-bold">Base model</p>
-              <select
-                className=" rounded-md bg-gray-500 bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-30 border border-gray-100/[.2] text-white placeholder-gray-100/[.5] focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent px-2 py-1  outline-none"
-                value={model}
-                onChange={(e) => {
-                  setModel(e.target.value);
-                }}
-              >
-                {models.map((model) => (
-                  <option
-                    key={model.name}
-                    value={model.value}
-                    disabled={model.disabled}
-                  >
-                    {model.name} ({model.developer})
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className="flex flex-col items-start gap-2 mt-1">
-              <p className="text-gray-300 font-bold">Search engine</p>
-              <select
-                className=" rounded-md bg-gray-500 bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-30 border border-gray-100/[.2] text-white placeholder-gray-100/[.5] focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent px-2 py-1  outline-none"
-                value={searchEngine}
-                onChange={(e) => {
-                  setSearchEngine(e.target.value);
-                }}
-              >
-                {searchEngines.map((searchEngine) => (
-                  <option
-                    key={searchEngine.name}
-                    value={searchEngine.value}
-                    disabled={searchEngine.disabled}
-                  >
-                    {searchEngine.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className="flex flex-col items-start gap-2 mt-1">
-              <p className="text-gray-300 font-bold">Image generator(Soon)</p>
-              <select
-                className=" rounded-md bg-gray-500 bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-30 border border-gray-100/[.2] text-white placeholder-gray-100/[.5] focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent px-2 py-1  outline-none"
-                value={imageGenerator}
-                onChange={(e) => {
-                  setImageGenerator(e.target.value);
-                }}
-              >
-                {imageGenerators.map((imageGenerator) => (
-                  <option
-                    key={imageGenerator.name}
-                    value={imageGenerator.value}
-                    disabled={imageGenerator.disabled}
-                  >
-                    {imageGenerator.name} ({imageGenerator.developer})
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className="flex flex-col items-start gap-2 mt-1">
-              <p className="text-gray-300 font-bold">Audio generator(Soon)</p>
-              <select
-                className=" rounded-md bg-gray-500 bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-30 border border-gray-100/[.2] text-white placeholder-gray-100/[.5] focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent px-2 py-1  outline-none"
-                value={audioGenerator}
-                onChange={(e) => {
-                  setAudioGenerator(e.target.value);
-                }}
-              >
-                {audioGenerators.map((audioGenerator) => (
-                  <option
-                    key={audioGenerator.name}
-                    value={audioGenerator.value}
-                    disabled={audioGenerator.disabled}
-                  >
-                    {audioGenerator.name} ({audioGenerator.developer})
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className="flex flex-col items-start gap-2 mt-1">
-              <p className="text-gray-300 font-bold">Video generator(Soon)</p>
-              <select
-                className=" rounded-md bg-gray-500 bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-30 border border-gray-100/[.2] text-white placeholder-gray-100/[.5] focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent px-2 py-1  outline-none"
-                value={videoGenerator}
-                onChange={(e) => {
-                  setVideoGenerator(e.target.value);
-                }}
-              >
-                {videoGenerators.map((videoGenerator) => (
-                  <option
-                    key={videoGenerator.name}
-                    value={videoGenerator.value}
-                    disabled={videoGenerator.disabled}
-                  >
-                    {videoGenerator.name} ({videoGenerator.developer})
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className="flex flex-col items-start gap-2 mt-1">
-              <p className="text-gray-300 font-bold">Image Modificator(Soon)</p>
-              <select
-                className=" rounded-md bg-gray-500 bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-30 border border-gray-100/[.2] text-white placeholder-gray-100/[.5] focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent px-2 py-1  outline-none"
-                value={imageModificator}
-                onChange={(e) => {
-                  setImageModificator(e.target.value);
-                }}
-              >
-                {imageModificators.map((imageModificator) => (
-                  <option
-                    key={imageModificator.name}
-                    value={imageModificator.value}
-                    disabled={imageModificator.disabled}
-                  >
-                    {imageModificator.name} ({imageModificator.developer})
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className="flex flex-col items-start gap-2 mt-1">
-              <p className="text-gray-300 font-bold">Image readers(Soon)</p>
-              <select
-                className=" rounded-md bg-gray-500 bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-30 border border-gray-100/[.2] text-white placeholder-gray-100/[.5] focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent px-2 py-1  outline-none"
-                value={imageReader}
-                onChange={(e) => {
-                  setImageReader(e.target.value);
-                }}
-              >
-                {imageReaders.map((imageReader) => (
-                  <option
-                    key={imageReader.name}
-                    value={imageReader.value}
-                    disabled={imageReader.disabled}
-                  >
-                    {imageReader.name} ({imageReader.developer})
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className="flex flex-col items-start gap-2 mt-1">
-              <p className="text-gray-300 font-bold">Code runners(Soon)</p>
-              <select
-                className=" rounded-md bg-gray-500 bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-30 border border-gray-100/[.2] text-white placeholder-gray-100/[.5] focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent px-2 py-1  outline-none"
-                value={codeRunner}
-                onChange={(e) => {
-                  setCodeRunner(e.target.value);
-                }}
-              >
-                {codeRunners.map((codeRunner) => (
-                  <option
-                    key={codeRunner.name}
-                    value={codeRunner.value}
-                    disabled={codeRunner.disabled}
-                  >
-                    {codeRunner.name} ({codeRunner.developer})
-                  </option>
-                ))}
-              </select>
-            </div>
+            <Settings
+              model={model}
+              setModel={setModel}
+              searchEngine={searchEngine}
+              setSearchEngine={setSearchEngine}
+              imageGenerator={imageGenerator}
+              setImageGenerator={setImageGenerator}
+              audioGenerator={audioGenerator}
+              setAudioGenerator={setAudioGenerator}
+              videoGenerator={videoGenerator}
+              setVideoGenerator={setVideoGenerator}
+              imageModificator={imageModificator}
+              setImageModificator={setImageModificator}
+              imageReader={imageReader}
+              setImageReader={setImageReader}
+              codeRunner={codeRunner}
+              setCodeRunner={setCodeRunner}
+            />
           </div>
           {/* links */}
           <ul className="flex flex-row items-center gap-2 right-0">

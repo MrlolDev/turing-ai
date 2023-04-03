@@ -9,9 +9,7 @@ export default function Login() {
 
   async function out() {
     await delay(1000);
-    supabase.auth.signInWithOAuth({ provider: "discord" }).then(() => {
-      router.push("/");
-    });
+    supabase.auth.signInWithOAuth({ provider: "discord", options: {redirectTo:'/'} })
   }
   out();
   return <Loading message="Logging in" />;

@@ -10,5 +10,9 @@ const nextConfig = {
     NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
   },
 };
+const withPWA = require("@ducanh2912/next-pwa").default({
+  dest: "public",
+  scope: "/app",
+});
 
-module.exports = nextConfig;
+module.exports = withPWA(nextConfig);

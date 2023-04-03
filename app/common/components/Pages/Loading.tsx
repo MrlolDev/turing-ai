@@ -5,7 +5,7 @@ export default function Loading({ message = "Loading" }: { message: string }) {
   return (
     <div className="absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] flex flex-col items-center">
       <Image
-        src="/neon.png"
+        src="/icons/neon.png"
         alt="Alan AI Logo"
         width={150}
         height={150}

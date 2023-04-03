@@ -22,7 +22,7 @@ export default function SystemMenu({
     },
   ];
   return (
-    <div className="flex flex-row items-center p-2 bg-gray-500 rounded-md bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-30 gap-2">
+    <div className="flex flex-row items-center p-2 bg-gray-500 rounded-md bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-30 gap-2 md:w-fit">
       {options.map((option) => (
         <div
           className={`${
@@ -33,7 +33,7 @@ export default function SystemMenu({
             option.disabled
               ? "cursor-not-allowed text-gray-500"
               : "cursor-pointer"
-          } px-4 rounded-md transition duration-200 border border-gray-100/[.2]`}
+          }  px-8 md:px-4 rounded-md transition duration-200 border border-gray-100/[.2]`}
           key={option.name}
           onClick={() => {
             if (!option.disabled) {

@@ -20,8 +20,8 @@ export const metadata = {
     },
   },
   icons: {
-    icon: "/neon.png",
-    shortcut: "/neon.png",
+    icon: "/icons/neon.png",
+    shortcut: "/icons/neon.png",
   },
   themeColor: "black",
   viewport: {

@@ -1,0 +1,27 @@
+{
+  "name": "Alan AI",
+  "short_name": "Alan",
+  "icons": [
+    {
+      "src": "/icons/neon.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/neon.png",
+      "sizes": "384x384",
+      "type": "image/png"
+    },
+    {
+      "src": "/icons/neon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "theme_color": "#62c0c9",
+  "background_color": "#62c0c9",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait"
+}

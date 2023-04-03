@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import useUser from "../../hooks/useUser";
 
 export default function Voice({
   sendMsg,
@@ -8,6 +9,7 @@ export default function Voice({
 }) {
   const [recording, setRecording] = useState<any>(null);
   const [audioData, setAudioData] = useState<any>([]);
+  const { status, profile } = useUser(true);
 
   const handleRecording = async () => {
     if (!recording || recording === "finished") {
@@ -38,21 +40,30 @@ export default function Voice({
   };
   async function send() {
     //  get transcription
-    let res = await fetch("https://api.turingai.tech/transcript", {
+    // array buffer to base64
+
+    let res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/transcript`, {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${process.env.TURING_API}`,
+        Authorization: `Bearer ${profile.access_token}`,
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        file: URL.createObjectURL(
-          new Blob([audioData], { type: "audio/ogg; codecs=opus" })
-        ),
+        file: bufferConvert(audioData),
         ai: "gladia",
       }),
     });
     console.log(res);
   }
-
+  function bufferConvert(ad: any) {
+    const binary = atob(ad.split(",")[1]);
+    const buffer = new ArrayBuffer(binary.length);
+    const view = new Uint8Array(buffer);
+    for (let i = 0; i < binary.length; i++) {
+      view[i] = binary.charCodeAt(i);
+    }
+    return buffer;
+  }
   return (
     <div className="flex flex-row items-center relative gap-2">
       <button

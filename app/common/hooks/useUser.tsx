@@ -74,7 +74,6 @@ const useUser = (
   }
   useEffect(() => {
     if (status == "loading") {
-      console.log("loading");
       getProfile();
     }
     if (
