@@ -15,7 +15,30 @@ export default function Chat() {
     "searchEngine",
     "google"
   );
-
+  const [imageGenerator, setImageGenerator] = useLocalStorage(
+    "imageGenerator",
+    "stable-diffusion"
+  );
+  const [audioGenerator, setAudioGenerator] = useLocalStorage(
+    "audioGenerator",
+    "riffusion"
+  );
+  const [videoGenerator, setVideoGenerator] = useLocalStorage(
+    "videoGenerator",
+    "gen-1"
+  );
+  const [imageModificator, setImageModificator] = useLocalStorage(
+    "imageModificator",
+    "controlnet"
+  );
+  const [imageReader, setImageReader] = useLocalStorage(
+    "imageReader",
+    "blip-2"
+  );
+  const [codeRunner, setCodeRunner] = useLocalStorage(
+    "codeRunner",
+    "codesandbox"
+  );
   const { status, profile } = useUser(true);
   let [messages, setMessages] = useState<
     Array<{
@@ -108,10 +131,22 @@ export default function Chat() {
         setModel={setModel}
         searchEngine={searchEngine}
         setSearchEngine={setSearchEngine}
+        imageGenerator={imageGenerator}
+        setImageGenerator={setImageGenerator}
+        audioGenerator={audioGenerator}
+        setAudioGenerator={setAudioGenerator}
+        videoGenerator={videoGenerator}
+        setVideoGenerator={setVideoGenerator}
+        imageModificator={imageModificator}
+        setImageModificator={setImageModificator}
+        imageReader={imageReader}
+        setImageReader={setImageReader}
+        codeRunner={codeRunner}
+        setCodeRunner={setCodeRunner}
       />
       <main className="min-h-[86vh] relative top-[14vh] w-full flex flex-col items-center  ">
         {/* messages div */}
-        <div className="flex flex-col gap-2 w-[80vw] h-full min-h-[65vh] max-h-[70vh] pb-2 overflow-y-auto list-none overflow-x-none pr-2">
+        <div className="flex flex-col gap-2 w-[80vw] h-full min-h-[60vh] max-h-[60vh] pb-2 overflow-y-auto list-none overflow-x-none pr-2">
           {messages.map((message) => (
             <div
               key={message.id}
