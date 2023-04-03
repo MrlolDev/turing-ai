@@ -111,7 +111,7 @@ export default function Chat() {
       />
       <main className="min-h-[86vh] relative top-[14vh] w-full flex flex-col items-center  ">
         {/* messages div */}
-        <div className="flex flex-col gap-2 w-[80vw] h-full min-h-[60vh] max-h-[65vh] pb-2 overflow-y-auto list-none overflow-x-none pr-2">
+        <div className="flex flex-col gap-2 w-[80vw] h-full min-h-[65vh] max-h-[70vh] pb-2 overflow-y-auto list-none overflow-x-none pr-2">
           {messages.map((message) => (
             <div
               key={message.id}

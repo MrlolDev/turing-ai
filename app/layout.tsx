@@ -47,7 +47,7 @@ export default function RootLayout({
           defer
         ></script>
       </head>
-      <body className="text-white">{children}</body>
+      <body className="text-white overflow-hidden">{children}</body>
     </html>
   );
 }
