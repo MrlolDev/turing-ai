@@ -20,16 +20,14 @@ export default function Text({
   }
   return (
     <div className="flex flex-col items-start gap-2">
-      {photo ? (
-        <div>
+      {photo && (
+        <div className="absolute bottom-[18vh]">
           <i
-            className="fas fa-times absolute ml-2 text-gray-300 hover:text-white text-xl cursor-pointer z-10"
+            className="fas fa-times absolute ml-1 text-gray-300 hover:text-white text-xl cursor-pointer z-10"
             onClick={() => setPhoto(null)}
           ></i>
           <img src={photo} alt="Photo" className="h-[15vh]" />
         </div>
-      ) : (
-        <div className="h-[15vh] w-full"></div>
       )}
       <div className="flex flex-row items-center relative gap-2">
         {/*photo */}

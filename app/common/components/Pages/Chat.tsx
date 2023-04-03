@@ -100,17 +100,22 @@ export default function Chat() {
         conversationId: `alan-${model}-${profile.user_metadata?.sub}`,
         searchEngine: searchEngine,
         photo: photo,
+        imageGenerator: imageGenerator,
       }),
     });
     let data = await res.json();
     messages.pop();
     setMessages([...messages]);
-
+    let photoResult;
+    if (data.images) {
+      photoResult = data.images[0];
+    }
     messages.push({
       id: uuidv4(),
       text: data.response,
       sender: "AI",
       time: formatTime(Date.now()),
+      photo: photoResult,
     });
     setMessages([...messages]);
   }
@@ -146,7 +151,7 @@ export default function Chat() {
       />
       <main className="min-h-[86vh] relative top-[14vh] w-full flex flex-col items-center  ">
         {/* messages div */}
-        <div className="flex flex-col gap-2 w-[80vw] h-full min-h-[60vh] max-h-[60vh] pb-2 overflow-y-auto list-none overflow-x-none pr-2">
+        <div className="flex flex-col gap-2 w-[80vw] h-full min-h-[70vh] max-h-[60vh] pb-2 overflow-y-auto list-none overflow-x-none pr-2">
           {messages.map((message) => (
             <div
               key={message.id}
@@ -155,13 +160,35 @@ export default function Chat() {
               } items-center gap-2 `}
             >
               <div className="bg-gray-500 rounded-md bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-30 py-1 px-2 border border-gray-100/[.25] max-w-[40vw]">
-                {message.photo && (
+                {message.photo && message.sender == "User" && (
                   <img
                     className="w-20 h-20 rounded-md object-fill"
                     src={message.photo}
+                    alt="message photo"
+                    onClick={
+                      message.photo
+                        ? () => {
+                            window.open(message.photo, "_blank");
+                          }
+                        : undefined
+                    }
                   />
                 )}
                 <p>{message.text}</p>
+                {message.photo && message.sender == "AI" && (
+                  <img
+                    className=" w-40 h-40 rounded-md object-fill cursor-pointer"
+                    src={message.photo}
+                    alt="message photo"
+                    onClick={
+                      message.photo
+                        ? () => {
+                            window.open(message.photo, "_blank");
+                          }
+                        : undefined
+                    }
+                  />
+                )}
               </div>
             </div>
           ))}

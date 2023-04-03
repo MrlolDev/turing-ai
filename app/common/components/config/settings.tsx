@@ -39,60 +39,70 @@ export default function Settings({
       array: models,
       set: setModel,
       get: model,
+      disabled: false,
     },
     {
       name: "Search engines",
       array: searchEngines,
       set: setSearchEngine,
       get: searchEngine,
+      disabled: false,
     },
     {
       name: "Image generators",
       array: imageGenerators,
       set: setImageGenerator,
       get: imageGenerator,
+      disabled: false,
     },
     {
       name: "Audio generators",
       array: audioGenerators,
       set: setAudioGenerator,
       get: audioGenerator,
+      disabled: true,
     },
     {
       name: "Video generators",
       array: videoGenerators,
       set: setVideoGenerator,
       get: videoGenerator,
+      disabled: true,
     },
     {
       name: "Image modificators",
       array: imageModificators,
       set: setImageModificator,
       get: imageModificator,
+      disabled: true,
     },
     {
       name: "Image readers",
       array: imageReaders,
       set: setImageReader,
       get: imageReader,
+      disabled: false,
     },
     {
       name: "Code runners",
       array: codeRunners,
       set: setCodeRunner,
       get: codeRunner,
+      disabled: true,
     },
   ];
   return (
     <>
       {settingsSections.map((section) => (
         <div
-          className="flex flex-col items-start gap-2 mt-1"
+          className="flex flex-col items-start gap-2 mt-1 ml-1"
           key={section.name}
         >
-          <p className="text-gray-300 font-bold">{section.name}</p>
+          <p className="text-gray-300 font-bold">
+            {section.name} {section.disabled && "(not available)"}
+          </p>
           <select
-            className=" rounded-md bg-gray-500 bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-30 border border-gray-100/[.2] text-white placeholder-gray-100/[.5] focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent px-2 py-1  outline-none"
+            className="w-fit max-w-[80vw] md:w-[20vw] rounded-md bg-gray-500 bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-30 border border-gray-100/[.2] text-white placeholder-gray-100/[.5] focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent px-2 py-1  outline-none"
             value={section.get}
             onChange={(e) => {
               section.set(e.target.value);
@@ -100,7 +110,8 @@ export default function Settings({
           >
             {section.array.map((x: any) => (
               <option key={x.name} value={x.value} disabled={x.disabled}>
-                {x.name} {x.developer && `(${x.developer})`}
+                {x.name} {x.developer && `(${x.developer})`}{" "}
+                {x.disabled && "(not available)"}
               </option>
             ))}
           </select>
@@ -186,7 +197,7 @@ const imageReaders = [
     name: "Blip-2",
     value: "blip-2",
     developer: "Salesforce",
-    disabled: true,
+    disabled: false,
   },
 ];
 const imageGenerators = [
@@ -194,13 +205,13 @@ const imageGenerators = [
     name: "Dall-e 2",
     value: "dall-e-2",
     developer: "OpenAI",
-    disabled: true,
+    disabled: false,
   },
   {
     name: "Stable diffusion",
     value: "stable-diffusion",
     developer: "StabilityAI",
-    disabled: true,
+    disabled: false,
   },
 ];
 const imageModificators = [
@@ -259,6 +270,19 @@ const audioToText = [
     name: "Whisper",
     value: "whisper",
     developer: "OpenAI",
+    disabled: true,
+  },
+];
+
+let textToAudio = [
+  {
+    name: "Google",
+    value: "google",
+    disabled: false,
+  },
+  {
+    name: "Elevenlabs",
+    value: "elevenlabs",
     disabled: true,
   },
 ];
