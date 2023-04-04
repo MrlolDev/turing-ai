@@ -170,9 +170,39 @@ export default function Chat() {
     let seconds = date.getSeconds();
     return `${hours}:${minutes}:${seconds}`;
   }
+  async function resetConversation() {
+    let res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/conversation/${model}`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${profile.access_token}`,
+        },
+        body: JSON.stringify({
+          conversationId: `alan-${model}-${profile.user_metadata?.sub}`,
+        }),
+      }
+    );
+    let data = await res.json();
+    if (!data.error) {
+      alert("Conversation reset");
+      setMessages([]);
+    } else {
+      messages.push({
+        id: uuidv4(),
+        text: data.error,
+        sender: "Error",
+        time: formatTime(Date.now()),
+        data: {},
+      });
+      setMessages([...messages]);
+    }
+  }
   return (
     <>
       <Navbar
+        resetConversation={resetConversation}
         mode={mode}
         setMode={setMode}
         model={model}

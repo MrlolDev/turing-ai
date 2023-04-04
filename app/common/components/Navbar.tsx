@@ -2,8 +2,10 @@ import Image from "next/image";
 import { useRef } from "react";
 import SystemMenu from "./SystemMenu";
 import Settings from "./config/settings";
+import supabase from "../lib/supabase";
 
 export default function Navbar({
+  resetConversation,
   mode,
   setMode,
   model,
@@ -23,6 +25,7 @@ export default function Navbar({
   codeRunner,
   setCodeRunner,
 }: {
+  resetConversation: any;
   mode: any;
   setMode: any;
   model: any;
@@ -60,6 +63,7 @@ export default function Navbar({
       link: "https://discord.gg/alanai",
     },
   ];
+
   return (
     <>
       <nav className="flex flex-row items-center justify-between w-[90vw] md:w-[80vw] absolute top-[4vh] left-[50%] translate-x-[-50%]">
@@ -110,7 +114,7 @@ export default function Navbar({
             </div>
           </div>
           {/* settings */}
-          <div className="flex flex-col gap-2 mt-6 items-start h-[75vh] py-2 overflow-y-auto">
+          <div className="flex flex-col gap-2 items-start max-h-[60%] py-2 overflow-y-auto">
             <h3 className="text-gray-300 font-bold text-xl">Settings</h3>
             <Settings
               model={model}
@@ -130,6 +134,27 @@ export default function Navbar({
               codeRunner={codeRunner}
               setCodeRunner={setCodeRunner}
             />
+          </div>
+          <div className="h-fit flex flex-row items-center gap-2 pt-2">
+            <button
+              className="relative px-2 py-1 gap-2 rounded-md bg-gradient-to-br from-turing-blue to-turing-purple shadow-lg flex items-center justify-center cursor-pointer text-sm transition duration-200 outline-none hover:from-turing-purple hover:to-turing-blue"
+              onClick={() => {
+                resetConversation();
+              }}
+            >
+              <i className="fas fa-broom text-white"></i>
+              Reset conversation
+            </button>
+            <button
+              onClick={() => {
+                supabase.auth.signOut();
+                localStorage.clear();
+                window.location.reload();
+              }}
+              className="hover:text-red-300 transition duration-300 outline-none"
+            >
+              Log out
+            </button>
           </div>
           {/* links */}
           <ul className="flex flex-row items-center gap-2 right-0">
