@@ -9,6 +9,7 @@ import { v4 as uuidv4 } from "uuid";
 import Loading from "./Loading";
 import Image from "next/image";
 import { Tooltip } from "react-tooltip";
+import md from "markdown-it";
 
 export default function Chat() {
   const [mode, setMode] = useLocalStorage("mode", "text");
@@ -27,7 +28,7 @@ export default function Chat() {
   );
   const [videoGenerator, setVideoGenerator] = useLocalStorage(
     "videoGenerator",
-    "gen-1"
+    "damo-text-to-video"
   );
   const [imageModificator, setImageModificator] = useLocalStorage(
     "imageModificator",
@@ -51,6 +52,10 @@ export default function Chat() {
       data: {
         photo?: string;
         photoDescription?: string;
+        video?: string;
+        videoDescription?: string;
+        audio?: string;
+        audioDescription?: string;
       };
     }>
   >([]);
@@ -109,6 +114,8 @@ export default function Chat() {
         searchEngine: searchEngine,
         photo: photo,
         imageGenerator: imageGenerator,
+        videoGenerator: videoGenerator,
+        audioGenerator: audioGenerator,
       }),
     });
     let data = await res.json();
@@ -119,15 +126,22 @@ export default function Chat() {
       if (data.images) {
         photoResult = data.images[0];
       }
+
       console.log(photoResult, data);
+      var contentHtml = md().render(data.response);
+
       messages.push({
         id: uuidv4(),
-        text: data.response,
+        text: contentHtml,
         sender: "AI",
         time: formatTime(Date.now()),
         data: {
           photo: photoResult,
           photoDescription: data.photoPrompt,
+          video: data.video,
+          videoDescription: data.videoPrompt,
+          audio: data.audio,
+          audioDescription: data.audioPrompt,
         },
       });
       setMessages([...messages]);
@@ -190,6 +204,8 @@ export default function Chat() {
                 }rounded-md bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-30 py-1 px-2 border max-w-[40vw]`}
               >
                 <Tooltip id={`${message.id}-photo`} />
+                <Tooltip id={`${message.id}-video`} />
+                <Tooltip id={`${message.id}-audio`} />
                 {message.data.photo && message.sender == "User" && (
                   <img
                     className="w-20 h-20 rounded object-fill"
@@ -208,7 +224,10 @@ export default function Chat() {
                     }
                   />
                 )}
-                <p>{message.text}</p>
+                <div
+                  className="markdown prose w-full break-words dark:prose-invert light"
+                  dangerouslySetInnerHTML={{ __html: message.text }}
+                ></div>{" "}
                 {message.data.photo && message.sender == "AI" && (
                   <img
                     className=" w-40 h-40 rounded object-fill cursor-pointer"
@@ -225,6 +244,26 @@ export default function Chat() {
                           }
                         : undefined
                     }
+                  />
+                )}
+                {message.data.video && (
+                  <video
+                    className="w-40 h-40 rounded object-fill cursor-pointer"
+                    src={message.data.video}
+                    width={160}
+                    height={160}
+                    data-tooltip-id={`${message.id}-video`}
+                    data-tooltip-content={message.data.videoDescription}
+                    controls
+                  />
+                )}
+                {message.data.audio && (
+                  <audio
+                    className=" rounded object-fill cursor-pointer"
+                    src={message.data.audio}
+                    data-tooltip-id={`${message.id}-audio`}
+                    data-tooltip-content={message.data.audioDescription}
+                    controls
                   />
                 )}
               </div>

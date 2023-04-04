@@ -63,13 +63,17 @@ export default function Navbar({
   return (
     <>
       <nav className="flex flex-row items-center justify-between w-[90vw] md:w-[80vw] absolute top-[4vh] left-[50%] translate-x-[-50%]">
-        <Image
-          src="/icons/neon.png"
-          alt="Alan AI Logo"
-          width={50}
-          height={50}
-          className="rounded-full"
-        />
+        <div className="flex flex-row items-center gap-2">
+          <Image
+            src="/icons/neon.png"
+            alt="Alan AI Logo"
+            width={50}
+            height={50}
+            className="rounded-full"
+          />
+          <p>v1.3.0</p>
+        </div>
+
         <SystemMenu mode={mode} setMode={setMode} />
         <div
           onClick={() => {

@@ -60,14 +60,14 @@ export default function Settings({
       array: audioGenerators,
       set: setAudioGenerator,
       get: audioGenerator,
-      disabled: true,
+      disabled: false,
     },
     {
       name: "Video generators",
       array: videoGenerators,
       set: setVideoGenerator,
       get: videoGenerator,
-      disabled: true,
+      disabled: false,
     },
     {
       name: "Image modificators",
@@ -230,6 +230,12 @@ const imageModificators = [
 ];
 const videoGenerators = [
   {
+    name: "damo-text-to-video",
+    value: "damo-text-to-video",
+    developer: "cjwbw",
+    disabled: false,
+  },
+  {
     name: "GEN-1",
     value: "gen-1",
     developer: "RunwayML",
@@ -238,15 +244,15 @@ const videoGenerators = [
 ];
 const audioGenerators = [
   {
-    name: "Mubert",
-    value: "mubert",
-    developer: "Mubert",
-    disabled: true,
-  },
-  {
     name: "Riffussion",
     value: "riffussion",
     developer: "Riffussion",
+    disabled: false,
+  },
+  {
+    name: "Mubert",
+    value: "mubert",
+    developer: "Mubert",
     disabled: true,
   },
 ];

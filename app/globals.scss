@@ -37,3 +37,21 @@
 ::-webkit-scrollbar-thumb:hover {
   cursor: pointer;
 }
+
+.markdown {
+  h1 {
+    @apply text-2xl font-bold;
+  }
+  h2 {
+    @apply text-xl font-bold;
+  }
+  h3 {
+    @apply text-xl font-bold;
+  }
+  h4 {
+    @apply text-lg font-bold;
+  }
+  code {
+    @apply text-sm font-mono bg-[#36393f] px-1 py-2 block rounded text-white;
+  }
+}
