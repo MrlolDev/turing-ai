@@ -1,4 +1,5 @@
 import "./globals.scss";
+import "react-tooltip/dist/react-tooltip.css";
 
 export const metadata = {
   title: "Alan AI",

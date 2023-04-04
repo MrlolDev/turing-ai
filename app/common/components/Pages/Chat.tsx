@@ -7,6 +7,8 @@ import { useLocalStorage } from "react-use";
 import useUser from "../../hooks/useUser";
 import { v4 as uuidv4 } from "uuid";
 import Loading from "./Loading";
+import Image from "next/image";
+import { Tooltip } from "react-tooltip";
 
 export default function Chat() {
   const [mode, setMode] = useLocalStorage("mode", "text");
@@ -44,9 +46,12 @@ export default function Chat() {
     Array<{
       id: string;
       text: string;
-      sender: "User" | "AI";
+      sender: "User" | "AI" | "Error";
       time: string;
-      photo?: string;
+      data: {
+        photo?: string;
+        photoDescription?: string;
+      };
     }>
   >([]);
   const messagesEndRef = useRef(null);
@@ -77,7 +82,9 @@ export default function Chat() {
       text: msg,
       sender: "User",
       time: formatTime(Date.now()),
-      photo: photo,
+      data: {
+        photo: photo,
+      },
     });
     setMessages([...messages]);
     // add loading message that dissapears after 2 seconds
@@ -86,6 +93,7 @@ export default function Chat() {
       text: "Loading...",
       sender: "AI",
       time: formatTime(Date.now()),
+      data: {},
     });
     setMessages([...messages]);
     let res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/alan/${model}`, {
@@ -106,18 +114,33 @@ export default function Chat() {
     let data = await res.json();
     messages.pop();
     setMessages([...messages]);
-    let photoResult;
-    if (data.images) {
-      photoResult = data.images[0];
+    if (!data.error) {
+      let photoResult;
+      if (data.images) {
+        photoResult = data.images[0];
+      }
+      console.log(photoResult, data);
+      messages.push({
+        id: uuidv4(),
+        text: data.response,
+        sender: "AI",
+        time: formatTime(Date.now()),
+        data: {
+          photo: photoResult,
+          photoDescription: data.photoPrompt,
+        },
+      });
+      setMessages([...messages]);
+    } else {
+      messages.push({
+        id: uuidv4(),
+        text: data.error,
+        sender: "Error",
+        time: formatTime(Date.now()),
+        data: {},
+      });
+      setMessages([...messages]);
     }
-    messages.push({
-      id: uuidv4(),
-      text: data.response,
-      sender: "AI",
-      time: formatTime(Date.now()),
-      photo: photoResult,
-    });
-    setMessages([...messages]);
   }
   // format time to hh:mm:ss
   function formatTime(time: number) {
@@ -159,31 +182,46 @@ export default function Chat() {
                 message.sender == "User" ? "justify-end " : "justify-start"
               } items-center gap-2 `}
             >
-              <div className="bg-gray-500 rounded-md bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-30 py-1 px-2 border border-gray-100/[.25] max-w-[40vw]">
-                {message.photo && message.sender == "User" && (
+              <div
+                className={`${
+                  message.sender == "Error"
+                    ? "border-red-500/[.25] bg-red-500 "
+                    : "border-gray-100/[.25] bg-gray-500 "
+                }rounded-md bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-30 py-1 px-2 border max-w-[40vw]`}
+              >
+                <Tooltip id={`${message.id}-photo`} />
+                {message.data.photo && message.sender == "User" && (
                   <img
-                    className="w-20 h-20 rounded-md object-fill"
-                    src={message.photo}
+                    className="w-20 h-20 rounded object-fill"
+                    src={message.data.photo}
                     alt="message photo"
+                    width={80}
+                    height={80}
+                    data-tooltip-id={`${message.id}-photo`}
+                    data-tooltip-content={message.data.photoDescription}
                     onClick={
-                      message.photo
+                      message.data.photo
                         ? () => {
-                            window.open(message.photo, "_blank");
+                            window.open(message.data.photo, "_blank");
                           }
                         : undefined
                     }
                   />
                 )}
                 <p>{message.text}</p>
-                {message.photo && message.sender == "AI" && (
+                {message.data.photo && message.sender == "AI" && (
                   <img
-                    className=" w-40 h-40 rounded-md object-fill cursor-pointer"
-                    src={message.photo}
+                    className=" w-40 h-40 rounded object-fill cursor-pointer"
+                    src={message.data.photo}
                     alt="message photo"
+                    width={160}
+                    height={160}
+                    data-tooltip-id={`${message.id}-photo`}
+                    data-tooltip-content={message.data.photoDescription}
                     onClick={
-                      message.photo
+                      message.data.photo
                         ? () => {
-                            window.open(message.photo, "_blank");
+                            window.open(message.data.photo, "_blank");
                           }
                         : undefined
                     }
