@@ -75,7 +75,7 @@ export default function Navbar({
             height={50}
             className="rounded-full"
           />
-          <p>v1.3.0</p>
+          <p>v1.3.1</p>
         </div>
 
         <SystemMenu mode={mode} setMode={setMode} />

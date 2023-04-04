@@ -172,7 +172,7 @@ export default function Chat() {
   }
   async function resetConversation() {
     let res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/conversation/${model}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/conversation/alan-${model}`,
       {
         method: "DELETE",
         headers: {
