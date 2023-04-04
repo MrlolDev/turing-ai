@@ -224,7 +224,7 @@ export default function Chat() {
       />
       <main className="min-h-[86vh] relative top-[14vh] w-full flex flex-col items-center  ">
         {/* messages div */}
-        <div className="flex flex-col gap-2 w-[80vw] h-full min-h-[70vh] max-h-[60vh] pb-2 overflow-y-auto list-none overflow-x-none pr-2">
+        <div className="flex flex-col gap-2 h-full w-full min-h-[70vh] max-h-[60vh] py-2 overflow-y-auto list-none overflow-x-none pr-2">
           {messages.map((message) => (
             <div
               key={message.id}
@@ -237,7 +237,7 @@ export default function Chat() {
                   message.sender == "Error"
                     ? "border-red-500/[.25] bg-red-500 "
                     : "border-gray-100/[.25] bg-gray-500 "
-                }rounded-md bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-30 py-1 px-2 border max-w-[40vw]`}
+                }rounded-md bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-30 py-1 px-2 border max-w-[70vw] sm:max-w-[40vw]`}
               >
                 <Tooltip id={`${message.id}-photo`} />
                 <Tooltip id={`${message.id}-video`} />
@@ -308,21 +308,23 @@ export default function Chat() {
           <div ref={messagesEndRef} />
         </div>
 
-        <Chatbar
-          addMessage={(msg, photo) => {
-            addMessage(msg, photo);
-          }}
-          mode={mode}
-        />
-        <footer className="text-sm text-gray-100/[.75] mt-1">
-          Service powered by{" "}
-          <a
-            className="underline hover:text-turing-blue"
-            href="https://dsc.gg/turing"
-          >
-            Turing AI
-          </a>
-        </footer>
+        <div className="fixed bottom-2 flex flex-col items-center mx-10">
+          <Chatbar
+            addMessage={(msg, photo) => {
+              addMessage(msg, photo);
+            }}
+            mode={mode}
+          />
+          <footer className="text-sm text-gray-100/[.75] ">
+            Service powered by{" "}
+            <a
+              className="underline hover:text-turing-blue"
+              href="https://dsc.gg/turing"
+            >
+              Turing AI
+            </a>
+          </footer>
+        </div>
       </main>
     </>
   );

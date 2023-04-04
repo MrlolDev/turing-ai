@@ -19,7 +19,7 @@ export default function Text({
     sendMsg(text, photo);
   }
   return (
-    <div className="flex flex-col items-start gap-2">
+    <div className="flex flex-col items-start gap-2 ">
       {photo && (
         <div className="absolute bottom-[18vh]">
           <i
@@ -29,7 +29,7 @@ export default function Text({
           <img src={photo} alt="Photo" className="h-[15vh]" />
         </div>
       )}
-      <div className="flex flex-row items-center relative gap-2">
+      <div className="flex flex-row items-center relative gap-2 w-full">
         {/*photo */}
 
         {/*input */}
@@ -38,15 +38,15 @@ export default function Text({
           className="w-[75.5vw] h-[5vh] rounded-md bg-gray-500 bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-30 border border-gray-100/[.2] text-white placeholder-gray-100/[.5] focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent px-2"
           placeholder="Type a message..."
           onKeyDown={(e) => {
-            if (e.key === "Enter") {
+            /*  if (e.key === "Enter") {
               send(e.currentTarget.value);
               e.currentTarget.value = "";
-            }
+            }*/
           }}
         />
         {/*camera button inside input */}
         <button
-          className="h-[5vh] w-[5vh] mr-2 z-40 rounded-fullshadow-lg flex items-center justify-center cursor-pointer text-sm transition duration-200 outline-none text-gray-400 hover:text-white"
+          className="px-1 z-40 rounded-fullshadow-lg flex items-center justify-center cursor-pointer text-sm transition duration-200 outline-none text-gray-400 hover:text-white"
           onClick={() => {
             // upload file
             let input = document.createElement("input");

@@ -48,7 +48,7 @@ export default function RootLayout({
           defer
         ></script>
       </head>
-      <body className="text-white overflow-hidden">{children}</body>
+      <body className="text-white overflow-hidden mx-5">{children}</body>
     </html>
   );
 }

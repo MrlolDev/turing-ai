@@ -66,7 +66,7 @@ export default function Navbar({
 
   return (
     <>
-      <nav className="flex flex-row items-center justify-between w-[90vw] md:w-[80vw] absolute top-[4vh] left-[50%] translate-x-[-50%]">
+      <nav className="flex flex-row items-center justify-between w-full px-5 absolute top-[4vh] left-[50%] translate-x-[-50%]">
         <div className="flex flex-row items-center gap-2">
           <Image
             src="/icons/neon.png"
@@ -75,7 +75,7 @@ export default function Navbar({
             height={50}
             className="rounded-full"
           />
-          <p>v1.3.1</p>
+          <p className="hidden sm:flex">v1.3.2</p>
         </div>
 
         <SystemMenu mode={mode} setMode={setMode} />
