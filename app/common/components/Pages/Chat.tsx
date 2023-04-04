@@ -43,6 +43,8 @@ export default function Chat() {
     "codesandbox"
   );
   const { status, profile } = useUser(true);
+  const [lastPhoto, setLastPhoto] = useState<string | null>(null);
+
   let [messages, setMessages] = useState<
     Array<{
       id: string;
@@ -82,6 +84,8 @@ export default function Chat() {
     );
   }
   async function addMessage(msg: any, photo?: any) {
+    setLastPhoto(photo);
+    console.log(photo);
     messages.push({
       id: uuidv4(),
       text: msg,
@@ -112,10 +116,11 @@ export default function Chat() {
         userName: profile.user_metadata?.full_name,
         conversationId: `alan-${model}-${profile.user_metadata?.sub}`,
         searchEngine: searchEngine,
-        photo: photo,
+        photo: lastPhoto,
         imageGenerator: imageGenerator,
         videoGenerator: videoGenerator,
         audioGenerator: audioGenerator,
+        imageModificator: imageModificator,
       }),
     });
     let data = await res.json();
@@ -125,6 +130,7 @@ export default function Chat() {
       let photoResult;
       if (data.images) {
         photoResult = data.images[0];
+        setLastPhoto(photoResult);
       }
 
       console.log(photoResult, data);

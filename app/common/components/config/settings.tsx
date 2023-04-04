@@ -74,7 +74,7 @@ export default function Settings({
       array: imageModificators,
       set: setImageModificator,
       get: imageModificator,
-      disabled: true,
+      disabled: false,
     },
     {
       name: "Image readers",
@@ -216,15 +216,15 @@ const imageGenerators = [
 ];
 const imageModificators = [
   {
+    name: "ControlNet",
+    value: "controlnet",
+    developer: "jagilley",
+    disabled: false,
+  },
+  {
     name: "Stable diffusion img2img",
     value: "stable-diffusion-img2img",
     developer: "StabilityAI",
-    disabled: true,
-  },
-  {
-    name: "ControlNet",
-    value: "controlnet",
-    developer: "",
     disabled: true,
   },
 ];

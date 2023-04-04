@@ -61,7 +61,6 @@ export default function Text({
               reader.readAsDataURL(file);
               reader.onload = () => {
                 // @ts-ignore
-                console.log(reader.result);
                 setPhoto(reader.result as string);
               };
             };
