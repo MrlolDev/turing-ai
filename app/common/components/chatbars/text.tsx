@@ -33,15 +33,21 @@ export default function Text({
         {/*photo */}
 
         {/*input */}
-        <input
-          type="text"
-          className="w-[75.5vw] h-[5vh] rounded-md bg-gray-500 bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-30 border border-gray-100/[.2] text-white placeholder-gray-100/[.5] focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent px-2"
+        <textarea
+          className="w-[75.5vw] h-[5vh] rounded-md resize-none bg-gray-500 bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-30 border border-gray-100/[.2] text-white placeholder-gray-100/[.5] focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent px-2 py-1"
           placeholder="Type a message..."
           onKeyDown={(e) => {
-            /*  if (e.key === "Enter") {
+            if (e.key === "Enter") {
+              // do not add a new line
+              e.preventDefault();
+
               send(e.currentTarget.value);
               e.currentTarget.value = "";
-            }*/
+            }
+            // if the user use shift + enter then it will add a new line
+            if (e.key === "Enter" && e.shiftKey) {
+              e.currentTarget.value += "\n";
+            }
           }}
         />
         {/*camera button inside input */}
@@ -73,7 +79,7 @@ export default function Text({
         <button
           className="relative h-[5vh] w-[5vh] rounded-full bg-gradient-to-br from-turing-blue to-turing-purple shadow-lg flex items-center justify-center cursor-pointer text-sm transition duration-200 outline-none hover:from-turing-purple hover:to-turing-blue"
           onClick={() => {
-            let input = document.querySelector("input");
+            let input = document.querySelector("textarea");
             if (input) {
               send(input.value);
               input.value = "";

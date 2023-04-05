@@ -202,22 +202,58 @@ const imageReaders = [
 ];
 const imageGenerators = [
   {
-    name: "Dall-e 2",
-    value: "dall-e-2",
-    developer: "OpenAI",
-    disabled: false,
-  },
-  {
     name: "Stable diffusion",
     value: "stable-diffusion",
     developer: "StabilityAI",
     disabled: false,
   },
+  {
+    name: "Dall-e 2",
+    value: "dall-e-2",
+    developer: "OpenAI",
+    disabled: false,
+  },
 ];
 const imageModificators = [
   {
-    name: "ControlNet",
+    name: "ControlNet Normal",
     value: "controlnet",
+    developer: "jagilley",
+    disabled: false,
+  },
+  {
+    name: "ControlNet Scribble",
+    value: "controlnet-scribble",
+    developer: "jagilley",
+    disabled: false,
+  },
+  {
+    name: "ControlNet Canny",
+    value: "controlnet-canny",
+    developer: "jagilley",
+    disabled: false,
+  },
+  {
+    name: "ControlNet Hed",
+    value: "controlnet-hed",
+    developer: "jagilley",
+    disabled: false,
+  },
+  {
+    name: "ControlNet depth2img",
+    value: "controlnet-depth2img",
+    developer: "jagilley",
+    disabled: false,
+  },
+  {
+    name: "ControlNet pose",
+    value: "controlnet-pose",
+    developer: "jagilley",
+    disabled: false,
+  },
+  {
+    name: "ControlNet seg",
+    value: "controlnet-seg",
     developer: "jagilley",
     disabled: false,
   },

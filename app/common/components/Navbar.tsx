@@ -114,7 +114,7 @@ export default function Navbar({
             </div>
           </div>
           {/* settings */}
-          <div className="flex flex-col gap-2 items-start max-h-[60%] py-2 overflow-y-auto">
+          <div className="flex flex-col gap-2 items-start max-h-[75vh] py-2 overflow-y-auto">
             <h3 className="text-gray-300 font-bold text-xl">Settings</h3>
             <Settings
               model={model}

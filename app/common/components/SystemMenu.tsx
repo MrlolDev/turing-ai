@@ -33,7 +33,7 @@ export default function SystemMenu({
             option.disabled
               ? "cursor-not-allowed text-gray-500"
               : "cursor-pointer"
-          }  px-8 sm:px-10 md:px-4 rounded-md transition duration-200 border border-gray-100/[.2]`}
+          }  px-4 sm:px-10 md:px-4 rounded-md transition duration-200 border border-gray-100/[.2]`}
           key={option.name}
           onClick={() => {
             if (!option.disabled) {
