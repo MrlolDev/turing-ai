@@ -4,8 +4,12 @@ import { useState } from "react";
 
 export default function Text({
   sendMsg,
+  isProcessing,
+  setIsProcessing,
 }: {
   sendMsg: (text: string, photo?: any) => void;
+  isProcessing: boolean;
+  setIsProcessing: (isProcessing: boolean) => void;
 }) {
   let [photo, setPhoto] = useState<string | null>(null);
   let [isDragging, setIsDragging] = useState(false);
@@ -76,9 +80,11 @@ export default function Text({
             if (e.key === "Enter") {
               // do not add a new line
               e.preventDefault();
-
-              send(e.currentTarget.value);
-              e.currentTarget.value = "";
+              if (!isProcessing) {
+                setIsProcessing(true);
+                send(e.currentTarget.value);
+                e.currentTarget.value = "";
+              }
             }
             // if the user use shift + enter then it will add a new line
             if (e.key === "Enter" && e.shiftKey) {
@@ -115,12 +121,16 @@ export default function Text({
         <button
           className="relative h-[5vh] w-[5vh] rounded-full bg-gradient-to-br from-turing-blue to-turing-purple shadow-lg flex items-center justify-center cursor-pointer text-sm transition duration-200 outline-none hover:from-turing-purple hover:to-turing-blue"
           onClick={() => {
-            let input = document.querySelector("textarea");
-            if (input) {
-              send(input.value);
-              input.value = "";
+            if (!isProcessing) {
+              setIsProcessing(true);
+              let input = document.querySelector("textarea");
+              if (input) {
+                send(input.value);
+                input.value = "";
+              }
             }
           }}
+          disabled={isProcessing}
         >
           <i className="fas fa-paper-plane text-white"></i>
         </button>

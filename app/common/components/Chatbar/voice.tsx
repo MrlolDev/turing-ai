@@ -5,9 +5,13 @@ import useUser from "../../hooks/useUser";
 export default function Voice({
   sendMsg,
   speechToTextModel,
+  isProcessing,
+  setIsProcessing,
 }: {
   sendMsg: (text: string, photo?: any) => void;
   speechToTextModel: any;
+  isProcessing: boolean;
+  setIsProcessing: (isProcessing: boolean) => void;
 }) {
   const [recording, setRecording] = useState<any>(null);
   const [audioData, setAudioData] = useState<any>([]);
@@ -97,8 +101,14 @@ export default function Voice({
         <button
           className="relative h-[8vh] w-[8vh] rounded-full bg-gradient-to-br from-turing-blue to-turing-purple shadow-lg flex items-center justify-center cursor-pointer text-xl transition duration-200 outline-none hover:from-turing-purple hover:to-turing-blue"
           onClick={() => {
-            send();
+            if (!isProcessing) {
+              setIsProcessing(true);
+              setRecording(null);
+              setAudioData([]);
+              send();
+            }
           }}
+          disabled={isProcessing}
         >
           <i className="fas fa-paper-plane text-white"></i>
         </button>

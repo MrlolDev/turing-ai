@@ -14,6 +14,7 @@ import md from "markdown-it";
 export default function Chat() {
   const [mode, setMode] = useLocalStorage("mode", "text");
   const [model, setModel] = useLocalStorage("model", "chatgpt");
+  let [isProcessing, setIsProcessing] = useState(false);
   const [searchEngine, setSearchEngine] = useLocalStorage(
     "searchEngine",
     "google"
@@ -48,7 +49,10 @@ export default function Chat() {
   );
   const [allowNsfw, setAllowNsfw] = useLocalStorage("allowNsfw", false);
   const { status, profile } = useUser(true);
-  const [lastPhoto, setLastPhoto] = useState<string | null>(null);
+  const [lastPhoto, setLastPhoto] = useState<{
+    img: string;
+    description?: string | null;
+  } | null>(null);
 
   let [messages, setMessages] = useState<
     Array<{
@@ -58,11 +62,11 @@ export default function Chat() {
       time: string;
       data: {
         photo?: string;
-        photoDescription?: string;
+        photoDescription?: string | null;
         video?: string;
-        videoDescription?: string;
+        videoDescription?: string | null;
         audio?: string;
-        audioDescription?: string;
+        audioDescription?: string | null;
       };
     }>
   >([]);
@@ -89,8 +93,9 @@ export default function Chat() {
     );
   }
   async function addMessage(msg: any, photo?: any) {
-    setLastPhoto(photo);
-    console.log(photo);
+    setLastPhoto({ img: photo, description: null });
+    console.log(photo, lastPhoto);
+
     messages.push({
       id: uuidv4(),
       text: msg,
@@ -98,6 +103,7 @@ export default function Chat() {
       time: formatTime(Date.now()),
       data: {
         photo: photo,
+        photoDescription: null,
       },
     });
     setMessages([...messages]);
@@ -121,7 +127,8 @@ export default function Chat() {
         userName: profile.user_metadata?.full_name,
         conversationId: `alan-${model}-${profile.user_metadata?.sub}`,
         searchEngine: searchEngine,
-        photo: lastPhoto,
+        photo: lastPhoto ? lastPhoto.img : null,
+        photoDescription: lastPhoto ? lastPhoto.description : null,
         imageGenerator: imageGenerator,
         nsfwFilter: allowNsfw,
         videoGenerator: videoGenerator,
@@ -136,10 +143,13 @@ export default function Chat() {
       let photoResult;
       if (data.images) {
         photoResult = data.images[0];
-        setLastPhoto(photoResult);
+        setLastPhoto({
+          img: photoResult,
+          description: data.photoPrompt,
+        });
       }
 
-      console.log(photoResult, data);
+      console.log(data);
       var contentHtml = md().render(data.response);
 
       messages.push({
@@ -261,7 +271,11 @@ export default function Chat() {
                     width={80}
                     height={80}
                     data-tooltip-id={`${message.id}-photo`}
-                    data-tooltip-content={message.data.photoDescription}
+                    data-tooltip-content={
+                      message.data.photoDescription
+                        ? message.data.photoDescription
+                        : "No description"
+                    }
                     onClick={
                       message.data.photo
                         ? () => {
@@ -283,7 +297,11 @@ export default function Chat() {
                     width={160}
                     height={160}
                     data-tooltip-id={`${message.id}-photo`}
-                    data-tooltip-content={message.data.photoDescription}
+                    data-tooltip-content={
+                      message.data.photoDescription
+                        ? message.data.photoDescription
+                        : "No description"
+                    }
                     onClick={
                       message.data.photo
                         ? () => {
@@ -300,7 +318,11 @@ export default function Chat() {
                     width={160}
                     height={160}
                     data-tooltip-id={`${message.id}-video`}
-                    data-tooltip-content={message.data.videoDescription}
+                    data-tooltip-content={
+                      message.data.videoDescription
+                        ? message.data.videoDescription
+                        : "No description"
+                    }
                     controls
                   />
                 )}
@@ -309,7 +331,11 @@ export default function Chat() {
                     className=" rounded object-fill cursor-pointer"
                     src={message.data.audio}
                     data-tooltip-id={`${message.id}-audio`}
-                    data-tooltip-content={message.data.audioDescription}
+                    data-tooltip-content={
+                      message.data.audioDescription
+                        ? message.data.audioDescription
+                        : "No description"
+                    }
                     controls
                   />
                 )}
@@ -326,6 +352,8 @@ export default function Chat() {
             }}
             mode={mode}
             speechToTextModel={speechToTextModel}
+            isProcessing={isProcessing}
+            setIsProcessing={setIsProcessing}
           />
           <footer className="text-sm text-gray-100/[.75] ">
             Service powered by{" "}
