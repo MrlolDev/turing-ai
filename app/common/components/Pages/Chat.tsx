@@ -150,7 +150,10 @@ export default function Chat() {
       }
 
       console.log(data);
-      var contentHtml = md().render(data.response);
+      let contentHtml = "";
+      if (data.response) {
+        contentHtml = md().render(data.response);
+      }
 
       messages.push({
         id: uuidv4(),

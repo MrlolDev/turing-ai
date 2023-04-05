@@ -10,6 +10,7 @@ export default function Loading({ message = "Loading" }: { message: string }) {
         width={150}
         height={150}
         className="rounded-full animate-pulse"
+        draggable={false}
       />
       <h3 className="text-gray-300">{message}...</h3>
     </div>
