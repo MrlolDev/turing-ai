@@ -1,6 +1,6 @@
 "use client";
-import Voice from "./chatbars/voice";
-import Text from "./chatbars/text";
+import Voice from "./voice";
+import Text from "./text";
 
 export default function Chatbar({
   addMessage,

@@ -1,8 +1,8 @@
 import Image from "next/image";
 import { useRef } from "react";
 import SystemMenu from "./SystemMenu";
-import Settings from "./config/settings";
-import supabase from "../lib/supabase";
+import Settings from "./settings";
+import supabase from "../../lib/supabase";
 
 export default function Navbar({
   resetConversation,
