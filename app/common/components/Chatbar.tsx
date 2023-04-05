@@ -12,6 +12,7 @@ export default function Chatbar({
   function getres(text: string, photo?: any) {
     addMessage(text, photo);
   }
+
   if (mode == "text") {
     return <Text sendMsg={getres} />;
   } else if (mode == "voice") {

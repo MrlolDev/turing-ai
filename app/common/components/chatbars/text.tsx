@@ -8,6 +8,7 @@ export default function Text({
   sendMsg: (text: string, photo?: any) => void;
 }) {
   let [photo, setPhoto] = useState<string | null>(null);
+  let [isDragging, setIsDragging] = useState(false);
   function send(text: string) {
     // check value
     if (text == "") {
@@ -18,12 +19,47 @@ export default function Text({
     setPhoto(null);
     sendMsg(text, photo);
   }
+
+  function onDragEnter() {
+    console.log("drag enter");
+    setIsDragging(true);
+  }
+  function onDragLeave() {
+    setIsDragging(false);
+    console.log("drag leave");
+  }
+  function onDragOver() {
+    console.log("drag over");
+  }
+  function onDrop(e: any) {
+    console.log("drop");
+    // disable default behavior
+    e.preventDefault();
+    setIsDragging(false);
+    // @ts-ignore
+    let file = e.dataTransfer.files[0];
+    // send file
+    // get file url
+    let reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => {
+      // @ts-ignore
+      setPhoto(reader.result as string);
+    };
+  }
+
   return (
-    <div className="flex flex-col items-start gap-2 ">
+    <div
+      className="flex flex-col items-start gap-2 "
+      onDragEnter={onDragEnter}
+      onDragOver={onDragOver}
+      onDragLeave={onDragLeave}
+      onDrop={onDrop}
+    >
       {photo && (
-        <div className="absolute bottom-[18vh]">
+        <div className="absolute bottom-[10vh]">
           <i
-            className="fas fa-times absolute ml-1 text-gray-300 hover:text-white text-xl cursor-pointer z-10"
+            className="fas fa-times absolute ml-1 mt-1 text-gray-300 hover:text-white bg-gray-600 px-1 rounded-md text-xl cursor-pointer z-10"
             onClick={() => setPhoto(null)}
           ></i>
           <img src={photo} alt="Photo" className="h-[15vh]" />
@@ -35,7 +71,7 @@ export default function Text({
         {/*input */}
         <textarea
           className="w-[75.5vw] h-[5vh] rounded-md resize-none bg-gray-500 bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-30 border border-gray-100/[.2] text-white placeholder-gray-100/[.5] focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent px-2 py-1"
-          placeholder="Type a message..."
+          placeholder={isDragging ? "Drop to attach" : "Type a message"}
           onKeyDown={(e) => {
             if (e.key === "Enter") {
               // do not add a new line
