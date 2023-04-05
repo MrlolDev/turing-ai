@@ -15,6 +15,8 @@ export default function Settings({
   setImageReader,
   codeRunner,
   setCodeRunner,
+  allowNsfw,
+  setAllowNsfw,
 }: {
   model: any;
   setModel: any;
@@ -32,6 +34,8 @@ export default function Settings({
   setImageReader: any;
   codeRunner: any;
   setCodeRunner: any;
+  allowNsfw: any;
+  setAllowNsfw: any;
 }) {
   const settingsSections = [
     {
@@ -53,6 +57,13 @@ export default function Settings({
       array: imageGenerators,
       set: setImageGenerator,
       get: imageGenerator,
+      disabled: false,
+    },
+    {
+      name: "Allow NSFW Images",
+      array: allowNsfwOptions,
+      set: setAllowNsfw,
+      get: allowNsfw,
       disabled: false,
     },
     {
@@ -298,6 +309,18 @@ const codeRunners = [
     value: "turing-machines",
     developer: "TuringAI",
     disabled: true,
+  },
+];
+const allowNsfwOptions = [
+  {
+    name: "Yes",
+    value: true,
+    disabled: false,
+  },
+  {
+    name: "No",
+    value: false,
+    disabled: false,
   },
 ];
 

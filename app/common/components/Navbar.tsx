@@ -24,6 +24,8 @@ export default function Navbar({
   setImageReader,
   codeRunner,
   setCodeRunner,
+  allowNsfw,
+  setAllowNsfw,
 }: {
   resetConversation: any;
   mode: any;
@@ -44,6 +46,8 @@ export default function Navbar({
   setImageReader: any;
   codeRunner: any;
   setCodeRunner: any;
+  allowNsfw: any;
+  setAllowNsfw: any;
 }) {
   let sideBar = useRef(null);
   const socials = [
@@ -133,6 +137,8 @@ export default function Navbar({
               setImageReader={setImageReader}
               codeRunner={codeRunner}
               setCodeRunner={setCodeRunner}
+              allowNsfw={allowNsfw}
+              setAllowNsfw={setAllowNsfw}
             />
           </div>
           <div className="h-fit flex flex-row items-center gap-2 pt-2">
