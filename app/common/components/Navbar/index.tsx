@@ -26,6 +26,8 @@ export default function Navbar({
   setCodeRunner,
   allowNsfw,
   setAllowNsfw,
+  speechToTextModel,
+  setSpeechToTextModel,
 }: {
   resetConversation: any;
   mode: any;
@@ -48,6 +50,8 @@ export default function Navbar({
   setCodeRunner: any;
   allowNsfw: any;
   setAllowNsfw: any;
+  speechToTextModel: any;
+  setSpeechToTextModel: any;
 }) {
   let sideBar = useRef(null);
   const socials = [
@@ -139,6 +143,8 @@ export default function Navbar({
               setCodeRunner={setCodeRunner}
               allowNsfw={allowNsfw}
               setAllowNsfw={setAllowNsfw}
+              speechToTextModel={speechToTextModel}
+              setSpeechToTextModel={setSpeechToTextModel}
             />
           </div>
           <div className="h-fit flex flex-row items-center gap-2 pt-2">

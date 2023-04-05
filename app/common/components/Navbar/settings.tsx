@@ -17,6 +17,8 @@ export default function Settings({
   setCodeRunner,
   allowNsfw,
   setAllowNsfw,
+  speechToTextModel,
+  setSpeechToTextModel,
 }: {
   model: any;
   setModel: any;
@@ -36,6 +38,8 @@ export default function Settings({
   setCodeRunner: any;
   allowNsfw: any;
   setAllowNsfw: any;
+  speechToTextModel: any;
+  setSpeechToTextModel: any;
 }) {
   const settingsSections = [
     {
@@ -92,6 +96,14 @@ export default function Settings({
       array: imageReaders,
       set: setImageReader,
       get: imageReader,
+      disabled: false,
+    },
+
+    {
+      name: "Speech to text model",
+      array: speechToTextModels,
+      set: setSpeechToTextModel,
+      get: speechToTextModel,
       disabled: false,
     },
     {
@@ -324,17 +336,17 @@ const allowNsfwOptions = [
   },
 ];
 
-const audioToText = [
-  {
-    name: "Gladia",
-    value: "gladia",
-    developer: "Gladia",
-    disabled: true,
-  },
+const speechToTextModels = [
   {
     name: "Whisper",
     value: "whisper",
     developer: "OpenAI",
+    disabled: false,
+  },
+  {
+    name: "Gladia",
+    value: "gladia",
+    developer: "Gladia",
     disabled: true,
   },
 ];

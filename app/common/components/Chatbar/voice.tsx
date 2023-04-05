@@ -4,12 +4,15 @@ import useUser from "../../hooks/useUser";
 
 export default function Voice({
   sendMsg,
+  speechToTextModel,
 }: {
-  sendMsg: (text: string) => void;
+  sendMsg: (text: string, photo?: any) => void;
+  speechToTextModel: any;
 }) {
   const [recording, setRecording] = useState<any>(null);
   const [audioData, setAudioData] = useState<any>([]);
   const { status, profile } = useUser(true);
+  let [photo, setPhoto] = useState<string | null>(null);
 
   const handleRecording = async () => {
     if (!recording || recording === "finished") {
@@ -24,7 +27,7 @@ export default function Voice({
       });
 
       mediaRecorder.addEventListener("stop", () => {
-        const blob = new Blob(chunks, { type: "audio/ogg; codecs=opus" });
+        const blob = new Blob(chunks, { type: "audio/mp3; codecs=opus" });
         const reader = new FileReader();
         reader.readAsArrayBuffer(blob);
         reader.onloadend = () => {
@@ -49,22 +52,23 @@ export default function Voice({
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        file: URL.createObjectURL(
-          new Blob([audioData], { type: "audio/ogg; codecs=opus" })
+        file: await blobToBase64(
+          new Blob([audioData], { type: "audio/mp3; codecs=opus" })
         ),
-        ai: "gladia",
+        ai: speechToTextModel,
       }),
     });
-    console.log(res);
+    let response = await res.json();
+    console.log(response);
+
+    sendMsg(response.text, null);
   }
-  function bufferConvert(ad: any) {
-    const binary = atob(ad.split(",")[1]);
-    const buffer = new ArrayBuffer(binary.length);
-    const view = new Uint8Array(buffer);
-    for (let i = 0; i < binary.length; i++) {
-      view[i] = binary.charCodeAt(i);
-    }
-    return buffer;
+  function blobToBase64(blob: any) {
+    return new Promise((resolve, _) => {
+      const reader = new FileReader();
+      reader.onloadend = () => resolve(reader.result);
+      reader.readAsDataURL(blob);
+    });
   }
   return (
     <div className="flex flex-row items-center relative gap-2">
@@ -83,7 +87,7 @@ export default function Voice({
       {audioData && recording == "finished" && (
         <audio
           src={URL.createObjectURL(
-            new Blob([audioData], { type: "audio/ogg; codecs=opus" })
+            new Blob([audioData], { type: "audio/mp3; codecs=opus" })
           )}
           className="outline-none"
           controls
