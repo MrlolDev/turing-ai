@@ -177,6 +177,7 @@ export default function Chat() {
       });
       setMessages([...messages]);
     }
+    setIsProcessing(false);
   }
   // format time to hh:mm:ss
   function formatTime(time: number) {

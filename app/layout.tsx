@@ -1,5 +1,6 @@
 import "./globals.scss";
 import "react-tooltip/dist/react-tooltip.css";
+import { Analytics } from "@vercel/analytics/react";
 
 export const metadata = {
   title: "Alan AI",
@@ -48,7 +49,10 @@ export default function RootLayout({
           defer
         ></script>
       </head>
-      <body className="text-white overflow-hidden mx-5">{children}</body>
+      <body className="text-white overflow-hidden mx-5">
+        {children}
+        <Analytics />
+      </body>
     </html>
   );
 }

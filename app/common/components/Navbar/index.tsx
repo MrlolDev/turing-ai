@@ -58,17 +58,17 @@ export default function Navbar({
     {
       name: "Twitter",
       icon: "fab fa-twitter",
-      link: "https://twitter.com/alan_ai",
+      link: "https://twitter.com/Turing_AI_",
     },
     {
       name: "GitHub",
       icon: "fab fa-github",
-      link: "",
+      link: "https://github.com/MrlolDev/turing-ai/tree/app",
     },
     {
       name: "Discord",
       icon: "fab fa-discord",
-      link: "https://discord.gg/alanai",
+      link: "https://discord.gg/turing-ai-899761438996963349",
     },
   ];
 
