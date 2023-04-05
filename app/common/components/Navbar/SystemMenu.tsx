@@ -18,7 +18,7 @@ export default function SystemMenu({
     {
       name: "Voice",
       selected: mode === "voice",
-      disabled: true,
+      disabled: false,
     },
   ];
   return (

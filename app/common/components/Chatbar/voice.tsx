@@ -49,7 +49,9 @@ export default function Voice({
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        file: bufferConvert(audioData),
+        file: URL.createObjectURL(
+          new Blob([audioData], { type: "audio/ogg; codecs=opus" })
+        ),
         ai: "gladia",
       }),
     });
