@@ -1,6 +1,7 @@
 "use client";
 import Voice from "./voice";
 import Text from "./text";
+import Turnstile from "react-turnstile";
 
 export default function Chatbar({
   addMessage,
@@ -19,24 +20,22 @@ export default function Chatbar({
     addMessage(text, photo);
   }
 
-  if (mode == "text") {
-    return (
-      <Text
-        sendMsg={getres}
-        isProcessing={isProcessing}
-        setIsProcessing={setIsProcessing}
-      />
-    );
-  } else if (mode == "voice") {
-    return (
-      <Voice
-        sendMsg={getres}
-        speechToTextModel={speechToTextModel}
-        isProcessing={isProcessing}
-        setIsProcessing={setIsProcessing}
-      />
-    );
-  } else {
-    return <div>Invalid mode</div>;
-  }
+  return (
+    <>
+      {mode == "text" ? (
+        <Text
+          sendMsg={getres}
+          isProcessing={isProcessing}
+          setIsProcessing={setIsProcessing}
+        />
+      ) : (
+        <Voice
+          sendMsg={getres}
+          speechToTextModel={speechToTextModel}
+          isProcessing={isProcessing}
+          setIsProcessing={setIsProcessing}
+        />
+      )}
+    </>
+  );
 }

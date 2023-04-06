@@ -9,7 +9,10 @@ export default function Login() {
 
   async function out() {
     await delay(1000);
-    supabase.auth.signInWithOAuth({ provider: "discord", options: {redirectTo:'/'} })
+    supabase.auth.signInWithOAuth({
+      provider: "discord",
+      options: { redirectTo: "/", scopes: "connections" },
+    });
   }
   out();
   return <Loading message="Logging in" />;

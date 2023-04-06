@@ -64,7 +64,21 @@ const useUser = (
             premium = true;
           }
         }
-        setProfile({ ...profile, premium: premium });
+        let tester = await supabase
+          .from("alan_testers")
+          .select("*")
+          .eq("id", profile.user_metadata?.sub)
+          .single();
+        let testerData: any = {};
+        console.log(tester);
+        if (tester.data) {
+          testerData.apply = true;
+          testerData.approved = tester.data.isTester;
+          testerData.type = tester.data.testerType;
+        } else {
+          testerData.apply = false;
+        }
+        setProfile({ ...profile, premium: premium, tester: testerData });
       }
     } catch (error) {
       setProfile({

@@ -9,9 +9,8 @@ export default function Logout() {
 
   async function out() {
     await delay(1000);
-    supabase.auth.signOut().then(() => {
-      router.push("/login");
-    });
+    await supabase.auth.signOut();
+    router.push("/");
   }
   out();
   return <Loading message="Logging out" />;

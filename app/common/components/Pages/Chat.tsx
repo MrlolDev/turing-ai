@@ -10,8 +10,10 @@ import Loading from "./Loading";
 import Image from "next/image";
 import { Tooltip } from "react-tooltip";
 import md from "markdown-it";
+import { useRouter } from "next/navigation";
 
 export default function Chat() {
+  const router = useRouter();
   const [mode, setMode] = useLocalStorage("mode", "text");
   const [model, setModel] = useLocalStorage("model", "chatgpt");
   let [isProcessing, setIsProcessing] = useState(false);
@@ -83,15 +85,13 @@ export default function Chat() {
     return <Loading message="Loading" />;
   }
 
-  if (profile.premium == false) {
-    return (
-      <div className="flex flex-col items-center justify-center h-[80vh]">
-        <h1 className="text-2xl font-bold">
-          You need to be a premium user to use this feature
-        </h1>
-      </div>
-    );
+  if (profile.tester.apply == false) {
+    router.push("/waitlist/apply");
   }
+  if (profile.tester.apply == true && profile.tester.approved == false) {
+    router.push("/waitlist/wait");
+  }
+
   async function addMessage(msg: any, photo?: any) {
     setLastPhoto({ img: photo, description: null });
     console.log(photo, lastPhoto);
