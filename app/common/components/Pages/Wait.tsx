@@ -1,5 +1,23 @@
 "use client";
+import useUser from "../../hooks/useUser";
+import Loading from "./Loading";
+import { useRouter } from "next/navigation";
+
 export default function WaitPage() {
+  const router = useRouter();
+  const { status, profile } = useUser(true);
+
+  if (status === "loading" || profile.id === "loading") {
+    return <Loading message="Loading" />;
+  }
+  if (profile.tester.apply == false) {
+    router.push("/waitlist/apply");
+    return <Loading message="Loading" />;
+  }
+  if (profile.tester.approved == true) {
+    router.push("/");
+    return <Loading message="Loading" />;
+  }
   return (
     <>
       <div className="flex flex-col items-center absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]">

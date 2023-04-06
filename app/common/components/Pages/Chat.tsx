@@ -11,6 +11,8 @@ import Image from "next/image";
 import { Tooltip } from "react-tooltip";
 import md from "markdown-it";
 import { useRouter } from "next/navigation";
+import ApplyPage from "./Apply";
+import WaitPage from "./Wait";
 
 export default function Chat() {
   const router = useRouter();
@@ -86,10 +88,10 @@ export default function Chat() {
   }
 
   if (profile.tester.apply == false) {
-    router.push("/waitlist/apply");
+    return <ApplyPage />;
   }
   if (profile.tester.apply == true && profile.tester.approved == false) {
-    router.push("/waitlist/wait");
+    return <WaitPage />;
   }
 
   async function addMessage(msg: any, photo?: any) {

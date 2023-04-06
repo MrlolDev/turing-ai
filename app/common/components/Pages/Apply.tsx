@@ -15,7 +15,10 @@ export default function ApplyPage() {
     router.push("/waitlist/wait");
     return <Loading message="Loading" />;
   }
-  console.log(profile);
+  if (profile.tester.approved == true) {
+    router.push("/");
+    return <Loading message="Loading" />;
+  }
   async function getDiscordConnections() {
     let discordToken = profile.provider_token;
     let discordId = profile.user_metadata?.sub;
