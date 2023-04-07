@@ -94,7 +94,7 @@ export default function Chat() {
     return <WaitPage />;
   }
 
-  async function addMessage(msg: any, photo?: any) {
+  async function addMessage(msg: any, token: string, photo?: any) {
     setLastPhoto({ img: photo, description: null });
     console.log(photo, lastPhoto);
 
@@ -123,6 +123,7 @@ export default function Chat() {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${profile.access_token}`,
+        "x-captcha-token": token,
       },
       body: JSON.stringify({
         message: msg,
