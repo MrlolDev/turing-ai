@@ -107,8 +107,7 @@ export default function Text({
             }}
           />
         )}
-
- *       /}
+        */}
         {/*input */}
         <textarea
           className="w-[75.5vw] h-[5vh] rounded-md resize-none bg-gray-500 bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-30 border border-gray-100/[.2] text-white placeholder-gray-100/[.5] focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent px-2 py-1"
