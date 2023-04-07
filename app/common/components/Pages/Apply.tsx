@@ -26,18 +26,22 @@ export default function ApplyPage() {
   async function getDiscordConnections() {
     let discordToken = profile.provider_token;
     let discordId = profile.user_metadata?.sub;
-    let res = await fetch(`https://discord.com/api/users/@me/connections`, {
-      headers: {
-        Authorization: `Bearer ${discordToken}`,
-      },
-    });
-    let discordConnections = await res.json();
-    console.log(discordConnections);
-    if (discordConnections.message === "401: Unauthorized") {
-      await supabase.auth.signOut();
-      router.push("/login");
+    try {
+      let res = await fetch(`https://discord.com/api/users/@me/connections`, {
+        headers: {
+          Authorization: `Bearer ${discordToken}`,
+        },
+      });
+      let discordConnections = await res.json();
+      console.log(discordConnections);
+      if (discordConnections.message === "401: Unauthorized") {
+        await supabase.auth.signOut();
+        router.push("/login");
+      }
+      return discordConnections;
+    } catch (e) {
+      return [];
     }
-    return discordConnections;
   }
   async function apply() {
     if (!captchaRef.current) return;
