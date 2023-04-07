@@ -2,7 +2,6 @@
 import Voice from "./voice";
 import Text from "./text";
 import { useRef, useState } from "react";
-import Turnstile from "react-turnstile";
 
 export default function Chatbar({
   addMessage,
@@ -17,11 +16,8 @@ export default function Chatbar({
   isProcessing: boolean;
   setIsProcessing: (isProcessing: boolean) => void;
 }) {
-  let captchaRef = useRef<any>(null);
   let [token, setToken] = useState<string | null>(null);
   function getres(text: string, photo?: any) {
-    if (!captchaRef.current) return;
-    captchaRef.current.execute();
     console.log(token);
     if (!token) {
       setIsProcessing(false);
@@ -34,30 +30,13 @@ export default function Chatbar({
 
   return (
     <>
-      <Turnstile
-        sitekey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY as string}
-        onVerify={(token) => {
-          setToken(token);
-        }}
-        theme="dark"
-        size="normal"
-        userRef={captchaRef}
-        execution="execute"
-        onExpire={() => {
-          setIsProcessing(false);
-        }}
-        onError={() => {
-          setIsProcessing(false);
-        }}
-        onLoad={() => {
-          // @ts-ignore
-        }}
-      />
       {mode == "text" ? (
         <Text
           sendMsg={getres}
           isProcessing={isProcessing}
           setIsProcessing={setIsProcessing}
+          token={token}
+          setToken={setToken}
         />
       ) : (
         <Voice
@@ -65,6 +44,8 @@ export default function Chatbar({
           speechToTextModel={speechToTextModel}
           isProcessing={isProcessing}
           setIsProcessing={setIsProcessing}
+          token={token}
+          setToken={setToken}
         />
       )}
     </>

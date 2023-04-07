@@ -1,17 +1,22 @@
 "use client";
 import { useState } from "react";
 import useUser from "../../hooks/useUser";
+import Turnstile from "react-turnstile";
 
 export default function Voice({
   sendMsg,
   speechToTextModel,
   isProcessing,
   setIsProcessing,
+  setToken,
+  token,
 }: {
   sendMsg: (text: string, photo?: any) => void;
   speechToTextModel: any;
   isProcessing: boolean;
   setIsProcessing: (isProcessing: boolean) => void;
+  setToken: (token: string | null) => void;
+  token: string | null;
 }) {
   const [recording, setRecording] = useState<any>(null);
   const [audioData, setAudioData] = useState<any>([]);
@@ -48,12 +53,20 @@ export default function Voice({
   async function send() {
     //  get transcription
     // array buffer to base64
-
+    if (!audioData) {
+      return;
+    }
+    if (!token) {
+      setIsProcessing(false);
+      alert("Please verify that you are not a robot");
+      return;
+    }
     let res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/transcript`, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${profile.access_token}`,
         "Content-Type": "application/json",
+        "x-captcha-token": token,
       },
       body: JSON.stringify({
         file: await blobToBase64(
@@ -112,6 +125,26 @@ export default function Voice({
         >
           <i className="fas fa-paper-plane text-white"></i>
         </button>
+      )}
+      {isProcessing && (
+        <Turnstile
+          sitekey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY as string}
+          onVerify={(token) => {
+            console.log("updated token");
+            setToken(token);
+          }}
+          theme="dark"
+          size="normal"
+          onExpire={() => {
+            setIsProcessing(false);
+          }}
+          onError={() => {
+            setIsProcessing(false);
+          }}
+          onLoad={() => {
+            // @ts-ignore
+          }}
+        />
       )}
     </div>
   );

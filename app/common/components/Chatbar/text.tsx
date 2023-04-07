@@ -1,15 +1,20 @@
 "use client";
 import Image from "next/image";
 import { useState } from "react";
+import Turnstile from "react-turnstile";
 
 export default function Text({
   sendMsg,
   isProcessing,
   setIsProcessing,
+  token,
+  setToken,
 }: {
   sendMsg: (text: string, photo?: any) => void;
   isProcessing: boolean;
   setIsProcessing: (isProcessing: boolean) => void;
+  token: string | null;
+  setToken: (token: string | null) => void;
 }) {
   let [photo, setPhoto] = useState<string | null>(null);
   let [isDragging, setIsDragging] = useState(false);
@@ -134,6 +139,26 @@ export default function Text({
         >
           <i className="fas fa-paper-plane text-white"></i>
         </button>
+        {isProcessing && (
+          <Turnstile
+            sitekey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY as string}
+            onVerify={(token) => {
+              console.log("updated token");
+              setToken(token);
+            }}
+            theme="dark"
+            size="normal"
+            onExpire={() => {
+              setIsProcessing(false);
+            }}
+            onError={() => {
+              setIsProcessing(false);
+            }}
+            onLoad={() => {
+              // @ts-ignore
+            }}
+          />
+        )}
       </div>
     </div>
   );
