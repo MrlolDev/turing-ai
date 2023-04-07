@@ -1,13 +1,17 @@
 "use client";
 import useUser from "../../hooks/useUser";
 import Loading from "./Loading";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import supabase from "../../lib/supabase";
 import { useRouter } from "next/navigation";
+import HCaptcha from "@hcaptcha/react-hcaptcha";
 
 export default function ApplyPage() {
   const router = useRouter();
   const { status, profile } = useUser(true);
+  const [token, setToken] = useState<string | null>(null);
+  const captchaRef = useRef(null);
+
   if (status === "loading" || profile.id === "loading") {
     return <Loading message="Loading" />;
   }
@@ -32,6 +36,22 @@ export default function ApplyPage() {
     return discordConnections;
   }
   async function apply() {
+    if (!captchaRef.current) return;
+    // @ts-ignore
+    await captchaRef.current.execute();
+    if (!token) return alert("Please verify you are not a robot");
+    let res = await fetch(process.env.NEXT_PUBLIC_API_URL + "/hcaptcha", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${profile.access_token}`,
+      },
+      body: JSON.stringify({
+        token,
+      }),
+    });
+    let d = await res.json();
+    if (!d.success) return alert("Please verify you are not a robot");
     let { data, error } = await supabase
       .from("alan_testers")
       .select("*")
@@ -67,6 +87,14 @@ export default function ApplyPage() {
         Apply to get access to Alan. We consider if you already have a premium
         subscription, and your social media.
       </p>
+      <HCaptcha
+        sitekey={process.env.NEXT_PUBLIC_HCAPTCHA_SITE_KEY as string}
+        onVerify={(token) => {
+          setToken(token);
+        }}
+        ref={captchaRef}
+        theme="dark"
+      />
       <button
         className=" px-4 py-1 rounded-md bg-gradient-to-br from-turing-blue to-turing-purple flex items-center justify-center cursor-pointer transition duration-500 outline-none hover:from-turing-purple hover:to-turing-blue"
         onClick={() => {
