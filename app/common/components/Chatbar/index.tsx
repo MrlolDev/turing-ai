@@ -20,6 +20,8 @@ export default function Chatbar({
   let captchaRef = useRef<any>(null);
   let [token, setToken] = useState<string | null>(null);
   function getres(text: string, photo?: any) {
+    if (!captchaRef.current) return;
+    captchaRef.current.execute();
     console.log(token);
     if (!token) {
       setIsProcessing(false);
@@ -27,6 +29,7 @@ export default function Chatbar({
     }
 
     addMessage(text, token, photo);
+    setToken(null);
   }
 
   return (
@@ -39,6 +42,7 @@ export default function Chatbar({
         theme="dark"
         size="normal"
         userRef={captchaRef}
+        execution="execute"
         onExpire={() => {
           setIsProcessing(false);
         }}
