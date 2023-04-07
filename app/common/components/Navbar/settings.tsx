@@ -158,7 +158,7 @@ const searchEngines: any = [
   {
     name: "Wikipedia",
     value: "wikipedia",
-    disabled: false,
+    disabled: true,
   },
 ];
 const models = [
