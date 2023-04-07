@@ -16,8 +16,7 @@ export default function Chatbar({
   isProcessing: boolean;
   setIsProcessing: (isProcessing: boolean) => void;
 }) {
-  let [token, setToken] = useState<string | null>(null);
-  function getres(text: string, photo?: any) {
+  function getres(text: string, token: any, photo?: any) {
     console.log(token);
     if (!token) {
       setIsProcessing(false);
@@ -25,7 +24,6 @@ export default function Chatbar({
     }
 
     addMessage(text, token, photo);
-    setToken(null);
   }
 
   return (
@@ -35,8 +33,6 @@ export default function Chatbar({
           sendMsg={getres}
           isProcessing={isProcessing}
           setIsProcessing={setIsProcessing}
-          token={token}
-          setToken={setToken}
         />
       ) : (
         <Voice
@@ -44,8 +40,6 @@ export default function Chatbar({
           speechToTextModel={speechToTextModel}
           isProcessing={isProcessing}
           setIsProcessing={setIsProcessing}
-          token={token}
-          setToken={setToken}
         />
       )}
     </>

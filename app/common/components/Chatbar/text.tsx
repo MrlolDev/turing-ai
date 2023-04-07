@@ -7,19 +7,15 @@ export default function Text({
   sendMsg,
   isProcessing,
   setIsProcessing,
-  token,
-  setToken,
 }: {
-  sendMsg: (text: string, photo?: any) => void;
+  sendMsg: (text: string, token: any, photo?: any) => void;
   isProcessing: boolean;
   setIsProcessing: (isProcessing: boolean) => void;
-  token: string | null;
-  setToken: (token: string | null) => void;
 }) {
   let [photo, setPhoto] = useState<string | null>(null);
   let [isDragging, setIsDragging] = useState(false);
   let [text, setText] = useState("");
-  function send(text: string) {
+  function send(text: string, token: any) {
     // check value
     if (text == "") {
       return;
@@ -27,7 +23,7 @@ export default function Text({
 
     // send message
     setPhoto(null);
-    sendMsg(text, photo);
+    sendMsg(text, token, photo);
   }
 
   function onDragEnter() {
@@ -144,9 +140,8 @@ export default function Text({
           <Turnstile
             sitekey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY as string}
             onVerify={(token) => {
-              console.log("updated token");
-              setToken(token);
-              send(text);
+              console.log("updated token", token);
+              send(text, token);
             }}
             theme="dark"
             size="normal"

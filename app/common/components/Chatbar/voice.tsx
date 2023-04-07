@@ -8,15 +8,11 @@ export default function Voice({
   speechToTextModel,
   isProcessing,
   setIsProcessing,
-  setToken,
-  token,
 }: {
-  sendMsg: (text: string, photo?: any) => void;
+  sendMsg: (text: string, token: any, photo?: any) => void;
   speechToTextModel: any;
   isProcessing: boolean;
   setIsProcessing: (isProcessing: boolean) => void;
-  setToken: (token: string | null) => void;
-  token: string | null;
 }) {
   const [recording, setRecording] = useState<any>(null);
   const [audioData, setAudioData] = useState<any>([]);
@@ -50,7 +46,7 @@ export default function Voice({
       setRecording("finished");
     }
   };
-  async function send() {
+  async function send(token: any) {
     //  get transcription
     // array buffer to base64
     if (!audioData) {
@@ -58,7 +54,7 @@ export default function Voice({
     }
     if (!token) {
       setIsProcessing(false);
-      alert("Please verify that you are not a robot");
+      alert("Please verify that you are not a robot :)");
       return;
     }
     let res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/transcript`, {
@@ -78,7 +74,7 @@ export default function Voice({
     let response = await res.json();
     console.log(response);
 
-    sendMsg(response.text, null);
+    sendMsg(response.text, token, null);
     setRecording(null);
     setAudioData([]);
   }
@@ -129,9 +125,8 @@ export default function Voice({
         <Turnstile
           sitekey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY as string}
           onVerify={(token) => {
-            console.log("updated token");
-            setToken(token);
-            send();
+            console.log("updated token", token);
+            send(token);
           }}
           theme="dark"
           size="normal"
