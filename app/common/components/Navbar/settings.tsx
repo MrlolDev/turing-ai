@@ -156,19 +156,9 @@ const searchEngines: any = [
     disabled: false,
   },
   {
-    name: "Bing",
-    value: "bing",
-    disabled: true,
-  },
-  {
-    name: "Yahoo",
-    value: "yahoo",
-    disabled: true,
-  },
-  {
-    name: "Yandex",
-    value: "yandex",
-    disabled: true,
+    name: "Wikipedia",
+    value: "wikipedia",
+    disabled: false,
   },
 ];
 const models = [
@@ -182,7 +172,7 @@ const models = [
     name: "GPT-4",
     value: "gpt4",
     developer: "OpenAI",
-    disabled: false,
+    disabled: true,
   },
   {
     name: "GPT-3",
