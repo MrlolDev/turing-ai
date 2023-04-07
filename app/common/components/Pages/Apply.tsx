@@ -38,7 +38,8 @@ export default function ApplyPage() {
   async function apply() {
     if (!captchaRef.current) return;
     // @ts-ignore
-    await captchaRef.current.execute();
+    //captchaRef.current.execute();
+
     if (!token) return alert("Please verify you are not a robot");
     let res = await fetch(process.env.NEXT_PUBLIC_API_URL + "/hcaptcha", {
       method: "POST",
@@ -94,7 +95,6 @@ export default function ApplyPage() {
         }}
         ref={captchaRef}
         theme="dark"
-        size="invisible"
       />
       <button
         className=" px-4 py-1 rounded-md bg-gradient-to-br from-turing-blue to-turing-purple flex items-center justify-center cursor-pointer transition duration-500 outline-none hover:from-turing-purple hover:to-turing-blue"
