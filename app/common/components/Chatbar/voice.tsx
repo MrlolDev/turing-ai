@@ -79,6 +79,8 @@ export default function Voice({
     console.log(response);
 
     sendMsg(response.text, null);
+    setRecording(null);
+    setAudioData([]);
   }
   function blobToBase64(blob: any) {
     return new Promise((resolve, _) => {
@@ -116,9 +118,6 @@ export default function Voice({
           onClick={() => {
             if (!isProcessing) {
               setIsProcessing(true);
-              setRecording(null);
-              setAudioData([]);
-              send();
             }
           }}
           disabled={isProcessing}
@@ -132,6 +131,7 @@ export default function Voice({
           onVerify={(token) => {
             console.log("updated token");
             setToken(token);
+            send();
           }}
           theme="dark"
           size="normal"

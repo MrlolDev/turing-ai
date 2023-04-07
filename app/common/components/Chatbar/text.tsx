@@ -18,6 +18,7 @@ export default function Text({
 }) {
   let [photo, setPhoto] = useState<string | null>(null);
   let [isDragging, setIsDragging] = useState(false);
+  let [text, setText] = useState("");
   function send(text: string) {
     // check value
     if (text == "") {
@@ -87,7 +88,7 @@ export default function Text({
               e.preventDefault();
               if (!isProcessing) {
                 setIsProcessing(true);
-                send(e.currentTarget.value);
+                setText(e.currentTarget.value);
                 e.currentTarget.value = "";
               }
             }
@@ -130,7 +131,7 @@ export default function Text({
               setIsProcessing(true);
               let input = document.querySelector("textarea");
               if (input) {
-                send(input.value);
+                setText(input.value);
                 input.value = "";
               }
             }
@@ -145,6 +146,7 @@ export default function Text({
             onVerify={(token) => {
               console.log("updated token");
               setToken(token);
+              send(text);
             }}
             theme="dark"
             size="normal"
