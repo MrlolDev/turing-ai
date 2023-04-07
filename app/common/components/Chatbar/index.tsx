@@ -9,12 +9,14 @@ export default function Chatbar({
   speechToTextModel,
   isProcessing,
   setIsProcessing,
+  resetConversation,
 }: {
   addMessage: (text: string, token: any, photo?: any) => void;
   mode: any;
   speechToTextModel: any;
   isProcessing: boolean;
   setIsProcessing: (isProcessing: boolean) => void;
+  resetConversation: any;
 }) {
   function getres(text: string, token: any, photo?: any) {
     console.log(token);
@@ -33,6 +35,7 @@ export default function Chatbar({
           sendMsg={getres}
           isProcessing={isProcessing}
           setIsProcessing={setIsProcessing}
+          resetConversation={resetConversation}
         />
       ) : (
         <Voice

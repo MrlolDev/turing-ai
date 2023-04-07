@@ -1,8 +1,9 @@
 import Image from "next/image";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import SystemMenu from "./SystemMenu";
 import Settings from "./settings";
 import supabase from "../../lib/supabase";
+import Turnstile from "react-turnstile";
 
 export default function Navbar({
   resetConversation,
@@ -54,6 +55,7 @@ export default function Navbar({
   setSpeechToTextModel: any;
 }) {
   let sideBar = useRef(null);
+  let [showCaptcha, setShowCaptcha] = useState(false);
   const socials = [
     {
       name: "Twitter",
@@ -151,12 +153,31 @@ export default function Navbar({
             <button
               className="relative px-2 py-1 gap-2 rounded-md bg-gradient-to-br from-turing-blue to-turing-purple shadow-lg flex items-center justify-center cursor-pointer text-sm transition duration-200 outline-none hover:from-turing-purple hover:to-turing-blue"
               onClick={() => {
-                resetConversation();
+                setShowCaptcha(true);
               }}
             >
               <i className="fas fa-broom text-white"></i>
               Reset conversation
             </button>
+            {showCaptcha && (
+              <Turnstile
+                sitekey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY as string}
+                onVerify={(token) => {
+                  resetConversation(token);
+                }}
+                theme="dark"
+                size="normal"
+                onExpire={() => {
+                  setShowCaptcha(false);
+                }}
+                onError={() => {
+                  setShowCaptcha(false);
+                }}
+                onLoad={() => {
+                  // @ts-ignore
+                }}
+              />
+            )}
             <button
               onClick={() => {
                 supabase.auth.signOut();

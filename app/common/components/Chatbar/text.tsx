@@ -7,14 +7,18 @@ export default function Text({
   sendMsg,
   isProcessing,
   setIsProcessing,
+  resetConversation,
 }: {
   sendMsg: (text: string, token: any, photo?: any) => void;
   isProcessing: boolean;
   setIsProcessing: (isProcessing: boolean) => void;
+  resetConversation: any;
 }) {
   let [photo, setPhoto] = useState<string | null>(null);
   let [isDragging, setIsDragging] = useState(false);
   let [text, setText] = useState("");
+  let [showCaptcha, setShowCaptcha] = useState(false);
+
   function send(text: string, token: any) {
     // check value
     if (text == "") {
@@ -73,7 +77,36 @@ export default function Text({
       )}
       <div className="flex flex-row items-center relative gap-2 w-full">
         {/*photo */}
-
+        <button
+          className="relative h-[5vh] w-[5vh] rounded-full bg-gradient-to-br from-turing-blue to-turing-purple shadow-lg flex items-center justify-center cursor-pointer text-sm transition duration-200 outline-none hover:from-turing-purple hover:to-turing-blue"
+          onClick={() => {
+            if (!showCaptcha) {
+              setShowCaptcha(true);
+            }
+          }}
+          disabled={showCaptcha}
+        >
+          <i className="fas fa-broom text-white"></i>
+        </button>
+        {showCaptcha && (
+          <Turnstile
+            sitekey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY as string}
+            onVerify={(token) => {
+              resetConversation(token);
+            }}
+            theme="dark"
+            size="normal"
+            onExpire={() => {
+              setIsProcessing(false);
+            }}
+            onError={() => {
+              setIsProcessing(false);
+            }}
+            onLoad={() => {
+              // @ts-ignore
+            }}
+          />
+        )}
         {/*input */}
         <textarea
           className="w-[75.5vw] h-[5vh] rounded-md resize-none bg-gray-500 bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-30 border border-gray-100/[.2] text-white placeholder-gray-100/[.5] focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent px-2 py-1"

@@ -193,7 +193,8 @@ export default function Chat() {
     let seconds = date.getSeconds();
     return `${hours}:${minutes}:${seconds}`;
   }
-  async function resetConversation() {
+  async function resetConversation(token: string | null) {
+    if (!token) return alert("Please complete the captcha");
     let res = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/conversation/alan-${model}`,
       {
@@ -201,6 +202,7 @@ export default function Chat() {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${profile.access_token}`,
+          "x-captcha-token": token,
         },
         body: JSON.stringify({
           conversationId: `alan-${model}-${profile.user_metadata?.sub}`,
@@ -361,6 +363,7 @@ export default function Chat() {
             speechToTextModel={speechToTextModel}
             isProcessing={isProcessing}
             setIsProcessing={setIsProcessing}
+            resetConversation={resetConversation}
           />
           <footer className="text-sm text-gray-100/[.75] ">
             Service powered by{" "}
