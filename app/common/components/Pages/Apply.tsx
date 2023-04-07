@@ -33,6 +33,10 @@ export default function ApplyPage() {
     });
     let discordConnections = await res.json();
     console.log(discordConnections);
+    if (discordConnections.message === "401: Unauthorized") {
+      await supabase.auth.signOut();
+      router.push("/login");
+    }
     return discordConnections;
   }
   async function apply() {
@@ -52,6 +56,7 @@ export default function ApplyPage() {
       }),
     });
     let d = await res.json();
+    console.log(d);
     if (!d.success) return alert("Please verify you are not a robot");
     let { data, error } = await supabase
       .from("alan_testers")
