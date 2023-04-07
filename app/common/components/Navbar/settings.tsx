@@ -182,7 +182,7 @@ const models = [
     name: "GPT-4",
     value: "gpt4",
     developer: "OpenAI",
-    disabled: true,
+    disabled: false,
   },
   {
     name: "GPT-3",
