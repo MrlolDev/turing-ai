@@ -174,7 +174,6 @@ export default function Text({
           <Turnstile
             sitekey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY as string}
             onVerify={(token) => {
-              console.log("updated token", token);
               send(text, token);
             }}
             theme="dark"
