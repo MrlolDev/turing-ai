@@ -7,6 +7,7 @@ export const metadata = {
   description:
     "Alan AI is a free, open-source, and extensible a new way to use LLM with internet access, i",
   keywords: ["Next.js", "React", "JavaScript"],
+  theme-color: "#62c0c9"
   authors: [{ name: "Turing AI", url: "https://turingai.tech" }],
   robots: {
     index: true,
