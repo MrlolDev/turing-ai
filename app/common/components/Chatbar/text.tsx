@@ -26,8 +26,8 @@ export default function Text({
     }
 
     // send message
-    setPhoto(null);
     sendMsg(text, token, photo);
+    setPhoto(null);
   }
 
   function onDragEnter() {
