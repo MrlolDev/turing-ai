@@ -19,14 +19,14 @@ export default function Text({
   let [text, setText] = useState("");
   //let [showCaptcha, setShowCaptcha] = useState(false);
 
-  function send(text: string, token: any) {
+  async function send(text: string, token: any) {
     // check value
     if (text == "") {
       return;
     }
 
     // send message
-    sendMsg(text, token, photo);
+    await sendMsg(text, token, photo);
     setPhoto(null);
   }
 

@@ -19,12 +19,11 @@ export default function Chatbar({
   resetConversation: any;
 }) {
   function getres(text: string, token: any, photo?: any) {
-    console.log(photo);
     if (!token) {
       setIsProcessing(false);
       return alert("Please verify you are not a robot");
     }
-
+    console.log(photo);
     addMessage(text, token, photo);
   }
 

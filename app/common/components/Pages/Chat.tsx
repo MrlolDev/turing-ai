@@ -95,9 +95,9 @@ export default function Chat() {
   }
 
   async function addMessage(msg: any, token: string, photo?: any) {
+    console.log(photo);
     setLastPhoto({ img: photo, description: null });
-    console.log(photo, lastPhoto);
-
+    console.log(lastPhoto);
     messages.push({
       id: uuidv4(),
       text: msg,
