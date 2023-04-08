@@ -10,6 +10,8 @@ export default function Chatbar({
   isProcessing,
   setIsProcessing,
   resetConversation,
+  setLastPhoto,
+  lastPhoto,
 }: {
   addMessage: (text: string, token: any, photo?: any) => void;
   mode: any;
@@ -17,14 +19,15 @@ export default function Chatbar({
   isProcessing: boolean;
   setIsProcessing: (isProcessing: boolean) => void;
   resetConversation: any;
+  setLastPhoto: any;
+  lastPhoto: any;
 }) {
-  function getres(text: string, token: any, photo?: any) {
+  async function getres(text: string, token: any, photo?: any) {
     if (!token) {
       setIsProcessing(false);
       return alert("Please verify you are not a robot");
     }
-    console.log(photo);
-    addMessage(text, token, photo);
+    await addMessage(text, token, photo);
   }
 
   return (

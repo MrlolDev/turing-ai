@@ -95,9 +95,10 @@ export default function Chat() {
   }
 
   async function addMessage(msg: any, token: string, photo?: any) {
-    console.log(photo);
-    setLastPhoto({ img: photo, description: null });
-    console.log(lastPhoto);
+    setLastPhoto({
+      img: photo,
+      description: null,
+    });
     messages.push({
       id: uuidv4(),
       text: msg,
@@ -356,13 +357,15 @@ export default function Chat() {
 
         <div className="fixed bottom-2 flex flex-col items-center mx-10">
           <Chatbar
-            addMessage={(msg, photo) => {
-              addMessage(msg, photo);
+            addMessage={(msg, token, photo?) => {
+              addMessage(msg, token, photo);
             }}
             mode={mode}
             speechToTextModel={speechToTextModel}
             isProcessing={isProcessing}
             setIsProcessing={setIsProcessing}
+            setLastPhoto={setLastPhoto}
+            lastPhoto={lastPhoto}
             resetConversation={resetConversation}
           />
           <footer className="text-sm text-gray-100/[.75] ">
