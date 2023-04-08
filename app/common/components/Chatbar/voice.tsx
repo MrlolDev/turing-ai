@@ -72,7 +72,6 @@ export default function Voice({
       }),
     });
     let response = await res.json();
-    console.log(response);
 
     sendMsg(response.text, token, null);
     setRecording(null);
@@ -125,7 +124,6 @@ export default function Voice({
         <Turnstile
           sitekey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY as string}
           onVerify={(token) => {
-            console.log("updated token", token);
             send(token);
           }}
           theme="dark"

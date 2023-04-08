@@ -153,7 +153,6 @@ export default function Chat() {
         });
       }
 
-      console.log(data);
       let contentHtml = "";
       if (data.response) {
         contentHtml = md().render(data.response);

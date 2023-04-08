@@ -70,7 +70,6 @@ const useUser = (
           .eq("id", profile.user_metadata?.sub)
           .single();
         let testerData: any = {};
-        console.log(tester);
         if (tester.data) {
           testerData.apply = true;
           testerData.approved = tester.data.isTester;

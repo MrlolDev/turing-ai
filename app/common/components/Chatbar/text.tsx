@@ -31,18 +31,13 @@ export default function Text({
   }
 
   function onDragEnter() {
-    console.log("drag enter");
     setIsDragging(true);
   }
   function onDragLeave() {
     setIsDragging(false);
-    console.log("drag leave");
   }
-  function onDragOver() {
-    console.log("drag over");
-  }
+  function onDragOver() {}
   function onDrop(e: any) {
-    console.log("drop");
     // disable default behavior
     e.preventDefault();
     setIsDragging(false);
