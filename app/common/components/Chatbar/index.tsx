@@ -12,6 +12,8 @@ export default function Chatbar({
   resetConversation,
   setLastPhoto,
   lastPhoto,
+  messages,
+  userId,
 }: {
   addMessage: (text: string, token: any, photo?: any) => void;
   mode: any;
@@ -21,6 +23,8 @@ export default function Chatbar({
   resetConversation: any;
   setLastPhoto: any;
   lastPhoto: any;
+  messages: any;
+  userId: string;
 }) {
   async function getres(text: string, token: any, photo?: any) {
     if (!token) {
@@ -38,6 +42,8 @@ export default function Chatbar({
           isProcessing={isProcessing}
           setIsProcessing={setIsProcessing}
           resetConversation={resetConversation}
+          messages={messages}
+          userId={userId}
         />
       ) : (
         <Voice

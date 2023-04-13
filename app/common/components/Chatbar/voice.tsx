@@ -17,6 +17,7 @@ export default function Voice({
   const [recording, setRecording] = useState<any>(null);
   const [audioData, setAudioData] = useState<any>([]);
   const { status, profile } = useUser(true);
+  let [text, setText] = useState("");
   let [photo, setPhoto] = useState<string | null>(null);
 
   const handleRecording = async () => {
@@ -46,6 +47,8 @@ export default function Voice({
       setRecording("finished");
     }
   };
+  let [showCaptcha, setShowCaptcha] = useState(false);
+
   async function send(token: any) {
     //  get transcription
     // array buffer to base64

@@ -365,7 +365,9 @@ export default function Chat() {
             setIsProcessing={setIsProcessing}
             setLastPhoto={setLastPhoto}
             lastPhoto={lastPhoto}
+            messages={messages}
             resetConversation={resetConversation}
+            userId={profile.id}
           />
           <footer className="text-sm text-gray-100/[.75] ">
             Service powered by{" "}
