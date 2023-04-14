@@ -221,6 +221,12 @@ const imageGenerators = [
     disabled: false,
   },
   {
+    name: "Kandinsky 2.1",
+    value: "kandinsky",
+    developer: "AI Forever",
+    disabled: false,
+  },
+  {
     name: "Dall-e 2",
     value: "dall-e-2",
     developer: "OpenAI",
