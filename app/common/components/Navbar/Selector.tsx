@@ -16,7 +16,7 @@ export default function Selector({
   setValue: (value: string) => void;
 }) {
   const [query, setQuery] = useState("");
-
+  options = options.filter((x) => !x.disabled);
   return (
     <Listbox value={value} onChange={setValue}>
       <div className="relative z-40 w-[85vw] md:w-[22vw]">
