@@ -42,7 +42,7 @@ export default function SharePage({ id }: { id: String }) {
         }
       });
   }
-
+  function contextMenu(e: any, message: any) {}
   const messagesEndRef = useRef(null);
   function scrollToBottom() {
     // @ts-ignore
@@ -58,7 +58,11 @@ export default function SharePage({ id }: { id: String }) {
         {/* messages div */}
         <div className="flex flex-col gap-2 h-full w-full min-h-[70vh] max-h-[80vh] py-2 overflow-y-auto list-none overflow-x-none pr-2">
           {messages.map((message) => (
-            <Message key={message.id} message={message} />
+            <Message
+              key={message.id}
+              message={message}
+              contextMenu={() => {}}
+            />
           ))}
           <div ref={messagesEndRef} />
         </div>
