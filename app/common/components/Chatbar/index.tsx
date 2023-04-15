@@ -15,7 +15,7 @@ export default function Chatbar({
   messages,
   userId,
 }: {
-  addMessage: (text: string, token: any, photo?: any) => void;
+  addMessage: (text: string, token: any, type: any, photo?: any) => void;
   mode: any;
   speechToTextModel: any;
   isProcessing: boolean;
@@ -26,12 +26,12 @@ export default function Chatbar({
   messages: any;
   userId: string;
 }) {
-  async function getres(text: string, token: any, photo?: any) {
+  async function getres(text: string, token: any, type?: any, photo?: any) {
     if (!token) {
       setIsProcessing(false);
       return alert("Please verify you are not a robot");
     }
-    await addMessage(text, token, photo);
+    await addMessage(text, token, type, photo);
   }
 
   return (

@@ -21,6 +21,8 @@ export default function Settings({
   setAllowNsfw,
   speechToTextModel,
   setSpeechToTextModel,
+  AutoHearMessages,
+  setAutoHearMessages,
 }: {
   model: any;
   setModel: any;
@@ -42,6 +44,8 @@ export default function Settings({
   setAllowNsfw: any;
   speechToTextModel: any;
   setSpeechToTextModel: any;
+  AutoHearMessages: any;
+  setAutoHearMessages: any;
 }) {
   const settingsSections = [
     {
@@ -109,11 +113,11 @@ export default function Settings({
       disabled: false,
     },
     {
-      name: "Code runners",
-      array: codeRunners,
-      set: setCodeRunner,
-      get: codeRunner,
-      disabled: true,
+      name: "Auto hear messages",
+      array: autoHearMessages,
+      set: setAutoHearMessages,
+      get: AutoHearMessages,
+      disabled: false,
     },
   ];
   return (
@@ -308,9 +312,9 @@ const videoGenerators = [
 ];
 const audioGenerators = [
   {
-    name: "Riffussion",
-    value: "riffussion",
-    developer: "Riffussion",
+    name: "Riffusion",
+    value: "riffusion",
+    developer: "Riffusion",
     disabled: false,
   },
   {
@@ -353,6 +357,23 @@ const speechToTextModels = [
     value: "gladia",
     developer: "Gladia",
     disabled: true,
+  },
+];
+let autoHearMessages = [
+  {
+    name: "Yes with voice input",
+    value: "voice",
+    disabled: false,
+  },
+  {
+    name: "Yes with text input",
+    value: "text",
+    disabled: false,
+  },
+  {
+    name: "No",
+    value: false,
+    disabled: false,
   },
 ];
 

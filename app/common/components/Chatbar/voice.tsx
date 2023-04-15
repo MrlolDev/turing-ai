@@ -9,7 +9,7 @@ export default function Voice({
   isProcessing,
   setIsProcessing,
 }: {
-  sendMsg: (text: string, token: any, photo?: any) => void;
+  sendMsg: (text: string, token: any, type: any, photo?: any) => void;
   speechToTextModel: any;
   isProcessing: boolean;
   setIsProcessing: (isProcessing: boolean) => void;
@@ -60,6 +60,22 @@ export default function Voice({
       alert("Please verify that you are not a robot :)");
       return;
     }
+
+    console.log(text);
+    sendMsg(text, token, "voice", null);
+  }
+  function blobToBase64(blob: any) {
+    return new Promise((resolve, _) => {
+      const reader = new FileReader();
+      reader.onloadend = () => resolve(reader.result);
+      reader.readAsDataURL(blob);
+    });
+  }
+  async function getText(token: any) {
+    let base64 = await blobToBase64(
+      new Blob([audioData], { type: "audio/mp3; codecs=opus" })
+    );
+    console.log(base64);
     let res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/transcript`, {
       method: "POST",
       headers: {
@@ -68,24 +84,14 @@ export default function Voice({
         "x-captcha-token": token,
       },
       body: JSON.stringify({
-        file: await blobToBase64(
-          new Blob([audioData], { type: "audio/mp3; codecs=opus" })
-        ),
+        file: base64,
         ai: speechToTextModel,
       }),
     });
-    let response = await res.json();
-
-    sendMsg(response.text, token, null);
     setRecording(null);
     setAudioData([]);
-  }
-  function blobToBase64(blob: any) {
-    return new Promise((resolve, _) => {
-      const reader = new FileReader();
-      reader.onloadend = () => resolve(reader.result);
-      reader.readAsDataURL(blob);
-    });
+    let response = await res.json();
+    setText(response.text);
   }
   return (
     <div className="flex flex-row items-center relative gap-2">
@@ -114,8 +120,8 @@ export default function Voice({
         <button
           className="relative h-[8vh] w-[8vh] rounded-full bg-gradient-to-br from-turing-blue to-turing-purple shadow-lg flex items-center justify-center cursor-pointer text-xl transition duration-200 outline-none hover:from-turing-purple hover:to-turing-blue"
           onClick={() => {
-            if (!isProcessing) {
-              setIsProcessing(true);
+            if (!showCaptcha && !isProcessing) {
+              setShowCaptcha(true);
             }
           }}
           disabled={isProcessing}
@@ -139,6 +145,24 @@ export default function Voice({
           }}
           onLoad={() => {
             // @ts-ignore
+          }}
+        />
+      )}
+      {showCaptcha && (
+        <Turnstile
+          sitekey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY as string}
+          onVerify={(token) => {
+            getText(token);
+            setShowCaptcha(false);
+            setIsProcessing(true);
+          }}
+          theme="dark"
+          size="normal"
+          onExpire={() => {
+            setShowCaptcha(false);
+          }}
+          onError={() => {
+            setShowCaptcha(false);
           }}
         />
       )}

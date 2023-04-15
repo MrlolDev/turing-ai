@@ -1,5 +1,5 @@
 import { Fragment, useState } from "react";
-import { Combobox, Transition } from "@headlessui/react";
+import { Listbox, Transition } from "@headlessui/react";
 
 export default function Selector({
   options,
@@ -17,38 +17,17 @@ export default function Selector({
 }) {
   const [query, setQuery] = useState("");
 
-  const filteredOptions =
-    query === ""
-      ? options.filter((option) => !option.disabled)
-      : options.filter(
-          (option) =>
-            option.name
-              .toLowerCase()
-              .replace(/\s+/g, "")
-              .includes(query.toLowerCase().replace(/\s+/g, "")) &&
-            !option.disabled
-        );
-
   return (
-    <Combobox value={value} onChange={setValue}>
+    <Listbox value={value} onChange={setValue}>
       <div className="relative z-40 w-[85vw] md:w-[22vw]">
         <div className="relative w-full cursor-default overflow-hidden rounded-lg text-left sm:text-sm z-40">
-          <Combobox.Input
-            className="w-full border-none z-40 py-2 pl-3 pr-10 text-sm leading-5  bg-gray-500 bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-30 border border-gray-100/[.2] outline-none"
-            displayValue={(value: any) =>
-              options.find((x) => x.value == value) !== undefined
-                ? // @ts-ignore
-                  options.find((x) => x.value == value).name
-                : ""
-            }
-            onChange={(event) => setQuery(event.target.value)}
-          />
-          <Combobox.Button className="absolute inset-y-0 right-0 flex items-center pr-2">
+          <Listbox.Button className="w-full border-none z-40 flex flex-row items-center justify-between py-2 px-3 text-sm leading-5  bg-gray-500 bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-30 border border-gray-100/[.2] outline-none">
+            <p>{options.find((x) => x.value == value)?.name}</p>
             <i
               className=" text-gray-400 fas fa-chevron-down"
               aria-hidden="true"
             />
-          </Combobox.Button>
+          </Listbox.Button>
         </div>
         <Transition
           as={Fragment}
@@ -57,14 +36,14 @@ export default function Selector({
           leaveTo="opacity-0"
           afterLeave={() => setQuery("")}
         >
-          <Combobox.Options className=" z-[100] mt-2 max-h-60 w-full overflow-auto rounded-md py-1 text-base focus:outline-none sm:text-sm bg-gray-500 bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-60 border border-gray-100/[.2] items-center flex flex-col">
-            {filteredOptions.length === 0 && query !== "" ? (
+          <Listbox.Options className=" z-[100] mt-2 max-h-60 w-full overflow-auto rounded-md py-1 text-base focus:outline-none sm:text-sm bg-gray-500 bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-60 border border-gray-100/[.2] items-center flex flex-col">
+            {options.length === 0 && query !== "" ? (
               <div className="relative cursor-default select-none py-2 px-4 text-white">
                 Nothing found.
               </div>
             ) : (
-              filteredOptions.map((option, i) => (
-                <Combobox.Option
+              options.map((option, i) => (
+                <Listbox.Option
                   key={i}
                   className={({ active }) =>
                     `relative cursor-default w-[95%] px-2 rounded-md flex flex-row items-center gap-2 select-none py-2 text-left ${
@@ -100,12 +79,12 @@ export default function Selector({
                       </span>
                     </>
                   )}
-                </Combobox.Option>
+                </Listbox.Option>
               ))
             )}
-          </Combobox.Options>
+          </Listbox.Options>
         </Transition>
       </div>
-    </Combobox>
+    </Listbox>
   );
 }

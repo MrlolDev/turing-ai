@@ -29,6 +29,8 @@ export default function Navbar({
   setAllowNsfw,
   speechToTextModel,
   setSpeechToTextModel,
+  AutoHearMessages,
+  setAutoHearMessages,
 }: {
   resetConversation: any;
   mode: any;
@@ -53,6 +55,8 @@ export default function Navbar({
   setAllowNsfw: any;
   speechToTextModel: any;
   setSpeechToTextModel: any;
+  AutoHearMessages: any;
+  setAutoHearMessages: any;
 }) {
   let sideBar = useRef(null);
   let [showCaptcha, setShowCaptcha] = useState(false);
@@ -146,6 +150,8 @@ export default function Navbar({
             setAllowNsfw={setAllowNsfw}
             speechToTextModel={speechToTextModel}
             setSpeechToTextModel={setSpeechToTextModel}
+            AutoHearMessages={AutoHearMessages}
+            setAutoHearMessages={setAutoHearMessages}
           />
         </div>
         <div className="h-fit flex flex-row items-center gap-2 pt-2">

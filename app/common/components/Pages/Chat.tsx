@@ -14,6 +14,7 @@ import { useRouter } from "next/navigation";
 import ApplyPage from "./Apply";
 import WaitPage from "./Wait";
 import Message from "../Message";
+import ContextMenu from "../ContextMenu";
 
 export default function Chat() {
   const router = useRouter();
@@ -52,12 +53,28 @@ export default function Chat() {
     "speechToTextModel",
     "whisper"
   );
+  let [AutoHearMessages, setAutoHearMessages] = useLocalStorage(
+    "AutoHearMessages",
+    "voice"
+  );
+
   const [allowNsfw, setAllowNsfw] = useLocalStorage("allowNsfw", false);
   const { status, profile } = useUser(true);
   const [lastPhoto, setLastPhoto] = useState<{
     img: string;
     description?: string | null;
   } | null>(null);
+  let [ContextMenuData, setContextMenuData] = useState<{
+    x: number;
+    y: number;
+    show: boolean;
+    message: any;
+  }>({
+    x: 0,
+    y: 0,
+    show: false,
+    message: null,
+  });
 
   let [messages, setMessages] = useState<
     Array<{
@@ -66,15 +83,30 @@ export default function Chat() {
       sender: "User" | "AI" | "Error";
       time: string;
       data: {
-        photo?: string;
+        photo?: string | null;
         photoDescription?: string | null;
-        video?: string;
+        video?: string | null;
         videoDescription?: string | null;
-        audio?: string;
+        audio?: string | null;
         audioDescription?: string | null;
       };
     }>
-  >([]);
+  >([
+    {
+      id: uuidv4(),
+      text: "Hello there! How can I assist you today? 😊",
+      sender: "AI",
+      time: formatTime(Date.now()),
+      data: {
+        photo: null,
+        photoDescription: null,
+        video: null,
+        videoDescription: null,
+        audio: null,
+        audioDescription: null,
+      },
+    },
+  ]);
   const messagesEndRef = useRef(null);
 
   useEffect(() => {
@@ -95,11 +127,15 @@ export default function Chat() {
     return <WaitPage />;
   }
 
-  async function addMessage(msg: any, token: string, photo?: any) {
+  async function addMessage(msg: any, token: string, type: any, photo?: any) {
     setLastPhoto({
       img: photo,
       description: null,
     });
+    // wait for last photo to be set
+
+    console.log(lastPhoto);
+
     messages.push({
       id: uuidv4(),
       text: msg,
@@ -120,6 +156,7 @@ export default function Chat() {
       data: {},
     });
     setMessages([...messages]);
+    console.log(lastPhoto);
     let res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/alan/${model}`, {
       method: "POST",
       headers: {
@@ -132,7 +169,7 @@ export default function Chat() {
         userName: profile.user_metadata?.full_name,
         conversationId: `alan-${model}-${profile.user_metadata?.sub}`,
         searchEngine: searchEngine,
-        photo: lastPhoto ? lastPhoto.img : null,
+        photo: photo ? photo : lastPhoto ? lastPhoto.img : null,
         photoDescription: lastPhoto ? lastPhoto.description : null,
         imageGenerator: imageGenerator,
         nsfwFilter: allowNsfw,
@@ -141,14 +178,18 @@ export default function Chat() {
         imageModificator: imageModificator,
       }),
     });
+    console.log(res);
     let data = await res.json();
+    if (AutoHearMessages && type == AutoHearMessages) {
+      await HearMsg(data.response);
+    }
     messages.pop();
     setMessages([...messages]);
     if (!data.error) {
       let photoResult;
       if (data.images) {
         photoResult = data.images[0];
-        setLastPhoto({
+        await setLastPhoto({
           img: photoResult,
           description: data.photoPrompt,
         });
@@ -173,6 +214,7 @@ export default function Chat() {
           audioDescription: data.audioPrompt,
         },
       });
+
       setMessages([...messages]);
     } else {
       messages.push({
@@ -214,6 +256,7 @@ export default function Chat() {
     if (!data.error) {
       alert("Conversation reset");
       setMessages([]);
+      setLastPhoto(null);
     } else {
       messages.push({
         id: uuidv4(),
@@ -225,7 +268,28 @@ export default function Chat() {
       setMessages([...messages]);
     }
   }
+  function contextMenu(e: any, message: any) {
+    e.preventDefault();
+    e.stopPropagation();
+    console.log("right click");
 
+    setContextMenuData({
+      show: true,
+      x: e.clientX,
+      y: e.clientY,
+      message: message,
+    });
+  }
+  async function HearMsg(msg: string) {
+    let url = `https://api.pawan.krd/tts?text=${encodeURIComponent(
+      msg
+    )}&voice=arnold`;
+    // url is the audio url
+    let res = await fetch(url);
+    let blob = await res.blob();
+    let audio = new Audio(URL.createObjectURL(blob));
+    audio.play();
+  }
   return (
     <>
       <Navbar
@@ -252,20 +316,79 @@ export default function Chat() {
         setAllowNsfw={setAllowNsfw}
         speechToTextModel={speechToTextModel}
         setSpeechToTextModel={setSpeechToTextModel}
+        AutoHearMessages={AutoHearMessages}
+        setAutoHearMessages={setAutoHearMessages}
       />
       <main className="min-h-[86vh] relative top-[14vh] w-full flex flex-col items-center  ">
         {/* messages div */}
+        <ContextMenu
+          show={ContextMenuData.show}
+          setShow={(show) => {
+            setContextMenuData({ ...ContextMenuData, show: show });
+          }}
+          position={{ x: ContextMenuData.x, y: ContextMenuData.y }}
+          sections={[
+            {
+              items: [
+                {
+                  content: "Copy",
+                  onClick: () => {
+                    navigator.clipboard.writeText(
+                      ContextMenuData.message
+                        ? ContextMenuData.message.text
+                        : ""
+                    );
+                    alert("Copied to clipboard");
+                  },
+                },
+                {
+                  content: "Hear message",
+                  onClick: async () => {
+                    await HearMsg(
+                      ContextMenuData.message
+                        ? ContextMenuData.message.text
+                        : ""
+                    );
+                  },
+                },
+                {
+                  content: "Download audio",
+                  onClick: async () => {
+                    let url = `https://api.pawan.krd/tts?text=${encodeURIComponent(
+                      ContextMenuData.message
+                        ? ContextMenuData.message.text
+                        : ""
+                    )}&voice=arnold`;
+                    // url is the audio url
+                    let res = await fetch(url);
+                    let blob = await res.blob();
+                    let audio = new Audio(URL.createObjectURL(blob));
+                    audio.play();
+                    let a = document.createElement("a");
+                    a.href = URL.createObjectURL(blob);
+                    a.download = "audio.mp3";
+                    a.click();
+                  },
+                },
+              ],
+            },
+          ]}
+        />
         <div className="flex flex-col gap-2 h-full w-full min-h-[70vh] max-h-[60vh] py-2 overflow-y-auto list-none overflow-x-none pr-2">
           {messages.map((message) => (
-            <Message key={message.id} message={message} />
+            <Message
+              key={message.id}
+              message={message}
+              contextMenu={contextMenu}
+            />
           ))}
           <div ref={messagesEndRef} />
         </div>
 
         <div className="fixed bottom-2 flex flex-col items-center mx-10">
           <Chatbar
-            addMessage={(msg, token, photo?) => {
-              addMessage(msg, token, photo);
+            addMessage={(msg, token, type, photo?) => {
+              addMessage(msg, token, type, photo);
             }}
             mode={mode}
             speechToTextModel={speechToTextModel}

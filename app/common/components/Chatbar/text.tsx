@@ -12,7 +12,7 @@ export default function Text({
   messages,
   userId,
 }: {
-  sendMsg: (text: string, token: any, photo?: any) => void;
+  sendMsg: (text: string, token: any, type: any, photo?: any) => void;
   isProcessing: boolean;
   setIsProcessing: (isProcessing: boolean) => void;
   resetConversation: any;
@@ -31,7 +31,7 @@ export default function Text({
     }
 
     // send message
-    await sendMsg(text, token, photo);
+    await sendMsg(text, token, "text", photo);
     setPhoto(null);
   }
 
