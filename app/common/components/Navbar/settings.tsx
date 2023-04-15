@@ -1,3 +1,5 @@
+import Selector from "./Selector";
+
 export default function Settings({
   model,
   setModel,
@@ -118,12 +120,13 @@ export default function Settings({
     <>
       {settingsSections.map((section) => (
         <div
-          className="flex flex-col items-start gap-2 mt-1 ml-1"
+          className="flex flex-col items-start gap-2 mt-1 ml-1 pr-2"
           key={section.name}
         >
           <p className="text-gray-300 font-bold">
             {section.name} {section.disabled && "(not available)"}
           </p>
+          {/* 
           <select
             className="w-fit max-w-[80vw] md:w-[20vw] rounded-md bg-gray-500 bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-30 border border-gray-100/[.2] text-white placeholder-gray-100/[.5] focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent px-2 py-1  outline-none"
             value={section.get}
@@ -138,6 +141,12 @@ export default function Settings({
               </option>
             ))}
           </select>
+          */}
+          <Selector
+            options={section.array}
+            value={section.get}
+            setValue={section.set}
+          />
         </div>
       ))}
     </>

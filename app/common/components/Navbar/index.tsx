@@ -102,107 +102,105 @@ export default function Navbar({
       {/*side bar */}
       <nav
         ref={sideBar}
-        className="hidden w-[95vw] md:w-[30vw] h-[95vh] fixed right-[2.5vw] top-[2.5vh] z-50 flex flex-col justify-between bg-gray-500 rounded-md bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-30 py-1 px-2 border border-gray-100/[.25]"
+        className="hidden w-[98vw] md:w-fit h-[95vh] fixed right-[1vw] top-[2.5vh] z-50 flex flex-col justify-between bg-gray-500 rounded-md bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-30 py-1 px-2 border border-gray-100/[.25]"
       >
-        <div>
-          <div className="flex flex-row items-center justify-between gap-2">
-            <Image
-              src="/icons/neon.png"
-              alt="Alan AI Logo"
-              width={50}
-              height={50}
-              className="rounded-full"
-            />
-            <div
-              onClick={() => {
-                // @ts-ignore
-                sideBar.current.classList.toggle("hidden");
-              }}
-              className="cursor-pointer"
-            >
-              <i className="fas fa-times text-gray-300 hover:text-white transition duration-300 text-xl"></i>
-            </div>
+        <div className="flex flex-row items-center justify-between gap-2">
+          <Image
+            src="/icons/neon.png"
+            alt="Alan AI Logo"
+            width={50}
+            height={50}
+            className="rounded-full"
+          />
+          <div
+            onClick={() => {
+              // @ts-ignore
+              sideBar.current.classList.toggle("hidden");
+            }}
+            className="cursor-pointer"
+          >
+            <i className="fas fa-times text-gray-300 hover:text-white transition duration-300 text-xl"></i>
           </div>
-          {/* settings */}
-          <div className="flex flex-col gap-2 items-start max-h-[75vh] py-2 overflow-y-auto">
-            <h3 className="text-gray-300 font-bold text-xl">Settings</h3>
-            <Settings
-              model={model}
-              setModel={setModel}
-              searchEngine={searchEngine}
-              setSearchEngine={setSearchEngine}
-              imageGenerator={imageGenerator}
-              setImageGenerator={setImageGenerator}
-              audioGenerator={audioGenerator}
-              setAudioGenerator={setAudioGenerator}
-              videoGenerator={videoGenerator}
-              setVideoGenerator={setVideoGenerator}
-              imageModificator={imageModificator}
-              setImageModificator={setImageModificator}
-              imageReader={imageReader}
-              setImageReader={setImageReader}
-              codeRunner={codeRunner}
-              setCodeRunner={setCodeRunner}
-              allowNsfw={allowNsfw}
-              setAllowNsfw={setAllowNsfw}
-              speechToTextModel={speechToTextModel}
-              setSpeechToTextModel={setSpeechToTextModel}
-            />
-          </div>
-          <div className="h-fit flex flex-row items-center gap-2 pt-2">
-            <button
-              className="relative px-2 py-1 gap-2 rounded-md bg-gradient-to-br from-turing-blue to-turing-purple shadow-lg flex items-center justify-center cursor-pointer text-sm transition duration-200 outline-none hover:from-turing-purple hover:to-turing-blue"
-              onClick={() => {
-                setShowCaptcha(true);
-              }}
-            >
-              <i className="fas fa-broom text-white"></i>
-              Reset conversation
-            </button>
-            {showCaptcha && (
-              <Turnstile
-                sitekey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY as string}
-                onVerify={(token) => {
-                  resetConversation(token);
-                }}
-                theme="dark"
-                size="normal"
-                onExpire={() => {
-                  setShowCaptcha(false);
-                }}
-                onError={() => {
-                  setShowCaptcha(false);
-                }}
-                onLoad={() => {
-                  // @ts-ignore
-                }}
-              />
-            )}
-            <button
-              onClick={() => {
-                supabase.auth.signOut();
-                localStorage.clear();
-                window.location.reload();
-              }}
-              className="hover:text-red-300 transition duration-300 outline-none"
-            >
-              Log out
-            </button>
-          </div>
-          {/* links */}
-          <ul className="flex flex-row items-center gap-2 right-0">
-            {socials.map((social) => (
-              <li
-                key={social.name}
-                className="text-gray-300 hover:text-white transition duration-300 text-xl"
-              >
-                <a href={social.link} target="_blank" rel="noreferrer">
-                  <i className={social.icon} aria-hidden="true"></i>
-                </a>
-              </li>
-            ))}
-          </ul>
         </div>
+        {/* settings */}
+        <div className="flex flex-col gap-2 items-start max-h-[75vh] py-2 overflow-y-auto">
+          <h3 className="text-gray-300 font-bold text-xl">Settings</h3>
+          <Settings
+            model={model}
+            setModel={setModel}
+            searchEngine={searchEngine}
+            setSearchEngine={setSearchEngine}
+            imageGenerator={imageGenerator}
+            setImageGenerator={setImageGenerator}
+            audioGenerator={audioGenerator}
+            setAudioGenerator={setAudioGenerator}
+            videoGenerator={videoGenerator}
+            setVideoGenerator={setVideoGenerator}
+            imageModificator={imageModificator}
+            setImageModificator={setImageModificator}
+            imageReader={imageReader}
+            setImageReader={setImageReader}
+            codeRunner={codeRunner}
+            setCodeRunner={setCodeRunner}
+            allowNsfw={allowNsfw}
+            setAllowNsfw={setAllowNsfw}
+            speechToTextModel={speechToTextModel}
+            setSpeechToTextModel={setSpeechToTextModel}
+          />
+        </div>
+        <div className="h-fit flex flex-row items-center gap-2 pt-2">
+          <button
+            className="relative px-2 py-1 gap-2 rounded-md bg-gradient-to-br from-turing-blue to-turing-purple shadow-lg flex items-center justify-center cursor-pointer text-sm transition duration-200 outline-none hover:from-turing-purple hover:to-turing-blue"
+            onClick={() => {
+              setShowCaptcha(true);
+            }}
+          >
+            <i className="fas fa-broom text-white"></i>
+            Reset conversation
+          </button>
+          {showCaptcha && (
+            <Turnstile
+              sitekey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY as string}
+              onVerify={(token) => {
+                resetConversation(token);
+              }}
+              theme="dark"
+              size="normal"
+              onExpire={() => {
+                setShowCaptcha(false);
+              }}
+              onError={() => {
+                setShowCaptcha(false);
+              }}
+              onLoad={() => {
+                // @ts-ignore
+              }}
+            />
+          )}
+          <button
+            onClick={() => {
+              supabase.auth.signOut();
+              localStorage.clear();
+              window.location.reload();
+            }}
+            className="hover:text-red-300 transition duration-300 outline-none"
+          >
+            Log out
+          </button>
+        </div>
+        {/* links */}
+        <ul className="flex flex-row items-center gap-2 right-0">
+          {socials.map((social) => (
+            <li
+              key={social.name}
+              className="text-gray-300 hover:text-white transition duration-300 text-xl"
+            >
+              <a href={social.link} target="_blank" rel="noreferrer">
+                <i className={social.icon} aria-hidden="true"></i>
+              </a>
+            </li>
+          ))}
+        </ul>
       </nav>
     </>
   );
