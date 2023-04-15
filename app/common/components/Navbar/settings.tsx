@@ -159,6 +159,11 @@ export default function Settings({
 
 const searchEngines: any = [
   {
+    name: "None",
+    value: "none",
+    disabled: false,
+  },
+  {
     name: "Google",
     value: "google",
     disabled: false,
@@ -228,6 +233,11 @@ const imageReaders = [
 ];
 const imageGenerators = [
   {
+    name: "None",
+    value: "none",
+    disabled: false,
+  },
+  {
     name: "Stable diffusion",
     value: "stable-diffusion",
     developer: "StabilityAI",
@@ -247,6 +257,11 @@ const imageGenerators = [
   },
 ];
 const imageModificators = [
+  {
+    name: "None",
+    value: "none",
+    disabled: false,
+  },
   {
     name: "ControlNet Normal",
     value: "controlnet",
@@ -298,6 +313,11 @@ const imageModificators = [
 ];
 const videoGenerators = [
   {
+    name: "None",
+    value: "none",
+    disabled: false,
+  },
+  {
     name: "damo-text-to-video",
     value: "damo-text-to-video",
     developer: "cjwbw",
@@ -311,6 +331,11 @@ const videoGenerators = [
   },
 ];
 const audioGenerators = [
+  {
+    name: "None",
+    value: "none",
+    disabled: false,
+  },
   {
     name: "Riffusion",
     value: "riffusion",
