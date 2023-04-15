@@ -32,9 +32,9 @@ export default function Selector({
   return (
     <Combobox value={value} onChange={setValue}>
       <div className="relative z-40 w-[85vw] md:w-[22vw]">
-        <div className="relative w-full cursor-default overflow-hidden rounded-lg bg-gray-500 bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-30 border border-gray-100/[.2] text-left sm:text-sm z-40">
+        <div className="relative w-full cursor-default overflow-hidden rounded-lg text-left sm:text-sm z-40">
           <Combobox.Input
-            className="w-full border-none z-40 py-2 pl-3 pr-10 text-sm leading-5  bg-gray-500 bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-60 border border-gray-100/[.2] outline-none"
+            className="w-full border-none z-40 py-2 pl-3 pr-10 text-sm leading-5  bg-gray-500 bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-30 border border-gray-100/[.2] outline-none"
             displayValue={(value: any) =>
               options.find((x) => x.value == value) !== undefined
                 ? // @ts-ignore
@@ -45,7 +45,7 @@ export default function Selector({
           />
           <Combobox.Button className="absolute inset-y-0 right-0 flex items-center pr-2">
             <i
-              className="h-5 w-5 text-gray-400 fas fa-chevron-down"
+              className=" text-gray-400 fas fa-chevron-down"
               aria-hidden="true"
             />
           </Combobox.Button>
