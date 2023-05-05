@@ -48,7 +48,7 @@ export default function ApplyPage() {
     //captchaRef.current.execute();
 
     if (!token) return alert("Please verify you are not a robot");
-    let res = await fetch(process.env.NEXT_PUBLIC_API_URL + "/hcaptcha", {
+    let res = await fetch(process.env.NEXT_PUBLIC_API_URL + "/other/hcaptcha", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

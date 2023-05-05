@@ -76,18 +76,21 @@ export default function Voice({
       new Blob([audioData], { type: "audio/mp3; codecs=opus" })
     );
     console.log(base64);
-    let res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/transcript`, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${profile.access_token}`,
-        "Content-Type": "application/json",
-        "x-captcha-token": token,
-      },
-      body: JSON.stringify({
-        file: base64,
-        ai: speechToTextModel,
-      }),
-    });
+    let res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/audio/transcript`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${profile.access_token}`,
+          "Content-Type": "application/json",
+          "x-captcha-token": token,
+        },
+        body: JSON.stringify({
+          file: base64,
+          ai: speechToTextModel,
+        }),
+      }
+    );
     setRecording(null);
     setAudioData([]);
     let response = await res.json();

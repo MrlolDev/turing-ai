@@ -15,6 +15,7 @@ import ApplyPage from "./Apply";
 import WaitPage from "./Wait";
 import Message from "../Message";
 import ContextMenu from "../ContextMenu";
+import axios from "axios";
 
 export default function Chat() {
   const router = useRouter();
@@ -157,62 +158,75 @@ export default function Chat() {
     });
     setMessages([...messages]);
     console.log(lastPhoto);
-    let res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/alan/${model}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${profile.access_token}`,
-        "x-captcha-token": token,
-      },
-      body: JSON.stringify({
-        message: msg,
-        userName: profile.user_metadata?.full_name,
-        conversationId: `alan-${model}-${profile.user_metadata?.sub}`,
-        searchEngine: searchEngine,
-        photo: photo ? photo : lastPhoto ? lastPhoto.img : null,
-        photoDescription: lastPhoto ? lastPhoto.description : null,
-        imageGenerator: imageGenerator,
-        nsfwFilter: allowNsfw,
-        videoGenerator: videoGenerator,
-        audioGenerator: audioGenerator,
-        imageModificator: imageModificator,
-      }),
-    });
-    console.log(res);
-    let data = await res.json();
+    let res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/text/alan/${model}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${profile.access_token}`,
+          "x-captcha-token": token,
+        },
+        body: JSON.stringify({
+          message: msg,
+          userName: profile.user_metadata?.full_name,
+          conversationId: `alan-${model}-${profile.user_metadata?.sub}`,
+          searchEngine: searchEngine,
+          photo: photo ? photo : lastPhoto ? lastPhoto.img : null,
+          photoDescription: lastPhoto ? lastPhoto.description : null,
+          imageGenerator: imageGenerator,
+          nsfwFilter: allowNsfw,
+          videoGenerator: videoGenerator,
+          audioGenerator: audioGenerator,
+          imageModificator: imageModificator,
+        }),
+      }
+    );
+    let data: any = await res.text();
+    let lastData = data.split("},\n\n").filter((x: any) => x != "");
+    lastData = lastData[lastData.length - 1] + "}";
+    data = JSON.parse(lastData);
     if (AutoHearMessages && type == AutoHearMessages) {
-      await HearMsg(data.response);
+      await HearMsg(data.result);
     }
     messages.pop();
     setMessages([...messages]);
     if (!data.error) {
       let photoResult;
-      if (data.images) {
-        photoResult = data.images[0];
+      if (data.results && data.generated == "image") {
+        photoResult = data.results[0];
         await setLastPhoto({
           img: photoResult,
-          description: data.photoPrompt,
+          description: data.generationPrompt,
         });
       }
 
       let contentHtml = "";
-      if (data.response) {
-        contentHtml = md().render(data.response);
+      if (data.result) {
+        contentHtml = md().render(data.result);
       }
 
+      let dataR: any = {};
+      if (data.generated && data.results) {
+        if (data.generated == "image") {
+          dataR.photo = data.results[0];
+          dataR.photoDescription = data.generationPrompt;
+        }
+        if (data.generated == "video") {
+          dataR.video = data.results;
+          dataR.videoDescription = data.generationPrompt;
+        }
+        if (data.generated == "audio") {
+          dataR.audio = data.results;
+          dataR.audioDescription = data.generationPrompt;
+        }
+      }
       messages.push({
         id: uuidv4(),
         text: contentHtml,
         sender: "AI",
         time: formatTime(Date.now()),
-        data: {
-          photo: photoResult,
-          photoDescription: data.photoPrompt,
-          video: data.video,
-          videoDescription: data.videoPrompt,
-          audio: data.audio,
-          audioDescription: data.audioPrompt,
-        },
+        data: dataR,
       });
 
       setMessages([...messages]);
@@ -239,7 +253,7 @@ export default function Chat() {
   async function resetConversation(token: string | null) {
     if (!token) return alert("Please complete the captcha");
     let res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/conversation/alan-${model}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/text/conversation/alan-${model}`,
       {
         method: "DELETE",
         headers: {
@@ -252,6 +266,7 @@ export default function Chat() {
         }),
       }
     );
+    // is a stream, wait for it to finish
     let data = await res.json();
     if (!data.error) {
       alert("Conversation reset");
