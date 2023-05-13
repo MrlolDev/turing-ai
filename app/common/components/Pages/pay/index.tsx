@@ -26,7 +26,7 @@ export default function PayPage() {
         email: profile.email,
         gateway: e,
         name: profile.user.user_metadata.name,
-        userId: profile.id,
+        userId: profile.user.user_metadata.id,
       }),
     });
     let session = await res.json();
