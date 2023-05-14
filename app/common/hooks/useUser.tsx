@@ -5,7 +5,8 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
 const useUser = (
-  required?: boolean
+  required?: boolean,
+  redirectTo: string = "/"
 ): {
   status: "authenticated" | "unauthenticated" | "loading";
   profile: any | null | undefined;
@@ -93,7 +94,10 @@ const useUser = (
       (required && status == "unauthenticated") ||
       (required && !profile.id)
     ) {
-      router.push("/login");
+      supabase.auth.signInWithOAuth({
+        provider: "discord",
+        options: { redirectTo: redirectTo, scopes: "connections, guilds" },
+      });
     }
   });
   return { status, profile };

@@ -9,7 +9,7 @@ import sellix from "@sellix/node-sdk";
 
 export default function PayPage() {
   const router = useRouter();
-  const { status, profile } = useUser(true);
+  const { status, profile } = useUser(true, "/pay");
 
   if (status === "loading" || profile.id === "loading") {
     return <Loading message="Loading" />;
