@@ -25,8 +25,6 @@ export default function PayPage() {
     return <Loading message="Loading" />;
   }
   async function handleSubscribe(e: any) {
-    alert("This feature is not available yet");
-    return;
     let res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/payments/pay`, {
       method: "POST",
       headers: {
@@ -34,11 +32,12 @@ export default function PayPage() {
         Authorization: `Bearer ${profile.access_token}`,
       },
       body: JSON.stringify({
-        productId: "645fb8d0eb031",
+        productId: sub == "user" ? "645fb8d0eb031" : "64627207b5a95",
         email: profile.email,
         gateway: e,
         name: profile.user.user_metadata.name,
         userId: profile.user.user_metadata.sub,
+        serverId: selectedServer?.id || null,
       }),
     });
     let session = await res.json();
@@ -196,13 +195,13 @@ export default function PayPage() {
 
             <PayButtons handleSubscribe={handleSubscribe} />
           </div>
+          {/*     
           <div className=" mt-2 flex flex-col  bg-gray-500 bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-30 border border-gray-100/[.2] items-center w-[300px] h-[420px] rounded-lg shadow-lg justify-between p-2 ">
             <div className="items-center flex-col flex">
               <h2 className="text-2xl font-semibold w-fit">
                 Pay as you go Plan
               </h2>
               <div className="flex flex-col items-center mt-2">
-                {/*  range menu to select amount of credits */}
                 <input
                   id="default-range"
                   type="range"
@@ -246,7 +245,7 @@ export default function PayPage() {
             </div>
 
             <PayButtons handleSubscribe={handleSubscribe} />
-          </div>
+          </div>*/}
         </div>
       </div>
     </div>
