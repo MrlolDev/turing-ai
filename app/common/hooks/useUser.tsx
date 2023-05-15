@@ -5,8 +5,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
 const useUser = (
-  required?: boolean,
-  redirectTo: string = "/"
+  required?: boolean
 ): {
   status: "authenticated" | "unauthenticated" | "loading";
   profile: any | null | undefined;
@@ -96,7 +95,10 @@ const useUser = (
     ) {
       supabase.auth.signInWithOAuth({
         provider: "discord",
-        options: { redirectTo: redirectTo, scopes: "connections, guilds" },
+        options: {
+          redirectTo: window.location.href,
+          scopes: "connections, guilds",
+        },
       });
     }
   });

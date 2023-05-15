@@ -37,6 +37,42 @@
 ::-webkit-scrollbar-thumb:hover {
   cursor: pointer;
 }
+input[type="range"] {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 10px;
+  background: none;
+  outline: none;
+  -webkit-transition: 0.2s;
+  transition: opacity 0.2s;
+
+  &::-webkit-slider-runnable-track {
+    height: 0.25rem;
+    @apply bg-white bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-30 border border-gray-100/[.2] rounded-md;
+  }
+  &::-moz-range-track {
+    background: red;
+    height: 0.5rem;
+    border-radius: 4px;
+  }
+
+  &::-webkit-slider-thumb {
+    -webkit-appearance: none; /* Override default look */
+    appearance: none;
+    margin-top: -1vh; /* Centers thumb on the track */
+    @apply h-[3vh] w-[3vh] rounded-full bg-gradient-to-br from-turing-blue to-turing-purple  hover:from-turing-purple hover:to-turing-blue transition duration-200;
+    // write inside the number of the value
+  }
+  &::-moz-range-thumb {
+    -webkit-appearance: none; /* Override default look */
+    appearance: none;
+    margin-top: -1vh; /* Centers thumb on the track */
+    @apply h-[3vh] w-[3vh] rounded-full bg-gradient-to-br from-turing-blue to-turing-purple  hover:from-turing-purple hover:to-turing-blue transition duration-200;
+  }
+}
+select {
+  // change select menu
+}
 
 .markdown {
   h1 {
