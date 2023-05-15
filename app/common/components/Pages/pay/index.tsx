@@ -60,12 +60,14 @@ export default function PayPage() {
     }
     if (servers.length > 0) return servers;
     let res = await fetch(
-      `https://discord.com/api/v8/users/@me/guilds?limit=100`,
+      `${process.env.NEXT_PUBLIC_API_URL}/payments/guilds`,
       {
+        method: "POST",
+        body: JSON.stringify({ accessToken }),
         headers: {
-          Authorization: `Bearer ${accessToken}`,
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${profile.access_token}`,
         },
-        body: null,
       }
     );
     let serversJSON = await res.json();
