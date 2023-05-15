@@ -40,7 +40,7 @@ export default function PayPage() {
         gateway: e,
         name: profile.user.user_metadata.name,
         userId: profile.user.user_metadata.sub,
-        serverId: selectedServer?.id || null,
+        serverId: selectedServer || null,
       }),
     });
     let session = await res.json();
