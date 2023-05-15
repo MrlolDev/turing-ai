@@ -48,6 +48,16 @@ export default function PayPage() {
   }
   async function getDiscordServers() {
     let accessToken = profile.provider_token;
+    if (!accessToken) {
+      supabase.auth.signInWithOAuth({
+        provider: "discord",
+        options: {
+          redirectTo: "https://app.turing.sh/pay",
+          scopes: "connections, guilds",
+        },
+      });
+      return;
+    }
     if (servers.length > 0) return servers;
     let res = await fetch(
       `https://discord.com/api/v8/users/@me/guilds?limit=100`,
