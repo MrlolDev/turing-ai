@@ -8,6 +8,7 @@ import Image from "next/image";
 // @ts-ignore
 import sellix from "@sellix/node-sdk";
 import SubSelector from "./SubSelector";
+import supabase from "../../../lib/supabase";
 
 export default function PayPage() {
   const router = useRouter();
@@ -25,6 +26,8 @@ export default function PayPage() {
     return <Loading message="Loading" />;
   }
   async function handleSubscribe(e: any) {
+    if (sub == "server" && !selectedServer)
+      return alert("Please select a server");
     let res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/payments/pay`, {
       method: "POST",
       headers: {
@@ -56,6 +59,17 @@ export default function PayPage() {
       }
     );
     let serversJSON = await res.json();
+    // if answers un authorized
+    if (serversJSON.code == 0 || serversJSON.code == 401 || res.status == 401) {
+      supabase.auth.signInWithOAuth({
+        provider: "discord",
+        options: {
+          redirectTo: "https://app.turing.sh/pay",
+          scopes: "connections, guilds",
+        },
+      });
+      return;
+    }
     // filter servers where the user is admin or owner
     serversJSON = serversJSON.filter(
       (server: any) =>
