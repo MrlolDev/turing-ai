@@ -25,9 +25,12 @@ export default function PayPage() {
   if (status === "loading" || profile.id === "loading") {
     return <Loading message="Loading" />;
   }
-  async function handleSubscribe(e: any) {
+  async function handleSubscribe(e: any, plan: any) {
     if (sub == "server" && !selectedServer)
       return alert("Please select a server");
+    let productId = sub == "user" ? "645fb8d0eb031" : "64627207b5a95";
+    if (plan == "credits")
+      productId = sub == "user" ? "646313b7bb6f1" : "646313fc5884a";
     let res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/payments/pay`, {
       method: "POST",
       headers: {
@@ -35,12 +38,15 @@ export default function PayPage() {
         Authorization: `Bearer ${profile.access_token}`,
       },
       body: JSON.stringify({
-        productId: sub == "user" ? "645fb8d0eb031" : "64627207b5a95",
+        productId: productId,
         email: profile.email,
         gateway: e,
         name: profile.user.user_metadata.name,
         userId: profile.user.user_metadata.sub,
         serverId: selectedServer || null,
+        credits: credits == "default" ? (sub == "user" ? 10 : 20) : credits,
+        plan: plan,
+        subType: sub,
       }),
     });
     let session = await res.json();
@@ -219,9 +225,10 @@ export default function PayPage() {
               </div>
             </div>
 
-            <PayButtons handleSubscribe={handleSubscribe} />
+            <PayButtons
+              handleSubscribe={(e: any) => handleSubscribe(e, "fixed")}
+            />
           </div>
-          {/*     
           <div className=" mt-2 flex flex-col  bg-gray-500 bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-30 border border-gray-100/[.2] items-center w-[300px] h-[420px] rounded-lg shadow-lg justify-between p-2 ">
             <div className="items-center flex-col flex">
               <h2 className="text-2xl font-semibold w-fit">
@@ -270,8 +277,10 @@ export default function PayPage() {
               </ul>
             </div>
 
-            <PayButtons handleSubscribe={handleSubscribe} />
-          </div>*/}
+            <PayButtons
+              handleSubscribe={(e: any) => handleSubscribe(e, "credits")}
+            />
+          </div>
         </div>
       </div>
     </div>
