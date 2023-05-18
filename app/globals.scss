@@ -59,15 +59,15 @@ input[type="range"] {
   &::-webkit-slider-thumb {
     -webkit-appearance: none; /* Override default look */
     appearance: none;
-    margin-top: -1vh; /* Centers thumb on the track */
-    @apply h-[3vh] w-[3vh] rounded-full bg-gradient-to-br from-turing-blue to-turing-purple  hover:from-turing-purple hover:to-turing-blue transition duration-200;
+    margin-top: -5px; /* Centers thumb on the track */
+    @apply h-[15px] w-[15px] rounded-full bg-gradient-to-br from-turing-blue to-turing-purple  hover:from-turing-purple hover:to-turing-blue transition duration-200;
     // write inside the number of the value
   }
   &::-moz-range-thumb {
     -webkit-appearance: none; /* Override default look */
     appearance: none;
-    margin-top: -1vh; /* Centers thumb on the track */
-    @apply h-[3vh] w-[3vh] rounded-full bg-gradient-to-br from-turing-blue to-turing-purple  hover:from-turing-purple hover:to-turing-blue transition duration-200;
+    margin-top: -5px; /* Centers thumb on the track */
+    @apply h-[15px] w-[15px] rounded-full bg-gradient-to-br from-turing-blue to-turing-purple  hover:from-turing-purple hover:to-turing-blue transition duration-200;
   }
 }
 select {
