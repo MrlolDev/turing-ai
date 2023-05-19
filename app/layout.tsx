@@ -5,10 +5,10 @@ import { Analytics } from "@vercel/analytics/react";
 export const metadata = {
   title: "Alan AI",
   description:
-    "Alan AI is a free, open-source, and extensible a new way to use LLM with internet access, i",
+    "Alan AI is a free, open-source, and extensible a new way to use LLM with internet access, image, video, and audio generation, and much more.",
   keywords: ["Next.js", "React", "JavaScript"],
   themeColor: "#62c0c9",
-  authors: [{ name: "Turing AI", url: "https://turingai.tech" }],
+  authors: [{ name: "Turing AI", url: "https://turing.sh" }],
   robots: {
     index: true,
     follow: true,
