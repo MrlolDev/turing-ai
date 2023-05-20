@@ -16,6 +16,7 @@ import WaitPage from "./Wait";
 import Message from "../Message";
 import ContextMenu from "../ContextMenu";
 import axios from "axios";
+import { fetchEventSource } from "@waylaidwanderer/fetch-event-source";
 
 export default function Chat() {
   const router = useRouter();
@@ -148,9 +149,9 @@ export default function Chat() {
       },
     });
     setMessages([...messages]);
-    // add loading message that dissapears after 2 seconds
+    let id = uuidv4();
     messages.push({
-      id: uuidv4(),
+      id: id,
       text: "Loading...",
       sender: "AI",
       time: formatTime(Date.now()),
@@ -158,7 +159,8 @@ export default function Chat() {
     });
     setMessages([...messages]);
     console.log(lastPhoto);
-    let res = await fetch(
+    var done = false;
+    let stream = await fetchEventSource(
       `${process.env.NEXT_PUBLIC_API_URL}/text/alan/${model}`,
       {
         method: "POST",
@@ -180,17 +182,85 @@ export default function Chat() {
           audioGenerator: audioGenerator,
           imageModificator: imageModificator,
         }),
+
+        onmessage: async (event: any) => {
+          const data = JSON.parse(event.data);
+          if (!data || !data.result) return;
+          console.log(data);
+          if (AutoHearMessages && type == AutoHearMessages) {
+            await HearMsg(data.result);
+          }
+          if (!data.error) {
+            let photoResult;
+            if (data.results && data.generated == "image") {
+              photoResult = data.results[0];
+              await setLastPhoto({
+                img: photoResult,
+                description: data.generationPrompt,
+              });
+            }
+
+            let contentHtml = "";
+            if (data.result) {
+              contentHtml = md().render(data.result);
+            }
+
+            let dataR: any = {};
+            if (data.generated && data.results) {
+              if (data.generated == "image") {
+                dataR.photo = data.results[0];
+                dataR.photoDescription = data.generationPrompt;
+              }
+              if (data.generated == "video") {
+                dataR.video = data.results;
+                dataR.videoDescription = data.generationPrompt;
+              }
+              if (data.generated == "audio") {
+                dataR.audio = data.results;
+                dataR.audioDescription = data.generationPrompt;
+              }
+            }
+            if (data.generating) {
+              await editMessage(
+                id,
+                `${contentHtml}\n\n<i>Generating ${data.generating}...</i>`,
+                "AI",
+                dataR
+              );
+            } else {
+              await editMessage(id, contentHtml, "AI", dataR);
+            }
+          } else {
+            await editMessage(id, data.error, "Error");
+          }
+          if (data.done) {
+            setIsProcessing(false);
+          }
+        },
+        onclose: () => {
+          if (!done) {
+            done = true;
+          }
+        },
+        onerror: (error: any) => {
+          throw error;
+        },
+        onopen: async (response: any) => {},
       }
     );
-    let data: any = await res.text();
-    let lastData = data.split("},\n\n").filter((x: any) => x != "");
+    console.log(stream);
+    let data;
+
+    return;
+    let lastData = data.split("}\n\n").filter((x: any) => x != "");
     lastData = lastData[lastData.length - 1] + "}";
+    // itt starts with data: {
+    lastData = lastData.split("data: ")[1];
+    console.log(lastData);
     data = JSON.parse(lastData);
     if (AutoHearMessages && type == AutoHearMessages) {
       await HearMsg(data.result);
     }
-    messages.pop();
-    setMessages([...messages]);
     if (!data.error) {
       let photoResult;
       if (data.results && data.generated == "image") {
@@ -221,15 +291,7 @@ export default function Chat() {
           dataR.audioDescription = data.generationPrompt;
         }
       }
-      messages.push({
-        id: uuidv4(),
-        text: contentHtml,
-        sender: "AI",
-        time: formatTime(Date.now()),
-        data: dataR,
-      });
-
-      setMessages([...messages]);
+      await editMessage(id, contentHtml);
     } else {
       messages.push({
         id: uuidv4(),
@@ -242,6 +304,20 @@ export default function Chat() {
     }
     setIsProcessing(false);
   }
+  function editMessage(
+    id: string,
+    msg: string,
+    sender?: "User" | "AI" | "Error",
+    data?: any
+  ) {
+    let message = messages.find((x) => x.id == id);
+    if (message) {
+      message.text = msg;
+      if (sender) message.sender = sender;
+      if (data) message.data = data;
+      setMessages([...messages]);
+    }
+  }
   // format time to hh:mm:ss
   function formatTime(time: number) {
     let date = new Date(time);
@@ -253,7 +329,7 @@ export default function Chat() {
   async function resetConversation(token: string | null) {
     if (!token) return alert("Please complete the captcha");
     let res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/text/conversation/alan-${model}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/text/alan/${model}`,
       {
         method: "DELETE",
         headers: {

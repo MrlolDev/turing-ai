@@ -18,6 +18,28 @@ export default function Selector({
   const [query, setQuery] = useState("");
   options = options.filter((x) => !x.disabled);
   return (
+    <>
+      <select
+        value={value}
+        onChange={() => {
+          let e = document.getElementById(
+            `selector#${value}`
+          ) as HTMLSelectElement;
+          setValue(e.value);
+        }}
+        id={`selector#${value}`}
+        className="w-full border-none z-40 flex flex-row items-center justify-between py-2 px-3 text-sm leading-5  bg-gray-500 bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-30 border border-gray-100/[.2] outline-none rounded-md"
+      >
+        {options.map((option, i) => (
+          <option key={i} value={option.value}>
+            {option.name}
+          </option>
+        ))}
+      </select>
+    </>
+  );
+  /*
+  return (
     <Listbox value={value} onChange={setValue}>
       <div className="relative z-40 w-[85vw] md:w-[22vw]">
         <div className="relative w-full cursor-default overflow-hidden rounded-lg text-left sm:text-sm z-40">
@@ -86,5 +108,5 @@ export default function Selector({
         </Transition>
       </div>
     </Listbox>
-  );
+  );*/
 }

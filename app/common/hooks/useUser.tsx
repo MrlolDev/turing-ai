@@ -44,38 +44,53 @@ const useUser = (
         throw error;
       }
       if (data && data.user) {
-        let profile = { ...data.user, ...user };
+        let profile: any = { ...data.user, ...user };
         let premium = false;
-        let ispremium = await supabase
-          .from("premium")
-          .select("*")
-          .eq("id", profile.user_metadata?.sub)
-          .single();
-        if (ispremium.data) {
-          var now = Date.now();
-          if (now >= ispremium.data.expires_at) {
-            await supabase
-              .from("premium")
-              .delete()
-              .eq("id", profile.user_metadata?.sub);
-
-            premium = false;
-          } else {
-            premium = true;
+        let response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/data/user/${profile.user_metadata.sub}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${user.access_token}`,
+            },
           }
-        }
-        let tester = await supabase
-          .from("alan_testers")
-          .select("*")
-          .eq("id", profile.user_metadata?.sub)
-          .single();
+        );
+        let userD = await response.json();
+        console.log(userD);
         let testerData: any = {};
-        if (tester.data) {
-          testerData.apply = true;
-          testerData.approved = tester.data.isTester;
-          testerData.type = tester.data.testerType;
-        } else {
-          testerData.apply = false;
+        if (userD) {
+          profile = {
+            ...profile,
+            subscription: userD.subscription,
+            plan: userD.plan,
+            tester: userD.tester,
+          };
+
+          if (userD.tester > 0) {
+            testerData.apply = true;
+            testerData.approved = true;
+            testerData.type = userD.tester;
+          } else {
+            testerData.apply = true;
+            testerData.approved = false;
+          }
+          if (!userD.metadata?.email) {
+            let res = await fetch(
+              `${process.env.NEXT_PUBLIC_API_URL}/data/user/${profile.user_metadata.sub}`,
+              {
+                method: "PUT",
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${user.access_token}`,
+                },
+                body: JSON.stringify({
+                  metadata: { ...userD.metadata, email: profile.email },
+                }),
+              }
+            );
+            let data = await res.json();
+          }
         }
         setProfile({ ...profile, premium: premium, tester: testerData });
       }
