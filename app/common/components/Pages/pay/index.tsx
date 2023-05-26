@@ -26,6 +26,7 @@ export default function PayPage() {
   if (status === "loading" || profile.id === "loading") {
     return <Loading message="Loading" />;
   }
+  console.log("pf", profile);
   async function handleSubscribe(e: any, plan: any) {
     if (sub == "server" && !selectedServer)
       return alert("Please select a server");

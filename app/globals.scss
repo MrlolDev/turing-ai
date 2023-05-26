@@ -51,9 +51,8 @@ input[type="range"] {
     @apply bg-white bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-30 border border-gray-100/[.2] rounded-md;
   }
   &::-moz-range-track {
-    background: red;
-    height: 0.5rem;
-    border-radius: 4px;
+    height: 0.25rem;
+    @apply bg-white bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-30 border border-gray-100/[.2] rounded-md;
   }
 
   &::-webkit-slider-thumb {

@@ -21,8 +21,8 @@ const useUser = (
       data: { session },
       error,
     } = await supabase.auth.getSession();
-
     if (error) {
+      console.log("err", error);
       throw error;
     }
     if (!session || !session.user) {
@@ -41,6 +41,7 @@ const useUser = (
       if (user == false) return;
       let { data, error } = await supabase.auth.getUser(user.access_token);
       if (error) {
+        console.log("err", error);
         throw error;
       }
       if (data && data.user) {
@@ -57,24 +58,13 @@ const useUser = (
           }
         );
         let userD = await response.json();
-        console.log(userD);
+        console.log("userD", userD);
         let testerData: any = {};
-        if (userD) {
-          profile = {
-            ...profile,
-            subscription: userD.subscription,
-            plan: userD.plan,
-            tester: userD.tester,
-          };
+        if (userD && !userD.error) {
+          let { p, tD } = updateProfile(userD, profile, testerData);
+          profile = p;
+          testerData = tD;
 
-          if (userD.tester > 0) {
-            testerData.apply = true;
-            testerData.approved = true;
-            testerData.type = userD.tester;
-          } else {
-            testerData.apply = true;
-            testerData.approved = false;
-          }
           if (!userD.metadata?.email) {
             let res = await fetch(
               `${process.env.NEXT_PUBLIC_API_URL}/data/user/${profile.user_metadata.sub}`,
@@ -91,6 +81,25 @@ const useUser = (
             );
             let data = await res.json();
           }
+        } else {
+          let res = await fetch(
+            `${process.env.NEXT_PUBLIC_API_URL}/data/user/${profile.user_metadata.sub}`,
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${user.access_token}`,
+              },
+              body: JSON.stringify({
+                metadata: { email: profile.email },
+                settings: {},
+              }),
+            }
+          );
+          let data = await res.json();
+          let { p, tD } = updateProfile(data, profile, testerData);
+          profile = p;
+          testerData = tD;
         }
         setProfile({ ...profile, premium: premium, tester: testerData });
       }
@@ -99,6 +108,24 @@ const useUser = (
         error: error,
       });
     }
+  }
+  function updateProfile(userD: any, profile: any, testerData: any) {
+    profile = {
+      ...profile,
+      subscription: userD.subscription,
+      plan: userD.plan,
+      tester: userD.tester,
+    };
+
+    if (userD.tester > 0) {
+      testerData.apply = true;
+      testerData.approved = true;
+      testerData.type = userD.tester;
+    } else {
+      testerData.apply = true;
+      testerData.approved = false;
+    }
+    return { p: profile, tD: testerData };
   }
   useEffect(() => {
     if (status == "loading") {
