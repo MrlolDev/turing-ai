@@ -52,6 +52,10 @@ export default function PayPage() {
       }),
     });
     let session = await res.json();
+    if (session.error) {
+      // alert with rate limit messag
+      alert("You are being rate limited, please try again in a few seconds.");
+    }
     window.location = session.url;
   }
   async function getDiscordServers() {
