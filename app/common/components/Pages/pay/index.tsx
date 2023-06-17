@@ -18,6 +18,7 @@ export default function PayPage() {
   const [servers, setServers] = useState<any>([]);
   const [selectedServer, setSelectedServer] = useState<any>(null);
   const [openLogoutMenu, setOpenLogoutMenu] = useState(false);
+  let [isProcessing, setIsProcessing] = useState(false);
 
   const handleCreditChange = (event: any) => {
     setCredits(event.target.value);
@@ -28,6 +29,8 @@ export default function PayPage() {
   }
   console.log("pf", profile);
   async function handleSubscribe(e: any, plan: any) {
+    if (isProcessing) return;
+    setIsProcessing(true);
     if (sub == "server" && !selectedServer)
       return alert("Please select a server");
     let productId = sub == "user" ? "645fb8d0eb031" : "64627207b5a95";
@@ -52,9 +55,12 @@ export default function PayPage() {
       }),
     });
     let session = await res.json();
+    console.log(session);
     if (session.error) {
       // alert with rate limit messag
-      alert("You are being rate limited, please try again in a few seconds.");
+      alert(
+        `Error: ${session.error}\nPlease report this issue to our support server at https://discord.gg/turing`
+      );
     }
     window.location = session.url;
   }
