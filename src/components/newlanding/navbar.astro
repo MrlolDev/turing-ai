@@ -1,0 +1,37 @@
+---
+export interface Props {}
+---
+
+<nav
+  class="relative w-full top-[4vh] h-[10vh] flex flex-row items-center justify-between p-4 z-50"
+>
+  <div class="flex flex-row items-center gap-2">
+    <img src="/logo.png" class="h-[8vh] ml-4" />
+    <p class="w-[0vw] hidden font-bold uppercase md:w-fit md:visible">
+      Turing AI
+    </p>
+  </div>
+  <ul
+    class="list-none md:flex flex-row items-center gap-2 hidden md:w-fit w-[0]"
+  >
+    <li class="hover:text-turing-light_purple duration-300 transition">
+      <a href="https://l.turing.sh/bot" target="_blank"> Discord bot</a>
+    </li>
+    <li class="hover:text-turing-light_purple duration-300 transition">
+      <a href="https://discord.gg/turing" target="_blank"> Discord server</a>
+    </li>
+    <li class="text-gray-400 cursor-not-allowed">Web app</li>
+  </ul>
+  <ul class="list-none flex flex-row items-center gap-2">
+    <li
+      class="text-[#FFB743]/[.8] hover:text-[#FFB743] transition duration-300"
+    >
+      <a href="https://app.turing.sh/pay">Premium</a>
+    </li>
+    <li
+      class="py-1 px-3 border-turing-light_purple/[.8] hover:border-turing-light_purple border rounded-md transition duration-300"
+    >
+      <a href="https://link.turing.sh/bot">Add bot</a>
+    </li>
+  </ul>
+</nav>

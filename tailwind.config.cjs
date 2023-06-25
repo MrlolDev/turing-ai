@@ -23,6 +23,12 @@ module.exports = {
           gradient_1: "#51d7c8",
           gradient_2: "#5376b0",
           gradient_3: "#ad7fe2",
+          // new
+          light_blue: "#44A6A6", // main
+          dark_blue: "#647AA6",
+          light_purple: "#A179D9", // main
+          purple: "#7E55D9", //main
+          dark_purple: "#5854BF", //main
         },
       },
     },
