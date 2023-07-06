@@ -56,16 +56,17 @@ export default function PayPage() {
         subType: sub,
       }),
     });
-    setIsLoading(false);
     let session = await res.json();
     console.log(session);
     if (session.error) {
+      setIsLoading(false);
       // alert with rate limit messag
       alert(
         `Error: ${session.error}\nPlease report this issue to our support server at https://discord.gg/turing`
       );
     }
     window.location = session.url;
+    setIsLoading(false);
   }
   async function getDiscordServers() {
     let accessToken = profile.provider_token;
