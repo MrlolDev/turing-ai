@@ -242,7 +242,7 @@ export default function PayPage() {
                       <input
                         id="default-range"
                         type="range"
-                        min={sub == "user" ? 3 : 10}
+                        min={sub == "user" ? 3.5 : 10}
                         max={sub == "user" ? 100 : 200}
                         value={
                           credits == "default"
