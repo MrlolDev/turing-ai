@@ -28,7 +28,6 @@ export default function PayPage() {
   if (status === "loading" || profile.id === "loading") {
     return <Loading message="Loading" />;
   }
-  console.log("pf", profile);
   async function handleSubscribe(e: any, plan: any) {
     if (isProcessing) return;
     setIsProcessing(true);
@@ -62,7 +61,7 @@ export default function PayPage() {
       setIsLoading(false);
       // alert with rate limit messag
       alert(
-        `Error: ${session.error}\nPlease report this issue to our support server at https://discord.gg/turing`
+        `Error: ${session.error}\nPlease report this issue to our support server at https://dsc.gg/turing`
       );
     }
     window.location = session.url;
@@ -218,7 +217,9 @@ export default function PayPage() {
                           Bigger token/character limit
                         </li>
                         <li className="cursor-help text-lg">No ads</li>
-                        <li className="cursor-help  text-lg">GPT-4 access</li>
+                        <li className="cursor-help  text-lg">
+                          GPT-4/Claude 2 access (soon)
+                        </li>
                         <li className="cursor-help  text-lg">
                           Earlier access to new features
                         </li>
@@ -279,7 +280,7 @@ export default function PayPage() {
                         No token/character limit
                       </li>
                       <li className="cursor-help  text-lg">
-                        GPT-4 and ChatGPT Plugins access
+                        GPT-4 and ChatGPT Plugins access (soon)
                       </li>
                       <li className="cursor-help  text-lg">
                         Earlier access to new features

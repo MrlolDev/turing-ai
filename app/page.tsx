@@ -11,7 +11,7 @@ export default function Home() {
   // create state linked to localStorage
   return (
     <>
-      <Chat></Chat>
+      <p>This page is no logenr available</p>
     </>
   );
 }
