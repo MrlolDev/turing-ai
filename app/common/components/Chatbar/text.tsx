@@ -2,7 +2,6 @@
 import Image from "next/image";
 import { useState } from "react";
 import Turnstile from "react-turnstile";
-import ShareBtn from "../ShareBtn";
 
 export default function Text({
   sendMsg,
@@ -108,7 +107,6 @@ export default function Text({
           />
         )}
         */}
-        <ShareBtn messages={messages} userId={userId} />
         {/*input */}
         <textarea
           className="w-[75.5vw] h-[5vh] rounded-md resize-none bg-gray-500 bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-30 border border-gray-100/[.2] text-white placeholder-gray-100/[.5] focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent px-2 py-1"
