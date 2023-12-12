@@ -13,6 +13,11 @@ export default function SuccessPage() {
         <i className="fab fa-discord"></i>
         Join our Discord (required for support)
       </a>
+      <p className="text-xl">
+        If you see this message it means there is an issue with our payment
+        provider that can cause you to not recieve your perks. Please join our
+        discord before closing this page
+      </p>
     </div>
   );
 }
